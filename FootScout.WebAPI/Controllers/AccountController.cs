@@ -22,9 +22,9 @@ namespace FootScout.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Register([FromBody] RegisterDTO request)
+        public async Task<IActionResult> Register([FromBody] RegisterDTO registerDTO)
         {
-            var response = await _accountService.Register(request);
+            var response = await _accountService.Register(registerDTO);
             return Ok(response);
         }
 
@@ -34,9 +34,9 @@ namespace FootScout.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Login([FromBody] LoginDTO request)
+        public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
         {
-            var response = await _accountService.Login(request);
+            var response = await _accountService.Login(loginDTO);
             return Ok(response);
         }
     }

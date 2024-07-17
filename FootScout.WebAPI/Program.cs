@@ -1,5 +1,4 @@
-using FootScout.WebAPI.DbContext;
-using FootScout.WebAPI.DbHandler;
+using FootScout.WebAPI.DbManager;
 using FootScout.WebAPI.Entities;
 using FootScout.WebAPI.Services.Classes;
 using FootScout.WebAPI.Services.Interfaces;
@@ -21,9 +20,12 @@ namespace FootScout.WebAPI
 
             // Database connection
             builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("SQLConnectionString")));
+            {
+                options.UseSqlServer(configuration.GetConnectionString("SQLConnectionString") ??
+                    throw new InvalidOperationException("SQL Connection String is not found!"));
+            });
 
-            // Identity
+            // Identity with support for roles
             builder.Services.AddIdentity<User, IdentityRole>()
                 .AddRoles<IdentityRole>()
                 .AddRoleManager<RoleManager<IdentityRole>>()
@@ -37,7 +39,6 @@ namespace FootScout.WebAPI
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-
             // JWT Bearer
             .AddJwtBearer(options =>
              {
@@ -62,14 +63,14 @@ namespace FootScout.WebAPI
                     policy.RequireRole(Role.Admin, Role.User));
             });
 
-            // Controller handler
-            builder.Services.AddControllers();
-            builder.Services.AddEndpointsApiExplorer();
-
             // Dependency Injection
             builder.Services.AddScoped<IAccountService, AccountService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
             //builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+            // Controller handler
+            builder.Services.AddControllers();
+            builder.Services.AddEndpointsApiExplorer();
 
             // Swagger authentication
             builder.Services.AddSwaggerGen(c =>
@@ -135,7 +136,7 @@ namespace FootScout.WebAPI
 
             app.MapControllers();
 
-            // 3. Seeders
+            // Seeders
             using (var scope = app.Services.CreateScope())
             {
                 var services = scope.ServiceProvider;

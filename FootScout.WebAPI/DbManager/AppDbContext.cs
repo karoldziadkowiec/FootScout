@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace FootScout.WebAPI.DbContext
+namespace FootScout.WebAPI.DbManager
 {
     public class AppDbContext : IdentityDbContext<User>
     {
