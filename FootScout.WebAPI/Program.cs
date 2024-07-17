@@ -57,7 +57,7 @@ namespace FootScout.WebAPI
             // Authorization policies
             builder.Services.AddAuthorization(options =>
             {
-                options.AddPolicy("ElevatedRights", policy =>
+                options.AddPolicy("AdminRights", policy =>
                     policy.RequireRole(Role.Admin));
                 options.AddPolicy("StandardRights", policy =>
                     policy.RequireRole(Role.Admin, Role.User));

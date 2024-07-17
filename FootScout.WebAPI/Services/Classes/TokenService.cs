@@ -35,11 +35,12 @@ namespace FootScout.WebAPI.Services.Classes
             }
 
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+            var expireDays = _configuration.GetValue<int>("JWT:ExpireDays");
             var credentials = new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256);
             var token = new JwtSecurityToken(
                 issuer: _configuration["JWT:ValidIssuer"],
                 audience: _configuration["JWT:ValidAudience"],
-                expires: DateTime.Now.AddDays(1),
+                expires: DateTime.Now.AddDays(expireDays),
                 claims: userClaims,
                 signingCredentials: credentials
                 );

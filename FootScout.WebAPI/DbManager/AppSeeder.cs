@@ -7,11 +7,11 @@ namespace FootScout.WebAPI.DbManager
     {
         public static async Task Seed(IServiceProvider services)
         {
-            await CreateRoles(services);
+            await SeedRoles(services);
             await SeedAdminRole(services);
         }
 
-        private static async Task CreateRoles(IServiceProvider services)
+        private static async Task SeedRoles(IServiceProvider services)
         {
             var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
             var roles = new List<string> { Role.Admin, Role.User };

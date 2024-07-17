@@ -20,16 +20,20 @@ namespace FootScout.WebAPI.Services.Classes
             _tokenService = tokenService;
         }
 
-        public async Task<bool> Register(RegisterDTO registerDTO)
+        public async Task Register(RegisterDTO registerDTO)
         {
             var userByEmail = await _userManager.FindByEmailAsync(registerDTO.Email);
             if (userByEmail != null)
             {
                 throw new ArgumentException($"User with email {registerDTO.Email} already exists.");
             }
+            if (!registerDTO.Password.Equals(registerDTO.ConfirmPassword))
+            {
+                throw new ArgumentException($"Confirmed password is different.");
+            }
 
-            Address address = new Address { City = registerDTO.City, Street = registerDTO.Street };
-            User user = new User
+            var address = new Address { City = registerDTO.City, Street = registerDTO.Street };
+            var user = new User
             {
                 Email = registerDTO.Email,
                 UserName = registerDTO.Email,
@@ -47,8 +51,6 @@ namespace FootScout.WebAPI.Services.Classes
             {
                 throw new ArgumentException($"Unable to register user {registerDTO.Email}, errors: {GetRegisterError(result.Errors)}");
             }
-
-            return true;
         }
 
         public async Task<string> Login(LoginDTO loginDTO)
@@ -58,7 +60,7 @@ namespace FootScout.WebAPI.Services.Classes
             {
                 throw new ArgumentException($"User {loginDTO.Email} does not exist.");
             }
-            else if (!await _userManager.CheckPasswordAsync(user, loginDTO.Password))
+            if (!await _userManager.CheckPasswordAsync(user, loginDTO.Password))
             {
                 throw new ArgumentException($"Unable to authenticate user {loginDTO.Email} - wrong password.");
             }

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FootScout.WebAPI.Controllers
 {
-    [Route("api/auth")]
+    [Route("api/{controller}")]
     [ApiController]
     public class AccountController : ControllerBase
     {
@@ -16,7 +16,7 @@ namespace FootScout.WebAPI.Controllers
             _accountService = accountService;
         }
 
-        // POST: api/auth/register
+        // POST: api/Account/register
         [AllowAnonymous]
         [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
@@ -24,11 +24,21 @@ namespace FootScout.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Register([FromBody] RegisterDTO registerDTO)
         {
-            var response = await _accountService.Register(registerDTO);
-            return Ok(response);
+            if (registerDTO == null || !ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                await _accountService.Register(registerDTO);
+                return Ok(registerDTO);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error during the registration of account: {ex.Message}");
+            }
         }
 
-        // POST: api/auth/login
+        // POST: api/Account/login
         [AllowAnonymous]
         [HttpPost("login")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
@@ -36,8 +46,18 @@ namespace FootScout.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
         {
-            var response = await _accountService.Login(loginDTO);
-            return Ok(response);
+            if (loginDTO == null || !ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                var token = await _accountService.Login(loginDTO);
+                return Ok(token);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error during the login: {ex.Message}");
+            }
         }
     }
 }
