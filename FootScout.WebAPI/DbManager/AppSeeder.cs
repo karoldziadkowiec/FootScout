@@ -26,7 +26,7 @@ namespace FootScout.WebAPI.DbManager
         private static async Task SeedAdminRole(IServiceProvider services)
         {
             string adminEmail = "admin@admin.com";
-            string adminPassword = "Admin!1";
+            string adminPassword = "Admin1!";
 
             var context = services.GetRequiredService<AppDbContext>();
             var userManager = services.GetRequiredService<UserManager<User>>();

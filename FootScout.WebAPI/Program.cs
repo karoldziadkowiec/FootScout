@@ -59,14 +59,20 @@ namespace FootScout.WebAPI
             {
                 options.AddPolicy("AdminRights", policy =>
                     policy.RequireRole(Role.Admin));
-                options.AddPolicy("StandardRights", policy =>
+                options.AddPolicy("UserRights", policy =>
+                    policy.RequireRole(Role.User));
+                options.AddPolicy("AdminOrUserRights", policy =>
                     policy.RequireRole(Role.Admin, Role.User));
             });
 
-            // Dependency Injection
+            // Dependency Injection - rejestrowanie serwisów z zakresem (scoped)
             builder.Services.AddScoped<IAccountService, AccountService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddScoped<ICookieService, CookieService>();
             //builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+            // Accessing HttpContext property (cookies)
+            builder.Services.AddHttpContextAccessor();
 
             // Controller handler
             builder.Services.AddControllers();

@@ -1,11 +1,12 @@
-﻿using FootScout.WebAPI.Models.DTOs;
+﻿using FootScout.WebAPI.Entities;
+using FootScout.WebAPI.Models.DTOs;
 using FootScout.WebAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FootScout.WebAPI.Controllers
 {
-    [Route("api/{controller}")]
+    [Route("api/account")]
     [ApiController]
     public class AccountController : ControllerBase
     {
@@ -58,6 +59,27 @@ namespace FootScout.WebAPI.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error during the login: {ex.Message}");
             }
+        }
+
+        [Authorize(Roles = Role.Admin)]
+        [HttpPost("admin-action")]
+        public IActionResult AdminAction()
+        {
+            return Ok("This is an admin action");
+        }
+
+        [Authorize(Roles = Role.User)]
+        [HttpPost("user-action")]
+        public IActionResult UserAction()
+        {
+            return Ok("This is a user action");
+        }
+
+        [Authorize(Policy = "AdminOrUserRights")]
+        [HttpPost("admin-user-action")]
+        public IActionResult AdminUserAction()
+        {
+            return Ok("This is a admin or user action");
         }
     }
 }

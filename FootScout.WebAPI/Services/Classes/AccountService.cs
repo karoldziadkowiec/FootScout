@@ -12,12 +12,14 @@ namespace FootScout.WebAPI.Services.Classes
         private readonly AppDbContext _dbContext;
         private readonly UserManager<User> _userManager;
         private readonly ITokenService _tokenService;
+        private readonly ICookieService _cookieService;
 
-        public AccountService(AppDbContext dbContext, UserManager<User> userManager, ITokenService tokenService)
+        public AccountService(AppDbContext dbContext, UserManager<User> userManager, ITokenService tokenService, ICookieService cookieService)
         {
             _dbContext = dbContext;
             _userManager = userManager;
             _tokenService = tokenService;
+            _cookieService = cookieService;
         }
 
         public async Task Register(RegisterDTO registerDTO)
@@ -66,7 +68,10 @@ namespace FootScout.WebAPI.Services.Classes
             }
 
             var token = await _tokenService.CreateTokenJWT(user);
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+            await _cookieService.SetCookies(token, tokenString);
+
+            return tokenString;
         }
 
         private string GetRegisterError(IEnumerable<IdentityError> errors)
