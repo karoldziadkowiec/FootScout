@@ -2,3 +2,11 @@
   text-align: center;
 }
 
+.logo {
+  width: 40px;
+  margin-right: 10px;
+}
+
+.green-links .nav-link {
+  color: rgb(92, 226, 117);
+}
