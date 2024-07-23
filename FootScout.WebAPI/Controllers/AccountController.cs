@@ -17,7 +17,7 @@ namespace FootScout.WebAPI.Controllers
             _accountService = accountService;
         }
 
-        // POST: api/Account/register
+        // POST: api/account/register
         [AllowAnonymous]
         [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
@@ -39,7 +39,7 @@ namespace FootScout.WebAPI.Controllers
             }
         }
 
-        // POST: api/Account/login
+        // POST: api/account/login
         [AllowAnonymous]
         [HttpPost("login")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
