@@ -35,7 +35,6 @@ namespace FootScout.WebAPI.DbManager
             var admin = await userManager.FindByEmailAsync(adminEmail);
             if (admin == null)
             {
-                Address address = new Address { City = "Admin", Street = "Admin" };
                 admin = new User
                 {
                     Email = adminEmail,
@@ -43,7 +42,8 @@ namespace FootScout.WebAPI.DbManager
                     FirstName = "Admin",
                     LastName = "Admin",
                     PhoneNumber = "000000000",
-                    Address = address
+                    Location = "Admin",
+                    CreationDate = DateTime.Now,
                 };
                 await userManager.CreateAsync(admin, adminPassword);
                 await userManager.AddToRoleAsync(admin, Role.Admin);

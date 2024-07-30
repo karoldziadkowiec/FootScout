@@ -17,10 +17,6 @@ namespace FootScout.WebAPI.Models.DTOs
         [Required]
         public string PhoneNumber { get; set; }
         [Required]
-        public string Position { get; set; }
-        [Required]
-        public string City { get; set; }
-        [Required]
-        public string Street { get; set; }
+        public string Location { get; set; }
     }
 }

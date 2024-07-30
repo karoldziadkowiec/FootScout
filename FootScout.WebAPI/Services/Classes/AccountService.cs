@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using System.IdentityModel.Tokens.Jwt;
 using FootScout.WebAPI.Services.Interfaces;
 using FootScout.WebAPI.Models.DTOs;
+using AutoMapper;
 
 namespace FootScout.WebAPI.Services.Classes
 {
@@ -11,13 +12,15 @@ namespace FootScout.WebAPI.Services.Classes
     {
         private readonly AppDbContext _dbContext;
         private readonly UserManager<User> _userManager;
+        private readonly IMapper _mapper;
         private readonly ITokenService _tokenService;
         private readonly ICookieService _cookieService;
 
-        public AccountService(AppDbContext dbContext, UserManager<User> userManager, ITokenService tokenService, ICookieService cookieService)
+        public AccountService(AppDbContext dbContext, UserManager<User> userManager, IMapper mapper, ITokenService tokenService, ICookieService cookieService)
         {
             _dbContext = dbContext;
             _userManager = userManager;
+            _mapper = mapper;
             _tokenService = tokenService;
             _cookieService = cookieService;
         }
@@ -34,17 +37,7 @@ namespace FootScout.WebAPI.Services.Classes
                 throw new ArgumentException($"Confirmed password is different.");
             }
 
-            var address = new Address { City = registerDTO.City, Street = registerDTO.Street };
-            var user = new User
-            {
-                Email = registerDTO.Email,
-                UserName = registerDTO.Email,
-                FirstName = registerDTO.FirstName,
-                LastName = registerDTO.LastName,
-                PhoneNumber = registerDTO.PhoneNumber,
-                Address = address,
-                SecurityStamp = Guid.NewGuid().ToString()
-            };
+            var user = _mapper.Map<User>(registerDTO);
 
             var result = await _userManager.CreateAsync(user, registerDTO.Password);
             await _userManager.AddToRoleAsync(user, Role.User);
