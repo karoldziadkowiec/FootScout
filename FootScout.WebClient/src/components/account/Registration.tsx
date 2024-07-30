@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Col, Row, Alert, Container } from 'react-bootstrap';
 import AccountService from '../../services/api/AccountService';
@@ -18,6 +18,14 @@ const Registration: React.FC = () => {
         phoneNumber: '',
         location: ''
     });
+
+    useEffect(() => {
+        // Clearing AuthToken when the Registration component is rendered
+        const clearAuthToken = async () => {
+          await AccountService.logout();
+        };
+        clearAuthToken();
+      }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;

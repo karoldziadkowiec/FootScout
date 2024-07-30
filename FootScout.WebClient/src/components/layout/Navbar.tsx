@@ -38,7 +38,7 @@ const NavbarComponent = () => {
             </NavDropdown>
             <NavDropdown title="My Profile" id="basic-nav-dropdown">
               <NavDropdown.Item as={NavLink} to="/my-profile">Profile</NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/my-profile">Club History</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/club-history">Club History</NavDropdown.Item>
               <NavDropdown.Item as={NavLink} to="/my-profile">Player Ads</NavDropdown.Item>
               <NavDropdown.Item as={NavLink} to="/my-profile">Club Ads</NavDropdown.Item>
               <NavDropdown.Item as={NavLink} to="/my-profile">Player Favorites</NavDropdown.Item>

@@ -1,22 +1,15 @@
 import React from 'react';
-import Navbar from '../components/layout/Navbar';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import RenderWithNavbarProps from '../models/interfaces/RenderWithNavbarProps';
+import ProtectedRoute from '../services/roles/ProtectedRoute';
+import DynamicNavbar from '../components/layout/DynamicNavbar';
+import Role from '../models/enums/Role';
 import Login from '../components/account/Login';
 import Registration from '../components/account/Registration';
 import Home from '../components/home/Home';
 import MyProfile from '../components/user/MyProfile';
-
-const RenderWithNavbar = ({ children }: RenderWithNavbarProps) => {
-  return (
-    <>
-      <Navbar/>
-      <div className="main-content">
-        {children}
-      </div>
-    </>
-  );
-};
+import ClubHistory from '../components/user/ClubHistory';
+import AdminHome from '../components/admin/AdminHome';
+import Users from '../components/admin/Users';
 
 const Routing = () => {
   return (
@@ -24,11 +17,14 @@ const Routing = () => {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/registration" element={<Registration />} />
-        <Route path="/home" element={<RenderWithNavbar><Home /></RenderWithNavbar>} />
-        <Route path="/my-profile" element={<RenderWithNavbar><MyProfile /></RenderWithNavbar>} />
+        <Route path="/home" element={<ProtectedRoute element={<DynamicNavbar><Home /></DynamicNavbar>} allowedRoles={[Role.User]} />} />
+        <Route path="/my-profile" element={<ProtectedRoute element={<DynamicNavbar><MyProfile /></DynamicNavbar>} allowedRoles={[Role.Admin, Role.User]} />} />
+        <Route path="/club-history" element={<ProtectedRoute element={<DynamicNavbar><ClubHistory /></DynamicNavbar>} allowedRoles={[Role.User]} />} />
+        <Route path="/admin-home" element={<ProtectedRoute element={<DynamicNavbar><AdminHome /></DynamicNavbar>} allowedRoles={[Role.Admin]} />} />
+        <Route path="/admin-users" element={<ProtectedRoute element={<DynamicNavbar><Users /></DynamicNavbar>} allowedRoles={[Role.Admin]} />} />
       </Routes>
     </Router>
   );
-}
+};
 
 export default Routing;

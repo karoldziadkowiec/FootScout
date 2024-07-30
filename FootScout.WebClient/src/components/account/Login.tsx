@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Alert } from 'react-bootstrap';
 import axios from 'axios';
@@ -13,13 +13,26 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
+  useEffect(() => {
+    // Clearing AuthToken when the Login component is rendered
+    const clearAuthToken = async () => {
+      await AccountService.logout();
+    };
+    clearAuthToken();
+  }, []);
+
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const loginDTO: LoginDTO = { email, password };
 
     try {
       await AccountService.login(loginDTO);
-      navigate('/home');
+      if(await AccountService.isRoleAdmin()){
+        navigate('/admin-home');
+      }
+      else {
+        navigate('/home');
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response) {

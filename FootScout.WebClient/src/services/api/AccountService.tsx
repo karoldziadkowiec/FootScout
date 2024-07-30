@@ -64,27 +64,22 @@ const AccountService = {
     return null;
   },
 
-  async getEmail() {
-    const token = await AccountService.getToken();
-    if (token) {
-      try {
-        const decodedToken = jwtDecode<any>(token);
-        return decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'];
-      } catch (error) {
-        console.error('Failed to decode token:', error);
-      }
-    }
-    return null;
-  },
-
   async isAuthenticated() {
     const token = await AccountService.getToken();
     return !!token;
   },
 
-  async isAdmin(): Promise<boolean> {
+  async isRoleAdmin(): Promise<boolean> {
     const role = await AccountService.getRole();
-    if(role === Role.Admin)
+    if (role === Role.Admin)
+      return true;
+    else
+      return false;
+  },
+
+  async isRoleUser(): Promise<boolean> {
+    const role = await AccountService.getRole();
+    if (role === Role.User)
       return true;
     else
       return false;
