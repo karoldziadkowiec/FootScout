@@ -2,11 +2,19 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import ApiURL from '../../config/ApiConfig';
 import LoginDTO from '../../models/dtos/LoginDTO';
+import RegisterDTO from '../../models/dtos/RegisterDTO';
 import jwtDecode from 'jwt-decode'
+import Role from '../../models/enums/Role';
 
 const AccountService = {
-  async register() {
-
+  async registerUser(registerDTO: RegisterDTO) {
+    try {
+      const response = await axios.post(`${ApiURL}/account/register`, registerDTO);
+      return response.data;
+    } catch (error) {
+      console.error('Registration failed:', error);
+      throw new Error('Registration failed');
+    }
   },
 
   async login(loginDTO: LoginDTO) {
@@ -72,6 +80,14 @@ const AccountService = {
   async isAuthenticated() {
     const token = await AccountService.getToken();
     return !!token;
+  },
+
+  async isAdmin(): Promise<boolean> {
+    const role = await AccountService.getRole();
+    if(role === Role.Admin)
+      return true;
+    else
+      return false;
   },
 
   async logout() {

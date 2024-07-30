@@ -63,6 +63,7 @@ const Login = () => {
               placeholder="Enter e-mail"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              maxLength={50}
               required
             />
           </Form.Group>
@@ -74,13 +75,14 @@ const Login = () => {
               placeholder="Enter password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              maxLength={30}
               required
             />
           </Form.Group>
           <div className="d-grid">
             <Button variant="success" type="submit">Log in</Button>
             <p></p>
-            <Button variant="secondary" onClick={moveToRegistrationPage}>Register account</Button>
+            <Button variant="outline-light" onClick={moveToRegistrationPage}>Register account</Button>
           </div>
         </Form>
       </div>
