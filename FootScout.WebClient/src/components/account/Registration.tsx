@@ -166,7 +166,7 @@ const Registration: React.FC = () => {
                                                 placeholder="Location"
                                                 value={registerDTO.location}
                                                 onChange={handleChange}
-                                                maxLength={30}
+                                                maxLength={40}
                                                 required
                                             />
                                         </Form.Group>
