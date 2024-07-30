@@ -12,12 +12,12 @@ namespace FootScout.WebAPI.Entities
         [ForeignKey("ClubAdvertisementId")]
         public virtual ClubAdvertisement ClubAdvertisement { get; set; }
         [Required]
-        public string UserPlayerId { get; set; }
-        [ForeignKey("UserPlayerId")]
-        public virtual User UserPlayer { get; set; }
-        [Required]
         public string Status { get; set; }
         [Required]
         public DateTime CreationDate { get; set; }
+        [Required]
+        public string UserPlayerId { get; set; }
+        [ForeignKey("UserPlayerId")]
+        public virtual User UserPlayer { get; set; }
     }
 }

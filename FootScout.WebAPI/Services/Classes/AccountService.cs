@@ -38,7 +38,7 @@ namespace FootScout.WebAPI.Services.Classes
             }
 
             var user = _mapper.Map<User>(registerDTO);
-
+            
             var result = await _userManager.CreateAsync(user, registerDTO.Password);
             await _userManager.AddToRoleAsync(user, Role.User);
 

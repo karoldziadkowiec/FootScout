@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FootScout.WebAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240730092818_Migration1")]
+    [Migration("20240730155451_Migration1")]
     partial class Migration1
     {
         /// <inheritdoc />
@@ -96,6 +96,30 @@ namespace FootScout.WebAPI.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("ClubAdvertisements");
+                });
+
+            modelBuilder.Entity("FootScout.WebAPI.Entities.ClubAdvertisementFavorite", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClubAdvertisementId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClubAdvertisementId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ClubAdvertisementFavorites");
                 });
 
             modelBuilder.Entity("FootScout.WebAPI.Entities.ClubHistory", b =>
@@ -217,6 +241,30 @@ namespace FootScout.WebAPI.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("PlayerAdvertisements");
+                });
+
+            modelBuilder.Entity("FootScout.WebAPI.Entities.PlayerAdvertisementFavorite", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("PlayerAdvertisementId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerAdvertisementId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PlayerAdvertisementFavorites");
                 });
 
             modelBuilder.Entity("FootScout.WebAPI.Entities.PlayerOffer", b =>
@@ -494,12 +542,31 @@ namespace FootScout.WebAPI.Migrations
                         .IsRequired();
 
                     b.HasOne("FootScout.WebAPI.Entities.User", "User")
-                        .WithMany("ClubAdvertisements")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("SalaryRange");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FootScout.WebAPI.Entities.ClubAdvertisementFavorite", b =>
+                {
+                    b.HasOne("FootScout.WebAPI.Entities.ClubAdvertisement", "ClubAdvertisement")
+                        .WithMany()
+                        .HasForeignKey("ClubAdvertisementId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("FootScout.WebAPI.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ClubAdvertisement");
 
                     b.Navigation("User");
                 });
@@ -513,7 +580,7 @@ namespace FootScout.WebAPI.Migrations
                         .IsRequired();
 
                     b.HasOne("FootScout.WebAPI.Entities.User", "User")
-                        .WithMany("ClubHistories")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -528,11 +595,11 @@ namespace FootScout.WebAPI.Migrations
                     b.HasOne("FootScout.WebAPI.Entities.PlayerAdvertisement", "PlayerAdvertisement")
                         .WithMany()
                         .HasForeignKey("PlayerAdvertisementId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("FootScout.WebAPI.Entities.User", "UserClub")
-                        .WithMany("ClubOffers")
+                        .WithMany()
                         .HasForeignKey("UserClubId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -551,7 +618,7 @@ namespace FootScout.WebAPI.Migrations
                         .IsRequired();
 
                     b.HasOne("FootScout.WebAPI.Entities.User", "User")
-                        .WithMany("PlayerAdvertisements")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -561,16 +628,35 @@ namespace FootScout.WebAPI.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("FootScout.WebAPI.Entities.PlayerAdvertisementFavorite", b =>
+                {
+                    b.HasOne("FootScout.WebAPI.Entities.PlayerAdvertisement", "PlayerAdvertisement")
+                        .WithMany()
+                        .HasForeignKey("PlayerAdvertisementId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("FootScout.WebAPI.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PlayerAdvertisement");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("FootScout.WebAPI.Entities.PlayerOffer", b =>
                 {
                     b.HasOne("FootScout.WebAPI.Entities.ClubAdvertisement", "ClubAdvertisement")
                         .WithMany()
                         .HasForeignKey("ClubAdvertisementId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("FootScout.WebAPI.Entities.User", "UserPlayer")
-                        .WithMany("PlayerOffers")
+                        .WithMany()
                         .HasForeignKey("UserPlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -629,19 +715,6 @@ namespace FootScout.WebAPI.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("FootScout.WebAPI.Entities.User", b =>
-                {
-                    b.Navigation("ClubAdvertisements");
-
-                    b.Navigation("ClubHistories");
-
-                    b.Navigation("ClubOffers");
-
-                    b.Navigation("PlayerAdvertisements");
-
-                    b.Navigation("PlayerOffers");
                 });
 #pragma warning restore 612, 618
         }

@@ -18,14 +18,14 @@ namespace FootScout.WebAPI.Entities
         [Required]
         public string ContractType { get; set; }
         [Required]
-        public string UserId { get; set; }
-        [ForeignKey("UserId")]
-        public virtual User User { get; set; }
-        [Required]
         public int SalaryRangeId { get; set; }
         [ForeignKey("SalaryRangeId")]
         public virtual SalaryRange SalaryRange { get; set; }
         [Required]
         public DateTime CreationDate { get; set; }
+        [Required]
+        public string UserId { get; set; }
+        [ForeignKey("UserId")]
+        public virtual User User { get; set; }
     }
 }

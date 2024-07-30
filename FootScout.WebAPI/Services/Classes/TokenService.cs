@@ -23,8 +23,6 @@ namespace FootScout.WebAPI.Services.Classes
         {
             var userClaims = new List<Claim>
             {
-                new(ClaimTypes.Name, user.FirstName),
-                new(ClaimTypes.Email, user.Email),
                 new(ClaimTypes.NameIdentifier, user.Id),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
