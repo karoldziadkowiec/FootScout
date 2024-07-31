@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Form, Button, Col, Row, Alert, Container } from 'react-bootstrap';
+import { Form, Button, Col, Row, Alert, Container, Modal } from 'react-bootstrap';
 import AccountService from '../../services/api/AccountService';
 import RegisterDTO from '../../models/dtos/RegisterDTO';
 import '../../App.css';
@@ -8,7 +8,7 @@ import '../../styles/account/Registration.css';
 
 const Registration: React.FC = () => {
     const navigate = useNavigate();
-    const [error, setError] = useState('');
+    const [error, setError] = useState<string>('');
     const [registerDTO, setRegisterDTO] = useState<RegisterDTO>({
         email: '',
         password: '',
@@ -18,6 +18,7 @@ const Registration: React.FC = () => {
         phoneNumber: '',
         location: ''
     });
+    const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false);
 
     useEffect(() => {
         // Clearing AuthToken when the Registration component is rendered
@@ -25,7 +26,7 @@ const Registration: React.FC = () => {
           await AccountService.logout();
         };
         clearAuthToken();
-      }, []);
+    }, []);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -37,28 +38,67 @@ const Registration: React.FC = () => {
 
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        const validationError = validateForm();
+        if (validationError) {
+            setError(validationError);
+            return;
+        }
+
         try {
-            if (isNaN(Number(registerDTO.phoneNumber))) {
-                setError('Phone number must be a number.');
-                return;
-            }
-
-            if (registerDTO.phoneNumber.length !== 9) {
-                setError('Phone number must contain exactly 9 digits.');
-                return;
-            }
-
-            if (registerDTO.password !== registerDTO.confirmPassword) {
-                setError('Passwords do not match.');
-                return;
-            }
-
             await AccountService.registerUser(registerDTO);
-            alert('Registration successful!');
-            moveToLoginPage();
+            setShowSuccessModal(true);
         } catch (error) {
             setError('Registration failed. Please try again.');
         }
+    };
+
+    const validateForm = () => {
+        const { email, password, confirmPassword, firstName, lastName, phoneNumber, location } = registerDTO;
+    
+        // Checking empty fields
+        if (!email || !password || !confirmPassword || !firstName || !lastName || !phoneNumber || !location)
+            return 'All fields are required.';
+    
+        // E-mail validation
+        const emailError = emailValidator(email);
+        if (emailError) 
+            return emailError;
+    
+        // Password validation
+        const passwordError = passwordValidator(password);
+        if (passwordError) 
+            return passwordError;
+    
+        // Passwords matcher
+        if (password !== confirmPassword)
+            return 'Passwords do not match.';
+    
+        // Checking phone number type
+        if (isNaN(Number(phoneNumber)))
+            return 'Phone number must be a number.';
+    
+        // Checking phone number length
+        if (phoneNumber.length !== 9)
+            return 'Phone number must contain exactly 9 digits.';
+    
+        return null;
+    };
+
+    const emailValidator = (email: string): string | null => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email))
+            return 'Invalid email format. Must contain "@" and "."';
+
+        return null;
+    };
+    
+    const passwordValidator = (password: string): string | null => {
+        const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{7,}$/;
+        if (!passwordRegex.test(password))
+            return 'Password must be at least 7 characters long, contain at least one uppercase letter, one number, and one special character.';
+
+        return null;
     };
 
     const moveToLoginPage = () => {
@@ -100,6 +140,7 @@ const Registration: React.FC = () => {
                                                 placeholder="Password"
                                                 value={registerDTO.password}
                                                 onChange={handleChange}
+                                                minLength={7}
                                                 maxLength={30}
                                                 required
                                             />
@@ -114,6 +155,7 @@ const Registration: React.FC = () => {
                                                 placeholder="Confirm Password"
                                                 value={registerDTO.confirmPassword}
                                                 onChange={handleChange}
+                                                minLength={7}
                                                 maxLength={30}
                                                 required
                                             />
@@ -191,6 +233,19 @@ const Registration: React.FC = () => {
                     </Row>
                 </Container>
             </div>
+
+            <Modal show={showSuccessModal} onHide={() => setShowSuccessModal(false)}>
+                <Modal.Header closeButton><Modal.Title>Registration Successful</Modal.Title></Modal.Header>
+                <Modal.Body>Your account has been successfully registered!</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="success" onClick={() => {
+                        setShowSuccessModal(false);
+                        moveToLoginPage();
+                    }}>
+                        OK
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 };

@@ -27,7 +27,7 @@ const Login = () => {
 
     try {
       await AccountService.login(loginDTO);
-      if(await AccountService.isRoleAdmin()){
+      if (await AccountService.isRoleAdmin()) {
         navigate('/admin-home');
       }
       else {

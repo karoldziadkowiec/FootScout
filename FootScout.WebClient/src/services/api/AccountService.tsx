@@ -64,6 +64,16 @@ const AccountService = {
     return null;
   },
 
+  async getAuthorizationHeader(): Promise<string> {
+    const tokenType = 'Bearer';
+    const tokenJWT = await AccountService.getToken();
+    if(tokenJWT)
+      return `${tokenType} ${tokenJWT}`;
+
+    else
+      throw new Error('Token is not available');
+  },
+
   async isAuthenticated() {
     const token = await AccountService.getToken();
     return !!token;
