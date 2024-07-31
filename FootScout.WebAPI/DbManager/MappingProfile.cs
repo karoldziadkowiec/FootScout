@@ -16,6 +16,11 @@ namespace FootScout.WebAPI.DbManager
             CreateMap<UserDTO, User>();
             CreateMap<User, UserUpdateDTO>();
             CreateMap<UserUpdateDTO, User>();
+            CreateMap<ClubHistoryCreateDTO, ClubHistory>()
+                .ForMember(dest => dest.Achievements, opt => opt.MapFrom(src => src.Achievements));
+            CreateMap<AchievementsDTO, Achievements>();
+            CreateMap<ClubHistory, ClubHistoryCreateDTO>();
+            CreateMap<Achievements, AchievementsDTO>();
         }
     }
 }

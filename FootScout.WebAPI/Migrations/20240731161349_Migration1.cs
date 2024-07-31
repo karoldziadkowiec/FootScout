@@ -248,6 +248,8 @@ namespace FootScout.WebAPI.Migrations
                     ContractType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SalaryRangeId = table.Column<int>(type: "int", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
@@ -279,6 +281,8 @@ namespace FootScout.WebAPI.Migrations
                     ContractType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SalaryRangeId = table.Column<int>(type: "int", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>

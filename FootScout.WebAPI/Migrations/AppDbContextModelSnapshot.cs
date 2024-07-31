@@ -84,6 +84,9 @@ namespace FootScout.WebAPI.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("League")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -98,6 +101,9 @@ namespace FootScout.WebAPI.Migrations
 
                     b.Property<int>("SalaryRangeId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -230,6 +236,9 @@ namespace FootScout.WebAPI.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("League")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -244,6 +253,9 @@ namespace FootScout.WebAPI.Migrations
 
                     b.Property<int>("SalaryRangeId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
                         .IsRequired()

@@ -68,11 +68,15 @@ namespace FootScout.WebAPI
                     policy.RequireRole(Role.Admin, Role.User));
             });
 
-            // Dependency Injection - rejestrowanie serwisów z zakresem (scoped)
+            // Services
             builder.Services.AddScoped<IAccountService, AccountService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<ICookieService, CookieService>();
+
+            // Repositories
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IClubHistoryRepository, ClubHistoryRepository>();
+            builder.Services.AddScoped<IAchievementsRepository, AchievementsRepository>();
 
             // AutoMapper service
             builder.Services.AddAutoMapper(typeof(Program));
