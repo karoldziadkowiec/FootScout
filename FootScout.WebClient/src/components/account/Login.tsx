@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Form, Button, Alert } from 'react-bootstrap';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Form, Button } from 'react-bootstrap';
+import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
 import LoginDTO from '../../models/dtos/LoginDTO';
 import AccountService from '../../services/api/AccountService';
@@ -9,17 +10,20 @@ import '../../styles/account/Login.css';
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
 
   useEffect(() => {
     // Clearing AuthToken when the Login component is rendered
     const clearAuthToken = async () => {
       await AccountService.logout();
     };
+    if (location.state && location.state.toastMessage)
+      toast.success(location.state.toastMessage);
+
     clearAuthToken();
-  }, []);
+  }, [location]);
 
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -29,27 +33,26 @@ const Login = () => {
       await AccountService.login(loginDTO);
       if (await AccountService.isRoleAdmin()) {
         navigate('/admin-home');
-      }
-      else {
+      } else {
         navigate('/home');
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
           if (error.response.status === 401) {
-            setError('Invalid email or password.');
+            toast.error('Invalid email or password.');
           } else if (error.response.status === 500) {
-            setError('Internal server error. Please try again later.');
+            toast.error('Internal server error. Please try again later.');
           } else {
-            setError('Login failed. Please check your credentials and try again.');
+            toast.error('Login failed. Please check your credentials and try again.');
           }
         } else if (error.request) {
-          setError('No response from server. Please check your network connection.');
+          toast.error('No response from server. Please check your network connection.');
         } else {
-          setError('Login request failed. Please try again.');
+          toast.error('Login request failed. Please try again.');
         }
       } else {
-        setError('An unexpected error occurred. Please try again.');
+        toast.error('An unexpected error occurred during login. Please try again.');
       }
     }
   };
@@ -60,6 +63,7 @@ const Login = () => {
 
   return (
     <div className="Login">
+      <ToastContainer />
       <div className="logo-container">
         <img src={require('../../img/logo.png')} alt="logo" className="logo" />
         FootScout
@@ -67,7 +71,6 @@ const Login = () => {
       <div className="login-container">
         <Form onSubmit={handleLogin}>
           <h2>Sign in</h2>
-          {error && <Alert variant="danger">{error}</Alert>}
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label className="white-label">E-mail</Form.Label>
             <Form.Control

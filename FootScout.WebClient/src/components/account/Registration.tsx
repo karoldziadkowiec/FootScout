@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Form, Button, Col, Row, Alert, Container, Modal } from 'react-bootstrap';
+import { Form, Button, Col, Row, Container } from 'react-bootstrap';
+import { ToastContainer, toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import RegisterDTO from '../../models/dtos/RegisterDTO';
 import '../../App.css';
@@ -8,7 +9,6 @@ import '../../styles/account/Registration.css';
 
 const Registration: React.FC = () => {
     const navigate = useNavigate();
-    const [error, setError] = useState<string>('');
     const [registerDTO, setRegisterDTO] = useState<RegisterDTO>({
         email: '',
         password: '',
@@ -18,7 +18,6 @@ const Registration: React.FC = () => {
         phoneNumber: '',
         location: ''
     });
-    const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false);
 
     useEffect(() => {
         // Clearing AuthToken when the Registration component is rendered
@@ -41,15 +40,15 @@ const Registration: React.FC = () => {
 
         const validationError = validateForm();
         if (validationError) {
-            setError(validationError);
+            toast.error(validationError);
             return;
         }
 
         try {
             await AccountService.registerUser(registerDTO);
-            setShowSuccessModal(true);
+            navigate('/', { state: { toastMessage: "Your account has been successfully registered!" } });
         } catch (error) {
-            setError('Registration failed. Please try again.');
+            toast.error('Registration failed. Please try again.');
         }
     };
 
@@ -101,12 +100,9 @@ const Registration: React.FC = () => {
         return null;
     };
 
-    const moveToLoginPage = () => {
-        navigate('/');
-    };
-
     return (
         <div className="Registration">
+            <ToastContainer />
             <div className="logo-container">
                 <img src={require('../../img/logo.png')} alt="logo" className="logo" />
                 FootScout
@@ -116,7 +112,6 @@ const Registration: React.FC = () => {
                     <Row className="justify-content-md-center">
                         <Col md="6">
                             <h2>Sign Up</h2>
-                            {error && <Alert variant="danger">{error}</Alert>}
                             <Form onSubmit={handleRegister}>
                                 <Form.Group className="mb-3" controlId="formEmail">
                                     <Form.Label className="white-label">E-mail</Form.Label>
@@ -233,19 +228,6 @@ const Registration: React.FC = () => {
                     </Row>
                 </Container>
             </div>
-
-            <Modal show={showSuccessModal} onHide={() => setShowSuccessModal(false)}>
-                <Modal.Header closeButton><Modal.Title>Registration Successful</Modal.Title></Modal.Header>
-                <Modal.Body>Your account has been successfully registered!</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="success" onClick={() => {
-                        setShowSuccessModal(false);
-                        moveToLoginPage();
-                    }}>
-                        OK
-                    </Button>
-                </Modal.Footer>
-            </Modal>
         </div>
     );
 };

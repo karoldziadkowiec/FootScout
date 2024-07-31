@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Form, Button, Alert, Row, Col, Modal } from 'react-bootstrap';
+import { Form, Button, Row, Col, Modal } from 'react-bootstrap';
+import { ToastContainer, toast } from 'react-toastify';
 import { format } from 'date-fns';
 import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
@@ -13,7 +14,6 @@ const MyProfile = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState<UserDTO | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
     const [updateFormData, setUpdateFormData] = useState<UserUpdateDTO>({
         id: '',
@@ -26,7 +26,6 @@ const MyProfile = () => {
         location: ''
     });
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
-    const [modalError, setModalError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -41,11 +40,11 @@ const MyProfile = () => {
                         confirmPasswordHash: ''
                     });
                 }
-            }
+            } 
             catch (error) {
                 console.error('Failed to fetch user data:', error);
-                setError('Failed to load user data.');
-            }
+                toast.error('Failed to load user data.');
+            } 
             finally {
                 setLoading(false);
             }
@@ -107,21 +106,21 @@ const MyProfile = () => {
 
         const validationError = validateForm();
         if (validationError) {
-            setModalError(validationError);
+            toast.error(validationError);
             return;
         }
 
         try {
             await UserService.updateUser(user.id, updateFormData);
             setShowEditModal(false);
-            setModalError(null);
+            toast.success('Profile updated successfully!');
             // Refresh the user data
             const updatedUser = await UserService.getUser(user.id);
             setUser(updatedUser);
-        }
+        } 
         catch (error) {
             console.error('Failed to update user data:', error);
-            setModalError('Failed to update user data.');
+            toast.error('Failed to update user data.');
         }
     };
 
@@ -131,21 +130,20 @@ const MyProfile = () => {
 
         try {
             await UserService.deleteUser(user.id);
-            navigate('/');
-        }
+            navigate('/', { state: { toastMessage: "Your account has been deleted successfully." } });
+        } 
         catch (error) {
             console.error('Failed to delete user:', error);
-            setError('Failed to delete user.');
+            toast.error('Failed to delete user.');
         }
     };
 
     if (loading)
         return <p>Loading...</p>;
-    if (error)
-        return <Alert variant="danger">{error}</Alert>;
 
     return (
         <div className="MyProfile">
+            <ToastContainer />
             <h1>My Profile</h1>
             <div className="buttons-container mb-3">
                 <Row>
@@ -182,7 +180,6 @@ const MyProfile = () => {
                     <Modal.Title>Edit Profile</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {modalError && <Alert variant="danger">{modalError}</Alert>}
                     <Form>
                         <Form.Group controlId="formEmail">
                             <Form.Label>E-mail:</Form.Label>
@@ -275,7 +272,7 @@ const MyProfile = () => {
                     <Button variant="danger" onClick={handleDeleteProfile}>Delete Profile</Button>
                 </Modal.Footer>
             </Modal>
-        </div >
+        </div>
     );
 }
 
