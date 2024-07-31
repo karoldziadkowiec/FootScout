@@ -1,9 +1,11 @@
 using FootScout.WebAPI.DbManager;
 using FootScout.WebAPI.Entities;
+using FootScout.WebAPI.Models.Constants;
+using FootScout.WebAPI.Repositories.Classes;
+using FootScout.WebAPI.Repositories.Interfaces;
 using FootScout.WebAPI.Services.Classes;
 using FootScout.WebAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -70,10 +72,13 @@ namespace FootScout.WebAPI
             builder.Services.AddScoped<IAccountService, AccountService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<ICookieService, CookieService>();
-            //builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
 
             // AutoMapper service
             builder.Services.AddAutoMapper(typeof(Program));
+
+            // Password hasher
+            builder.Services.AddTransient<IPasswordHasher<User>, PasswordHasher<User>>();
 
             // Accessing HttpContext property (cookies)
             builder.Services.AddHttpContextAccessor();

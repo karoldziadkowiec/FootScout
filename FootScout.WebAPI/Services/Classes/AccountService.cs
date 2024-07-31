@@ -5,6 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using FootScout.WebAPI.Services.Interfaces;
 using FootScout.WebAPI.Models.DTOs;
 using AutoMapper;
+using FootScout.WebAPI.Models.Constants;
 
 namespace FootScout.WebAPI.Services.Classes
 {
@@ -29,13 +30,10 @@ namespace FootScout.WebAPI.Services.Classes
         {
             var userByEmail = await _userManager.FindByEmailAsync(registerDTO.Email);
             if (userByEmail != null)
-            {
                 throw new ArgumentException($"User with email {registerDTO.Email} already exists.");
-            }
+
             if (!registerDTO.Password.Equals(registerDTO.ConfirmPassword))
-            {
                 throw new ArgumentException($"Confirmed password is different.");
-            }
 
             var user = _mapper.Map<User>(registerDTO);
             

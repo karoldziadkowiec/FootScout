@@ -1,5 +1,7 @@
 ﻿using FootScout.WebAPI.Entities;
+using FootScout.WebAPI.Models.Constants;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace FootScout.WebAPI.DbManager
 {
@@ -7,8 +9,12 @@ namespace FootScout.WebAPI.DbManager
     {
         public static async Task Seed(IServiceProvider services)
         {
-            await SeedRoles(services);
-            await SeedAdminRole(services);
+            using (var dbContext = services.GetRequiredService<AppDbContext>())
+            {
+                await SeedRoles(services);
+                await SeedAdminRole(services);
+                await SeedAdvertisementStatuses(services, dbContext);
+            }
         }
 
         private static async Task SeedRoles(IServiceProvider services)
@@ -48,6 +54,24 @@ namespace FootScout.WebAPI.DbManager
                 await userManager.CreateAsync(admin, adminPassword);
                 await userManager.AddToRoleAsync(admin, Role.Admin);
             }
+        }
+
+        private static async Task SeedAdvertisementStatuses(IServiceProvider services, AppDbContext dbContext)
+        {
+            var statuses = new List<string> { Status.Accepted, Status.During, Status.Rejected };
+
+            foreach (var status in statuses)
+            {
+                if (!await dbContext.AdvertisementStatuses.AnyAsync(s => s.StatusName == status))
+                {
+                    AdvertisementStatus newStatus = new AdvertisementStatus
+                    {
+                        StatusName = status,
+                    };
+                    dbContext.AdvertisementStatuses.Add(newStatus);
+                }
+            }
+            await dbContext.SaveChangesAsync();
         }
     }
 }

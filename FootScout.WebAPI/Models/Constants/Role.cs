@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FootScout.WebAPI.Entities
+namespace FootScout.WebAPI.Models.Constants
 {
     public static class Role
     {

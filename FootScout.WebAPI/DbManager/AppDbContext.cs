@@ -8,6 +8,7 @@ namespace FootScout.WebAPI.DbManager
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
         public DbSet<Achievements> Achievements { get; set; }
+        public DbSet<AdvertisementStatus> AdvertisementStatuses { get; set; }
         public DbSet<ClubAdvertisement> ClubAdvertisements { get; set; }
         public DbSet<ClubAdvertisementFavorite> ClubAdvertisementFavorites { get; set; }
         public DbSet<ClubHistory> ClubHistories { get; set; }
@@ -51,6 +52,12 @@ namespace FootScout.WebAPI.DbManager
                 .WithMany()
                 .HasForeignKey(co => co.PlayerAdvertisementId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ClubOffer>()
+                .HasOne(co => co.AdvertisementStatus)
+                .WithMany()
+                .HasForeignKey(co => co.AdvertisementStatusId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ClubOffer>()
                 .HasOne(co => co.UserClub)
@@ -99,6 +106,12 @@ namespace FootScout.WebAPI.DbManager
                 .WithMany()
                 .HasForeignKey(po => po.ClubAdvertisementId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<PlayerOffer>()
+                .HasOne(po => po.AdvertisementStatus)
+                .WithMany()
+                .HasForeignKey(po => po.AdvertisementStatusId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<PlayerOffer>()
                 .HasOne(po => po.UserPlayer)

@@ -12,6 +12,10 @@ namespace FootScout.WebAPI.DbManager
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email))
                 .ForMember(dest => dest.CreationDate, opt => opt.MapFrom(src => DateTime.Now))
                 .ForMember(dest => dest.SecurityStamp, opt => opt.MapFrom(src => Guid.NewGuid().ToString()));
+            CreateMap<User, UserDTO>();
+            CreateMap<UserDTO, User>();
+            CreateMap<User, UserUpdateDTO>();
+            CreateMap<UserUpdateDTO, User>();
         }
     }
 }

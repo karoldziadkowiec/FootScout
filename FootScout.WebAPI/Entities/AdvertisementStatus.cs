@@ -1,9 +1,12 @@
-﻿namespace FootScout.WebAPI.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace FootScout.WebAPI.Entities
 {
     public class AdvertisementStatus
     {
-        public const string Accepted = "Accepted";
-        public const string During = "During";
-        public const string Rejected = "Rejected";
+        [Key]
+        public int Id { get; set; }
+        [Required]
+        public string StatusName { get; set; }
     }
 }

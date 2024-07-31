@@ -28,6 +28,19 @@ namespace FootScout.WebAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AdvertisementStatuses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StatusName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AdvertisementStatuses", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
@@ -318,13 +331,19 @@ namespace FootScout.WebAPI.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ClubAdvertisementId = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AdvertisementStatusId = table.Column<int>(type: "int", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserPlayerId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PlayerOffers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PlayerOffers_AdvertisementStatuses_AdvertisementStatusId",
+                        column: x => x.AdvertisementStatusId,
+                        principalTable: "AdvertisementStatuses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PlayerOffers_AspNetUsers_UserPlayerId",
                         column: x => x.UserPlayerId,
@@ -346,13 +365,19 @@ namespace FootScout.WebAPI.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PlayerAdvertisementId = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AdvertisementStatusId = table.Column<int>(type: "int", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserClubId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ClubOffers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ClubOffers_AdvertisementStatuses_AdvertisementStatusId",
+                        column: x => x.AdvertisementStatusId,
+                        principalTable: "AdvertisementStatuses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ClubOffers_AspNetUsers_UserClubId",
                         column: x => x.UserClubId,
@@ -464,6 +489,11 @@ namespace FootScout.WebAPI.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ClubOffers_AdvertisementStatusId",
+                table: "ClubOffers",
+                column: "AdvertisementStatusId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ClubOffers_PlayerAdvertisementId",
                 table: "ClubOffers",
                 column: "PlayerAdvertisementId");
@@ -492,6 +522,11 @@ namespace FootScout.WebAPI.Migrations
                 name: "IX_PlayerAdvertisements_UserId",
                 table: "PlayerAdvertisements",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PlayerOffers_AdvertisementStatusId",
+                table: "PlayerOffers",
+                column: "AdvertisementStatusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PlayerOffers_ClubAdvertisementId",
@@ -545,6 +580,9 @@ namespace FootScout.WebAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "PlayerAdvertisements");
+
+            migrationBuilder.DropTable(
+                name: "AdvertisementStatuses");
 
             migrationBuilder.DropTable(
                 name: "ClubAdvertisements");
