@@ -7,8 +7,7 @@ namespace FootScout.WebAPI.Repositories.Interfaces
     {
         Task<ClubHistory> GetClubHistory(int clubHistoryId);
         Task<IEnumerable<ClubHistory>> GetAllClubHistory();
-        Task<ClubHistory> GetUserClubHistory(string userId, int clubHistoryId);
-        Task<IEnumerable<ClubHistory>> GetUserAllClubHistory(string userId);
+        Task<IEnumerable<ClubHistory>> GetUserClubHistory(string userId);
         Task CreateClubHistory(ClubHistory clubHistory);
         Task UpdateClubHistory(ClubHistory clubHistory);
         Task DeleteClubHistory(int clubHistoryId);

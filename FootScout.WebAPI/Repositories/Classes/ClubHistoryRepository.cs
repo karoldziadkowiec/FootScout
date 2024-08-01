@@ -30,21 +30,13 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
-        public async Task<ClubHistory> GetUserClubHistory(string userId, int clubHistoryId)
-        {
-            return await _dbContext.ClubHistories
-                .Include(ch => ch.Achievements)
-                .Include(ch => ch.User)
-                .FirstOrDefaultAsync(ch => ch.UserId == userId && ch.Id == clubHistoryId);
-        }
-
-        public async Task<IEnumerable<ClubHistory>> GetUserAllClubHistory(string userId)
+        public async Task<IEnumerable<ClubHistory>> GetUserClubHistory(string userId)
         {
             return await _dbContext.ClubHistories
                 .Include(ch => ch.Achievements)
                 .Include(ch => ch.User)
                 .Where(ch => ch.UserId == userId)
-            .ToListAsync();
+                .ToListAsync();
         }
 
         public async Task CreateClubHistory(ClubHistory clubHistory)
@@ -62,11 +54,18 @@ namespace FootScout.WebAPI.Repositories.Classes
         public async Task DeleteClubHistory(int clubHistoryId)
         {
             var clubHistory = await _dbContext.ClubHistories.FindAsync(clubHistoryId);
-            if (clubHistory != null)
+            if (clubHistory == null)
+                throw new ArgumentException($"No club history found with ID {clubHistoryId}");
+
+            if (clubHistory.AchievementsId != null)
             {
-                _dbContext.ClubHistories.Remove(clubHistory);
-                await _dbContext.SaveChangesAsync();
+                var achievements = await _dbContext.Achievements.FindAsync(clubHistory.AchievementsId);
+                if (achievements != null)
+                    _dbContext.Achievements.Remove(achievements);
             }
+
+            _dbContext.ClubHistories.Remove(clubHistory);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

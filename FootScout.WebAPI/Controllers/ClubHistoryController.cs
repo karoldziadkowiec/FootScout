@@ -42,22 +42,11 @@ namespace FootScout.WebAPI.Controllers
             return Ok(clubHistories);
         }
 
-        // GET: api/users/:userId/club-history/:clubHistoryId
-        [HttpGet("users/{userId}/club-history/{clubHistoryId}")]
-        public async Task<ActionResult<ClubHistory>> GetUserClubHistory(string userId, int clubHistoryId)
-        {
-            var userClubHistory = await _clubHistoryRepository.GetUserClubHistory(userId, clubHistoryId);
-            if (userClubHistory == null)
-                return NotFound();
-
-            return Ok(userClubHistory);
-        }
-
         // GET: api/users/:userId/club-history
         [HttpGet("users/{userId}/club-history")]
-        public async Task<ActionResult<IEnumerable<ClubHistory>>> GetUserAllClubHistory(string userId)
+        public async Task<ActionResult<IEnumerable<ClubHistory>>> GetUserClubHistory(string userId)
         {
-            var userClubHistories = await _clubHistoryRepository.GetUserAllClubHistory(userId);
+            var userClubHistories = await _clubHistoryRepository.GetUserClubHistory(userId);
             return Ok(userClubHistories);
         }
 
