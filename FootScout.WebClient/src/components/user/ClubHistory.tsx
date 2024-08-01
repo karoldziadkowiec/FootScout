@@ -4,17 +4,19 @@ import { ToastContainer, toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
 import ClubHistoryService from '../../services/api/ClubHistoryService';
+import ClubHistoryModel from '../../models/interfaces/ClubHistory';
 import ClubHistoryCreateDTO from '../../models/dtos/ClubHistoryCreateDTO';
 import UserDTO from '../../models/dtos/UserDTO';
 import '../../App.css';
 import '../../styles/user/ClubHistory.css';
 
-const ClubHistory: React.FC = () => {
+const ClubHistory = () => {
     const [user, setUser] = useState<UserDTO | null>(null);
-    const [clubHistories, setClubHistories] = useState<ClubHistoryCreateDTO[]>([]);
+    const [userClubHistories, setUserClubHistories] = useState<ClubHistoryModel[]>([]);
     const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
-
-    const [addFormData, setAddFormData] = useState<ClubHistoryCreateDTO>({
+    const [showDetailsModal, setShowDetailsModal] = useState<boolean>(false);
+    const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+    const [createFormData, setCreateFormData] = useState<ClubHistoryCreateDTO>({
         position: '',
         clubName: '',
         league: '',
@@ -29,6 +31,8 @@ const ClubHistory: React.FC = () => {
         },
         userId: ''
     });
+    const [selectedClubHistory, setSelectedClubHistory] = useState<ClubHistoryModel | null>(null);
+    const [deleteHistoryId, setDeleteHistoryId] = useState<number | null>(null);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -38,10 +42,10 @@ const ClubHistory: React.FC = () => {
                     const userData = await UserService.getUser(userId);
                     setUser(userData);
 
-                    const userClubHistories = await ClubHistoryService.getUserAllClubHistory(userId);
-                    setClubHistories(userClubHistories);
+                    const _userClubHistories = await ClubHistoryService.getUserClubHistory(userId);
+                    setUserClubHistories(_userClubHistories);
                 }
-            } 
+            }
             catch (error) {
                 console.error('Failed to fetch user data:', error);
                 toast.error('Failed to load user data.');
@@ -49,6 +53,83 @@ const ClubHistory: React.FC = () => {
         };
         fetchUserData();
     }, []);
+
+    const handleCreateClubHistory = async () => {
+        if (!user)
+            return;
+
+        const validationError = validateForm();
+        if (validationError) {
+            toast.error(validationError);
+            return;
+        }
+
+        try {
+            const newFormData = { ...createFormData, userId: user.id };
+
+            await ClubHistoryService.createClubHistory(newFormData);
+            setShowCreateModal(false);
+            toast.success('Club history created successfully!');
+            // Refresh the user data
+            const _userClubHistories = await ClubHistoryService.getUserClubHistory(user.id);
+            setUserClubHistories(_userClubHistories);
+        }
+        catch (error) {
+            console.error('Failed to create club history:', error);
+            toast.error('Failed to create club history.');
+        }
+    };
+
+    const validateForm = () => {
+        const { position, clubName, league, region, startDate, endDate, achievements } = createFormData;
+        const { numberOfMatches, goals, assists } = achievements;
+
+        if (!position || !clubName || !league || !region || !startDate || !endDate)
+            return 'All fields are required.';
+
+        if (isNaN(Number(numberOfMatches)) || isNaN(Number(goals)) || isNaN(Number(assists)))
+            return 'Matches, goals, and assists must be numbers.';
+
+        if (Number(numberOfMatches) < 0 || Number(goals) < 0 || Number(assists) < 0)
+            return 'Matches, goals and assists must be greater than or equal to 0.';
+
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        if (end <= start) {
+            return 'End date must be later than start date.';
+        }
+
+        return null;
+    };
+
+    const handleShowDetails = (clubHistory: ClubHistoryModel) => {
+        setSelectedClubHistory(clubHistory);
+        setShowDetailsModal(true);
+    };
+
+    const handleShowDeleteModal = (clubHistoryId: number) => {
+        setDeleteHistoryId(clubHistoryId);
+        setShowDeleteModal(true);
+    };
+
+    const handleDeleteClubHistory = async () => {
+        if (!user || !deleteHistoryId)
+            return;
+
+        try {
+            await ClubHistoryService.deleteClubHistory(deleteHistoryId);
+            toast.success('Your club history has been deleted successfully.');
+            setShowDeleteModal(false);
+            setDeleteHistoryId(null);
+            // Refresh the user data
+            const _userClubHistories = await ClubHistoryService.getUserClubHistory(user.id);
+            setUserClubHistories(_userClubHistories);
+        } 
+        catch (error) {
+            console.error('Failed to delete club history:', error);
+            toast.error('Failed to delete club history.');
+        }
+    };
 
     const formatDate = (dateString: string): string => {
         const date = new Date(dateString);
@@ -58,57 +139,36 @@ const ClubHistory: React.FC = () => {
         return `${day}-${month}-${year}`;
     };
 
-    const handleCreateClubHistory = async () => {
-        if(!user) 
-            return;
-
-        try {
-            const newFormData = { ...addFormData, userId: user.id };
-
-            await ClubHistoryService.createClubHistory(newFormData);
-            setShowCreateModal(false);
-            toast.success('Club history created successfully!');
-            
-            const userClubHistories = await ClubHistoryService.getUserAllClubHistory(user.id);
-            setClubHistories(userClubHistories);
-        } 
-        catch (error) {
-            console.error('Failed to create club history:', error);
-            toast.error('Failed to create club history.');
-        }
-    };
-
     return (
         <div className="ClubHistory">
+            <ToastContainer />
             <h1>Club History</h1>
-            <Button variant="success" className="form-button"onClick={() => setShowCreateModal(true)}>Create Club History</Button>
+            <Button variant="success" className="form-button" onClick={() => setShowCreateModal(true)}>Create Club History</Button>
             <Table striped bordered hover>
                 <thead>
                     <tr>
-                        <th>Position</th>
+                        <th>Date</th>
                         <th>Club</th>
                         <th>League</th>
                         <th>Region</th>
-                        <th>Date</th>
-                        <th>Matches</th>
-                        <th>Goals</th>
-                        <th>Assists</th>
-                        <th>Achievements</th>
+                        <th>Position</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    {clubHistories.length > 0 ? (
-                        clubHistories.map((history, index) => (
+                    {userClubHistories.length > 0 ? (
+                        userClubHistories.map((history, index) => (
                             <tr key={index}>
-                                <td>{history.position}</td>
+                                <td>{formatDate(history.startDate)} - {formatDate(history.endDate)}</td>
                                 <td>{history.clubName}</td>
                                 <td>{history.league}</td>
                                 <td>{history.region}</td>
-                                <td>{formatDate(history.startDate)} - {formatDate(history.endDate)}</td>
-                                <td>{history.achievements.numberOfMatches || 'N/A'}</td>
-                                <td>{history.achievements.goals || 'N/A'}</td>
-                                <td>{history.achievements.assists || 'N/A'}</td>
-                                <td>{history.achievements.additionalAchievements || 'N/A'}</td>
+                                <td>{history.position}</td>
+                                <td>
+                                    <Button variant="dark" onClick={() => handleShowDetails(history)}>Details</Button>
+                                    <Button variant="warning">Edit</Button>
+                                    <Button variant="danger" onClick={() => handleShowDeleteModal(history.id)}>Delete</Button>
+                                </td>
                             </tr>
                         ))
                     ) : (
@@ -119,6 +179,7 @@ const ClubHistory: React.FC = () => {
                 </tbody>
             </Table>
 
+            {/* Create Club History Modal */}   
             <Modal show={showCreateModal} onHide={() => setShowCreateModal(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>Create Club History</Modal.Title>
@@ -128,11 +189,13 @@ const ClubHistory: React.FC = () => {
                         <Form.Group as={Row} controlId="formPosition">
                             <Form.Label column sm="3">Position</Form.Label>
                             <Col sm="9">
-                                <Form.Control 
-                                    type="text" 
-                                    placeholder="Position" 
-                                    value={addFormData.position} 
-                                    onChange={(e) => setAddFormData({ ...addFormData, position: e.target.value })} 
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Position"
+                                    value={createFormData.position}
+                                    onChange={(e) => setCreateFormData({ ...createFormData, position: e.target.value })}
+                                    maxLength={20}
+                                    required
                                 />
                             </Col>
                         </Form.Group>
@@ -140,11 +203,13 @@ const ClubHistory: React.FC = () => {
                         <Form.Group as={Row} controlId="formClubName">
                             <Form.Label column sm="3">Club Name</Form.Label>
                             <Col sm="9">
-                                <Form.Control 
-                                    type="text" 
-                                    placeholder="Club Name" 
-                                    value={addFormData.clubName} 
-                                    onChange={(e) => setAddFormData({ ...addFormData, clubName: e.target.value })} 
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Club Name"
+                                    value={createFormData.clubName}
+                                    onChange={(e) => setCreateFormData({ ...createFormData, clubName: e.target.value })}
+                                    maxLength={30}
+                                    required
                                 />
                             </Col>
                         </Form.Group>
@@ -152,11 +217,13 @@ const ClubHistory: React.FC = () => {
                         <Form.Group as={Row} controlId="formLeague">
                             <Form.Label column sm="3">League</Form.Label>
                             <Col sm="9">
-                                <Form.Control 
-                                    type="text" 
-                                    placeholder="League" 
-                                    value={addFormData.league} 
-                                    onChange={(e) => setAddFormData({ ...addFormData, league: e.target.value })} 
+                                <Form.Control
+                                    type="text"
+                                    placeholder="League"
+                                    value={createFormData.league}
+                                    onChange={(e) => setCreateFormData({ ...createFormData, league: e.target.value })}
+                                    maxLength={30}
+                                    required
                                 />
                             </Col>
                         </Form.Group>
@@ -164,11 +231,13 @@ const ClubHistory: React.FC = () => {
                         <Form.Group as={Row} controlId="formRegion">
                             <Form.Label column sm="3">Region</Form.Label>
                             <Col sm="9">
-                                <Form.Control 
-                                    type="text" 
-                                    placeholder="Region" 
-                                    value={addFormData.region} 
-                                    onChange={(e) => setAddFormData({ ...addFormData, region: e.target.value })} 
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Region"
+                                    value={createFormData.region}
+                                    onChange={(e) => setCreateFormData({ ...createFormData, region: e.target.value })}
+                                    maxLength={30}
+                                    required
                                 />
                             </Col>
                         </Form.Group>
@@ -176,10 +245,11 @@ const ClubHistory: React.FC = () => {
                         <Form.Group as={Row} controlId="formStartDate">
                             <Form.Label column sm="3">Start Date</Form.Label>
                             <Col sm="9">
-                                <Form.Control 
-                                    type="date" 
-                                    value={addFormData.startDate} 
-                                    onChange={(e) => setAddFormData({ ...addFormData, startDate: e.target.value })} 
+                                <Form.Control
+                                    type="date"
+                                    value={createFormData.startDate}
+                                    onChange={(e) => setCreateFormData({ ...createFormData, startDate: e.target.value })}
+                                    required
                                 />
                             </Col>
                         </Form.Group>
@@ -187,64 +257,90 @@ const ClubHistory: React.FC = () => {
                         <Form.Group as={Row} controlId="formEndDate">
                             <Form.Label column sm="3">End Date</Form.Label>
                             <Col sm="9">
-                                <Form.Control 
-                                    type="date" 
-                                    value={addFormData.endDate} 
-                                    onChange={(e) => setAddFormData({ ...addFormData, endDate: e.target.value })} 
+                                <Form.Control
+                                    type="date"
+                                    value={createFormData.endDate}
+                                    onChange={(e) => setCreateFormData({ ...createFormData, endDate: e.target.value })}
+                                    required
                                 />
                             </Col>
                         </Form.Group>
 
-                        <Form.Group as={Row} controlId="formAchievements">
+                        <Form.Group as={Row} controlId="formMatches">
+                            <Form.Label column sm="3">Matches</Form.Label>
+                            <Col sm="9">
+                                <Form.Control
+                                    type="number"
+                                    placeholder="Number of Matches"
+                                    value={createFormData.achievements.numberOfMatches}
+                                    onChange={(e) => setCreateFormData({
+                                        ...createFormData,
+                                        achievements: {
+                                            ...createFormData.achievements,
+                                            numberOfMatches: parseInt(e.target.value)
+                                        }
+                                    })}
+                                    maxLength={4}
+                                    required
+                                />
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} controlId="formGoals">
+                            <Form.Label column sm="3">Goals</Form.Label>
+                            <Col sm="9">
+                                <Form.Control
+                                    type="number"
+                                    placeholder="Goals"
+                                    value={createFormData.achievements.goals}
+                                    onChange={(e) => setCreateFormData({
+                                        ...createFormData,
+                                        achievements: {
+                                            ...createFormData.achievements,
+                                            goals: parseInt(e.target.value)
+                                        }
+                                    })}
+                                    maxLength={4}
+                                    required
+                                />
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} controlId="formAssists">
+                            <Form.Label column sm="3">Assists</Form.Label>
+                            <Col sm="9">
+                                <Form.Control
+                                    type="number"
+                                    placeholder="Assists"
+                                    value={createFormData.achievements.assists}
+                                    onChange={(e) => setCreateFormData({
+                                        ...createFormData,
+                                        achievements: {
+                                            ...createFormData.achievements,
+                                            assists: parseInt(e.target.value)
+                                        }
+                                    })}
+                                    maxLength={4}
+                                    required
+                                />
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} controlId="formAdditionalAchievements">
                             <Form.Label column sm="3">Achievements</Form.Label>
                             <Col sm="9">
-                                <Form.Control 
-                                    type="number" 
-                                    placeholder="Number of Matches" 
-                                    value={addFormData.achievements.numberOfMatches} 
-                                    onChange={(e) => setAddFormData({ 
-                                        ...addFormData, 
-                                        achievements: { 
-                                            ...addFormData.achievements, 
-                                            numberOfMatches: parseInt(e.target.value) 
-                                        } 
-                                    })} 
-                                />
-                                <Form.Control 
-                                    type="number" 
-                                    placeholder="Goals" 
-                                    value={addFormData.achievements.goals} 
-                                    onChange={(e) => setAddFormData({ 
-                                        ...addFormData, 
-                                        achievements: { 
-                                            ...addFormData.achievements, 
-                                            goals: parseInt(e.target.value) 
-                                        } 
-                                    })} 
-                                />
-                                <Form.Control 
-                                    type="number" 
-                                    placeholder="Assists" 
-                                    value={addFormData.achievements.assists} 
-                                    onChange={(e) => setAddFormData({ 
-                                        ...addFormData, 
-                                        achievements: { 
-                                            ...addFormData.achievements, 
-                                            assists: parseInt(e.target.value) 
-                                        } 
-                                    })} 
-                                />
-                                <Form.Control 
-                                    type="text" 
-                                    placeholder="Additional Achievements" 
-                                    value={addFormData.achievements.additionalAchievements} 
-                                    onChange={(e) => setAddFormData({ 
-                                        ...addFormData, 
-                                        achievements: { 
-                                            ...addFormData.achievements, 
-                                            additionalAchievements: e.target.value 
-                                        } 
-                                    })} 
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Additional Achievements"
+                                    value={createFormData.achievements.additionalAchievements}
+                                    onChange={(e) => setCreateFormData({
+                                        ...createFormData,
+                                        achievements: {
+                                            ...createFormData.achievements,
+                                            additionalAchievements: e.target.value
+                                        }
+                                    })}
+                                    maxLength={200}
                                 />
                             </Col>
                         </Form.Group>
@@ -256,7 +352,43 @@ const ClubHistory: React.FC = () => {
                 </Modal.Footer>
             </Modal>
 
-            <ToastContainer />
+            {/* Details of Club History Modal */}   
+            <Modal show={showDetailsModal} onHide={() => setShowDetailsModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Club History Details</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {selectedClubHistory && (
+                        <div className="modal-content-centered">
+                            <p><strong>Club Name:</strong> {selectedClubHistory.clubName}</p>
+                            <p><strong>League:</strong> {selectedClubHistory.league}</p>
+                            <p><strong>Region:</strong> {selectedClubHistory.region}</p>
+                            <p><strong>Start Date:</strong> {formatDate(selectedClubHistory.startDate)}</p>
+                            <p><strong>End Date:</strong> {formatDate(selectedClubHistory.endDate)}</p>
+                            <p><strong>Position:</strong> {selectedClubHistory.position}</p>
+                            <p><strong>Matches:</strong> {selectedClubHistory.achievements.numberOfMatches}</p>
+                            <p><strong>Goals:</strong> {selectedClubHistory.achievements.goals}</p>
+                            <p><strong>Assists:</strong> {selectedClubHistory.achievements.assists}</p>
+                            <p><strong>Additional Achievements:</strong> {selectedClubHistory.achievements.additionalAchievements}</p>
+                        </div>
+                    )}
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowDetailsModal(false)}>Close</Button>
+                </Modal.Footer>
+            </Modal>
+
+            {/* Delete Club History Modal */}
+            <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirm action</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure you want to delete this club history?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>Cancel</Button>
+                    <Button variant="danger" onClick={handleDeleteClubHistory}>Delete</Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 }

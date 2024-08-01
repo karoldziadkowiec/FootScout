@@ -1,64 +1,53 @@
 import axios from 'axios';
 import ApiURL from '../../config/ApiConfig';
 import AccountService from './AccountService';
+import ClubHistoryModel from '../../models/interfaces/ClubHistory';
 import ClubHistoryCreateDTO from '../../models/dtos/ClubHistoryCreateDTO';
 
 const ClubHistoryService = {
-    async getClubHistory(clubHistoryId: number): Promise<ClubHistoryCreateDTO> {
+    async getClubHistory(clubHistoryId: number): Promise<ClubHistoryModel> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
-            const response = await axios.get<ClubHistoryCreateDTO>(`${ApiURL}/club-history/${clubHistoryId}`, {
+            const response = await axios.get<ClubHistoryModel>(`${ApiURL}/club-history/${clubHistoryId}`, {
                 headers: {
                     'Authorization': authorizationHeader
                 }
             });
             return response.data;
-        } catch (error) {
+        } 
+        catch (error) {
             console.error("Error fetching club history:", error);
             throw error;
         }
     },
 
-    async getAllClubHistory(): Promise<ClubHistoryCreateDTO[]> {
+    async getAllClubHistory(): Promise<ClubHistoryModel[]> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
-            const response = await axios.get<ClubHistoryCreateDTO[]>(`${ApiURL}/club-history`, {
+            const response = await axios.get<ClubHistoryModel[]>(`${ApiURL}/club-history`, {
                 headers: {
                     'Authorization': authorizationHeader
                 }
             });
             return response.data;
-        } catch (error) {
+        } 
+        catch (error) {
             console.error("Error fetching all club histories:", error);
             throw error;
         }
     },
 
-    async getUserClubHistory(userId: string, clubHistoryId: number): Promise<ClubHistoryCreateDTO> {
+    async getUserClubHistory(userId: string): Promise<ClubHistoryModel[]> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
-            const response = await axios.get<ClubHistoryCreateDTO>(`${ApiURL}/users/${userId}/club-history/${clubHistoryId}`, {
+            const response = await axios.get<ClubHistoryModel[]>(`${ApiURL}/users/${userId}/club-history`, {
                 headers: {
                     'Authorization': authorizationHeader
                 }
             });
             return response.data;
-        } catch (error) {
-            console.error("Error fetching user's club history:", error);
-            throw error;
-        }
-    },
-
-    async getUserAllClubHistory(userId: string): Promise<ClubHistoryCreateDTO[]> {
-        try {
-            const authorizationHeader = await AccountService.getAuthorizationHeader();
-            const response = await axios.get<ClubHistoryCreateDTO[]>(`${ApiURL}/users/${userId}/club-history`, {
-                headers: {
-                    'Authorization': authorizationHeader
-                }
-            });
-            return response.data;
-        } catch (error) {
+        } 
+        catch (error) {
             console.error("Error fetching user's club histories:", error);
             throw error;
         }
@@ -72,13 +61,14 @@ const ClubHistoryService = {
                     'Authorization': authorizationHeader
                 }
             });
-        } catch (error) {
+        } 
+        catch (error) {
             console.error("Error adding new club history:", error);
             throw error;
         }
     },
 
-    async updateClubHistory(clubHistoryId: number, clubHistory: ClubHistoryCreateDTO): Promise<void> {
+    async updateClubHistory(clubHistoryId: number, clubHistory: ClubHistoryModel): Promise<void> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
             await axios.put(`${ApiURL}/club-history/${clubHistoryId}`, clubHistory, {
@@ -86,7 +76,8 @@ const ClubHistoryService = {
                     'Authorization': authorizationHeader
                 }
             });
-        } catch (error) {
+        } 
+        catch (error) {
             console.error("Error updating club history:", error);
             throw error;
         }
@@ -100,7 +91,8 @@ const ClubHistoryService = {
                     'Authorization': authorizationHeader
                 }
             });
-        } catch (error) {
+        } 
+        catch (error) {
             console.error("Error deleting club history:", error);
             throw error;
         }
