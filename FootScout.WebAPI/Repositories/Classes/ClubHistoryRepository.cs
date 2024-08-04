@@ -36,6 +36,8 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(ch => ch.Achievements)
                 .Include(ch => ch.User)
                 .Where(ch => ch.UserId == userId)
+                .OrderByDescending(ch => ch.StartDate)
+                .ThenByDescending(ch => ch.EndDate)
                 .ToListAsync();
         }
 
