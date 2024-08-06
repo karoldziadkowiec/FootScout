@@ -7,8 +7,8 @@ import ClubHistoryService from '../../services/api/ClubHistoryService';
 import PlayerPositionService from '../../services/api/PlayerPositionService';
 import ClubHistoryModel from '../../models/interfaces/ClubHistory';
 import PlayerPosition from '../../models/interfaces/PlayerPosition';
-import ClubHistoryCreateDTO from '../../models/dtos/ClubHistoryCreateDTO';
 import UserDTO from '../../models/dtos/UserDTO';
+import ClubHistoryCreateDTO from '../../models/dtos/ClubHistoryCreateDTO';
 import '../../App.css';
 import '../../styles/user/ClubHistory.css';
 
@@ -202,7 +202,7 @@ const ClubHistory = () => {
         return `${day}-${month}-${year}`;
     };
 
-    const formatDate2 = (dateString: string): string => {
+    const formatDateToForm = (dateString: string): string => {
         const date = new Date(dateString);
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -530,7 +530,7 @@ const ClubHistory = () => {
                                 <Col sm="9">
                                     <Form.Control
                                         type="date"
-                                        value={formatDate2(editFormData.startDate)}
+                                        value={formatDateToForm(editFormData.startDate)}
                                         onChange={(e) => setEditFormData({ ...editFormData, startDate: e.target.value })}
                                         required
                                     />
@@ -542,7 +542,7 @@ const ClubHistory = () => {
                                 <Col sm="9">
                                     <Form.Control
                                         type="date"
-                                        value={formatDate2(editFormData.endDate)}
+                                        value={formatDateToForm(editFormData.endDate)}
                                         onChange={(e) => setEditFormData({ ...editFormData, endDate: e.target.value })}
                                         required
                                     />
