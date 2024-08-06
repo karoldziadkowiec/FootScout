@@ -30,17 +30,6 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<ClubHistory>> GetUserClubHistory(string userId)
-        {
-            return await _dbContext.ClubHistories
-                .Include(ch => ch.Achievements)
-                .Include(ch => ch.User)
-                .Where(ch => ch.UserId == userId)
-                .OrderByDescending(ch => ch.StartDate)
-                .ThenByDescending(ch => ch.EndDate)
-                .ToListAsync();
-        }
-
         public async Task CreateClubHistory(ClubHistory clubHistory)
         {
             await _dbContext.ClubHistories.AddAsync(clubHistory);

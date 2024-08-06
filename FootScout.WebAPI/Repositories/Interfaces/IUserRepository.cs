@@ -9,5 +9,7 @@ namespace FootScout.WebAPI.Repositories.Interfaces
         Task<IEnumerable<UserDTO>> GetUsers();
         Task UpdateUser(UserUpdateDTO userUpdateDTO);
         Task DeleteUser(string userId);
+        Task<IEnumerable<ClubHistory>> GetUserClubHistory(string userId);
+        Task<IEnumerable<PlayerAdvertisement>> GetUserPlayerAdvertisements(string userId);
     }
 }

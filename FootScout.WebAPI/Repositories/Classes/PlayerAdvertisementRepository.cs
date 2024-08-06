@@ -14,59 +14,57 @@ namespace FootScout.WebAPI.Repositories.Classes
             _dbContext = dbContext;
         }
 
-        public async Task<ClubHistory> GetPlayerAdvertisement(int playerAdvertisementId)
+        public async Task<PlayerAdvertisement> GetPlayerAdvertisement(int playerAdvertisementId)
         {
-            return await _dbContext.ClubHistories
-                .Include(ch => ch.Achievements)
-                .Include(ch => ch.User)
-                .FirstOrDefaultAsync(ch => ch.Id == playerAdvertisementId);
+            return await _dbContext.PlayerAdvertisements
+                .Include(pa => pa.PlayerPosition)
+                .Include(pa => pa.PlayerFoot)
+                .Include(pa => pa.SalaryRange)
+                .Include(pa => pa.User)
+                .FirstOrDefaultAsync(pa => pa.Id == playerAdvertisementId);
         }
 
-        public async Task<IEnumerable<ClubHistory>> GetAllPlayerAdvertisements()
+        public async Task<IEnumerable<PlayerAdvertisement>> GetPlayerAdvertisements()
         {
-            return await _dbContext.ClubHistories
-                .Include(ch => ch.Achievements)
-                .Include(ch => ch.User)
+            return await _dbContext.PlayerAdvertisements
+                .Include(pa => pa.PlayerPosition)
+                .Include(pa => pa.PlayerFoot)
+                .Include(pa => pa.SalaryRange)
+                .Include(pa => pa.User)
+                .OrderByDescending(pa => pa.EndDate)
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<ClubHistory>> GetUserPlayerAdvertisement(string userId)
+        public async Task CreatePlayerAdvertisement(PlayerAdvertisement playerAdvertisement)
         {
-            return await _dbContext.ClubHistories
-                .Include(ch => ch.Achievements)
-                .Include(ch => ch.User)
-                .Where(ch => ch.UserId == userId)
-                .OrderByDescending(ch => ch.StartDate)
-                .ThenByDescending(ch => ch.EndDate)
-                .ToListAsync();
-        }
+            playerAdvertisement.CreationDate = DateTime.Now;
+            playerAdvertisement.StartDate = DateTime.Now;
+            playerAdvertisement.EndDate = DateTime.Now.AddDays(30);
 
-        public async Task CreatePlayerAdvertisement(ClubHistory clubHistory)
-        {
-            await _dbContext.ClubHistories.AddAsync(clubHistory);
+            await _dbContext.PlayerAdvertisements.AddAsync(playerAdvertisement);
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task UpdatePlayerAdvertisement(ClubHistory clubHistory)
+        public async Task UpdatePlayerAdvertisement(PlayerAdvertisement playerAdvertisement)
         {
-            _dbContext.ClubHistories.Update(clubHistory);
+            _dbContext.PlayerAdvertisements.Update(playerAdvertisement);
             await _dbContext.SaveChangesAsync();
         }
 
         public async Task DeletePlayerAdvertisement(int playerAdvertisementId)
         {
-            var clubHistory = await _dbContext.ClubHistories.FindAsync(playerAdvertisementId);
-            if (clubHistory == null)
-                throw new ArgumentException($"No club history found with ID {playerAdvertisementId}");
+            var playerAdvertisement = await _dbContext.PlayerAdvertisements.FindAsync(playerAdvertisementId);
+            if (playerAdvertisement == null)
+                throw new ArgumentException($"No Player Advertisement found with ID {playerAdvertisementId}");
 
-            if (clubHistory.AchievementsId != null)
+            if (playerAdvertisement.SalaryRangeId != null)
             {
-                var achievements = await _dbContext.Achievements.FindAsync(clubHistory.AchievementsId);
-                if (achievements != null)
-                    _dbContext.Achievements.Remove(achievements);
+                var salaryRange = await _dbContext.SalaryRanges.FindAsync(playerAdvertisement.SalaryRangeId);
+                if (salaryRange != null)
+                    _dbContext.SalaryRanges.Remove(salaryRange);
             }
 
-            _dbContext.ClubHistories.Remove(clubHistory);
+            _dbContext.PlayerAdvertisements.Remove(playerAdvertisement);
             await _dbContext.SaveChangesAsync();
         }
     }

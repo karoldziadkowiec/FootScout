@@ -21,6 +21,8 @@ namespace FootScout.WebAPI.DbManager
             CreateMap<AchievementsDTO, Achievements>();
             CreateMap<ClubHistory, ClubHistoryCreateDTO>();
             CreateMap<Achievements, AchievementsDTO>();
+            CreateMap<PlayerAdvertisement, PlayerAdvertisementCreateDTO>();
+            CreateMap<SalaryRange, SalaryRangeDTO>();
         }
     }
 }

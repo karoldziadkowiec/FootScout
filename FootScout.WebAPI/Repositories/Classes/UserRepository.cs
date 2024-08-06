@@ -64,5 +64,28 @@ namespace FootScout.WebAPI.Repositories.Classes
             _dbContext.Users.Remove(user);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<ClubHistory>> GetUserClubHistory(string userId)
+        {
+            return await _dbContext.ClubHistories
+                .Include(ch => ch.Achievements)
+                .Include(ch => ch.User)
+                .Where(ch => ch.UserId == userId)
+                .OrderByDescending(ch => ch.StartDate)
+                .ThenByDescending(ch => ch.EndDate)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<PlayerAdvertisement>> GetUserPlayerAdvertisements(string userId)
+        {
+            return await _dbContext.PlayerAdvertisements
+                .Include(pa => pa.PlayerPosition)
+                .Include(pa => pa.PlayerFoot)
+                .Include(pa => pa.SalaryRange)
+                .Include(pa => pa.User)
+                .Where(pa => pa.UserId == userId)
+                .OrderByDescending(pa => pa.EndDate)
+                .ToListAsync();
+        }
     }
 }

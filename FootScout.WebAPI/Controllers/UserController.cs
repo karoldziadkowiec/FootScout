@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FootScout.WebAPI.Entities;
 using FootScout.WebAPI.Models.DTOs;
 using FootScout.WebAPI.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -77,6 +78,22 @@ namespace FootScout.WebAPI.Controllers
                 return NotFound();
             }
             return NoContent();
+        }
+
+        // GET: api/users/:userId/club-history
+        [HttpGet("{userId}/club-history")]
+        public async Task<ActionResult<IEnumerable<ClubHistory>>> GetUserClubHistory(string userId)
+        {
+            var userClubHistories = await _userRepository.GetUserClubHistory(userId);
+            return Ok(userClubHistories);
+        }
+
+        // GET: api/users/:userId/player-advertisements
+        [HttpGet("{userId}/player-advertisements")]
+        public async Task<ActionResult<IEnumerable<PlayerAdvertisement>>> GetUserPlayerAdvertisements(string userId)
+        {
+            var userPlayerAdvertisements = await _userRepository.GetUserPlayerAdvertisements(userId);
+            return Ok(userPlayerAdvertisements);
         }
     }
 }

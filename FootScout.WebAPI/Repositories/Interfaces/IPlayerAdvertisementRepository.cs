@@ -4,11 +4,10 @@ namespace FootScout.WebAPI.Repositories.Interfaces
 {
     public interface IPlayerAdvertisementRepository
     {
-        Task<ClubHistory> GetPlayerAdvertisement(int playerAdvertisementId);
-        Task<IEnumerable<ClubHistory>> GetAllPlayerAdvertisements();
-        Task<IEnumerable<ClubHistory>> GetUserPlayerAdvertisement(string userId);
-        Task CreatePlayerAdvertisement(ClubHistory clubHistory);
-        Task UpdatePlayerAdvertisement(ClubHistory clubHistory);
+        Task<PlayerAdvertisement> GetPlayerAdvertisement(int playerAdvertisementId);
+        Task<IEnumerable<PlayerAdvertisement>> GetPlayerAdvertisements();
+        Task CreatePlayerAdvertisement(PlayerAdvertisement playerAdvertisement);
+        Task UpdatePlayerAdvertisement(PlayerAdvertisement playerAdvertisement);
         Task DeletePlayerAdvertisement(int playerAdvertisementId);
     }
 }

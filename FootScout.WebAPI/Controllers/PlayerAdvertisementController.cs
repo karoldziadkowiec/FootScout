@@ -7,86 +7,78 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FootScout.WebAPI.Controllers
 {
-    [Route("api2")]
+    [Route("api/player-advertisements")]
     [Authorize(Policy = "AdminOrUserRights")]
     [ApiController]
     public class PlayerAdvertisementController : ControllerBase
     {
         private readonly IPlayerAdvertisementRepository _playerAdvertisementRepository;
-        private readonly IAchievementsRepository _achievementsRepository;
+        private readonly ISalaryRangeRepository _salaryRangeRepository;
         private readonly IMapper _mapper;
 
-        public PlayerAdvertisementController(IPlayerAdvertisementRepository playerAdvertisementRepository, IAchievementsRepository achievementsRepository, IMapper mapper)
+        public PlayerAdvertisementController(IPlayerAdvertisementRepository playerAdvertisementRepository, ISalaryRangeRepository salaryRangeRepository, IMapper mapper)
         {
             _playerAdvertisementRepository = playerAdvertisementRepository;
-            _achievementsRepository = achievementsRepository;
+            _salaryRangeRepository = salaryRangeRepository;
             _mapper = mapper;
         }
 
-        // GET: api/club-history/:clubHistoryId
-        [HttpGet("club-history/{playerAdvertisementId}")]
-        public async Task<ActionResult<ClubHistory>> GetClubHistory(int playerAdvertisementId)
+        // GET: api/player-advertisements/:playerAdvertisementId
+        [HttpGet("{playerAdvertisementId}")]
+        public async Task<ActionResult<PlayerAdvertisement>> GetPlayerAdvertisement(int playerAdvertisementId)
         {
-            var clubHistory = await _playerAdvertisementRepository.GetPlayerAdvertisement(playerAdvertisementId);
-            if (clubHistory == null)
+            var playerAdvertisement = await _playerAdvertisementRepository.GetPlayerAdvertisement(playerAdvertisementId);
+            if (playerAdvertisement == null)
                 return NotFound();
 
-            return Ok(clubHistory);
+            return Ok(playerAdvertisement);
         }
 
-        // GET: api/club-history
-        [HttpGet("club-history")]
-        public async Task<ActionResult<IEnumerable<ClubHistory>>> GetAllClubHistory()
+        // GET: api/player-advertisements
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<PlayerAdvertisement>>> GetPlayerAdvertisement()
         {
-            var clubHistories = await _playerAdvertisementRepository.GetAllPlayerAdvertisements();
-            return Ok(clubHistories);
+            var playerAdvertisements = await _playerAdvertisementRepository.GetPlayerAdvertisements();
+            return Ok(playerAdvertisements);
         }
 
-        // GET: api/users/:userId/club-history
-        [HttpGet("users/{userId}/club-history")]
-        public async Task<ActionResult<IEnumerable<ClubHistory>>> GetUserClubHistory(string userId)
-        {
-            var userClubHistories = await _playerAdvertisementRepository.GetUserPlayerAdvertisement(userId);
-            return Ok(userClubHistories);
-        }
-
-        // POST: api/club-history
-        [HttpPost("club-history")]
-        public async Task<ActionResult> CreateClubHistory([FromBody] ClubHistoryCreateDTO dto)
+        // POST: api/player-advertisements
+        [HttpPost]
+        public async Task<ActionResult> CreatePlayerAdvertisement([FromBody] PlayerAdvertisementCreateDTO dto)
         {
             if (dto == null)
-                return BadRequest("Invalid data.");
+                return BadRequest("Invalid dto data.");
 
-            var achievements = _mapper.Map<Achievements>(dto.Achievements);
-            await _achievementsRepository.CreateAchievements(achievements);
+            var salaryRange = _mapper.Map<SalaryRange>(dto.SalaryRange);
+            await _salaryRangeRepository.CreateSalaryRange(salaryRange);
 
-            var clubHistory = _mapper.Map<ClubHistory>(dto);
-            clubHistory.AchievementsId = achievements.Id;
-            await _playerAdvertisementRepository.CreatePlayerAdvertisement(clubHistory);
+            var playerAdvertisement = _mapper.Map<PlayerAdvertisement>(dto);
+            playerAdvertisement.SalaryRangeId = salaryRange.Id;
+            await _playerAdvertisementRepository.CreatePlayerAdvertisement(playerAdvertisement);
 
-            return Ok(clubHistory);
+            return Ok(playerAdvertisement);
         }
 
-        // PUT: api/club-history/:playerAdvertisementId
-        [HttpPut("club-history/{playerAdvertisementId}")]
-        public async Task<ActionResult> UpdateClubHistory(int playerAdvertisementId, [FromBody] ClubHistory clubHistory)
+        // PUT: api/player-advertisements/:playerAdvertisementId
+        [HttpPut("{playerAdvertisementId}")]
+        public async Task<ActionResult> UpdatePlayerAdvertisement(int playerAdvertisementId, [FromBody] PlayerAdvertisement playerAdvertisement)
         {
-            if (playerAdvertisementId != clubHistory.Id)
+            if (playerAdvertisementId != playerAdvertisement.Id)
                 return BadRequest();
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            await _playerAdvertisementRepository.UpdatePlayerAdvertisement(clubHistory);
+            await _playerAdvertisementRepository.UpdatePlayerAdvertisement(playerAdvertisement);
             return NoContent();
         }
 
-        // DELETEs: api/club-history/:playerAdvertisementId
-        [HttpDelete("club-history/{playerAdvertisementId}")]
-        public async Task<ActionResult> DeleteClubHistory(int playerAdvertisementId)
+        // DELETE: api/player-advertisements/:playerAdvertisementId
+        [HttpDelete("{playerAdvertisementId}")]
+        public async Task<ActionResult> DeletePlayerAdvertisement(int playerAdvertisementId)
         {
-            var clubHistory = await _playerAdvertisementRepository.GetPlayerAdvertisement(playerAdvertisementId);
-            if (clubHistory == null)
+            var playerAdvertisement = await _playerAdvertisementRepository.GetPlayerAdvertisement(playerAdvertisementId);
+            if (playerAdvertisement == null)
                 return NotFound();
 
             await _playerAdvertisementRepository.DeletePlayerAdvertisement(playerAdvertisementId);

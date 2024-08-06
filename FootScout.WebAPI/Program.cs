@@ -78,6 +78,7 @@ namespace FootScout.WebAPI
             builder.Services.AddScoped<IClubHistoryRepository, ClubHistoryRepository>();
             builder.Services.AddScoped<IAchievementsRepository, AchievementsRepository>();
             builder.Services.AddScoped<IPlayerAdvertisementRepository, PlayerAdvertisementRepository>();
+            builder.Services.AddScoped<ISalaryRangeRepository, SalaryRangeRepository>();
             builder.Services.AddScoped<IPlayerPositionRepository, PlayerPositionRepository>();
             builder.Services.AddScoped<IPlayerFootRepository, PlayerFootRepository>();
 

@@ -2,15 +2,15 @@
 
 namespace FootScout.WebAPI.Models.DTOs
 {
-    public class ClubHistoryCreateDTO
+    public class PlayerAdvertisementCreateDTO
     {
         public int PlayerPositionId { get; set; }
-        public string ClubName { get; set; }
         public string League { get; set; }
         public string Region { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public Achievements Achievements { get; set; }
+        public int Age { get; set; }
+        public int Height { get; set; }
+        public int PlayerFootId { get; set; }
+        public SalaryRange SalaryRange { get; set; }
         public string UserId { get; set; }
     }
 }

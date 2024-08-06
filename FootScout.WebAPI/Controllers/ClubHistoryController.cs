@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FootScout.WebAPI.Controllers
 {
-    [Route("api")]
+    [Route("api/club-history")]
     [Authorize(Policy = "AdminOrUserRights")]
     [ApiController]
     public class ClubHistoryController : ControllerBase
@@ -24,7 +24,7 @@ namespace FootScout.WebAPI.Controllers
         }
 
         // GET: api/club-history/:clubHistoryId
-        [HttpGet("club-history/{clubHistoryId}")]
+        [HttpGet("{clubHistoryId}")]
         public async Task<ActionResult<ClubHistory>> GetClubHistory(int clubHistoryId)
         {
             var clubHistory = await _clubHistoryRepository.GetClubHistory(clubHistoryId);
@@ -35,23 +35,15 @@ namespace FootScout.WebAPI.Controllers
         }
 
         // GET: api/club-history
-        [HttpGet("club-history")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<ClubHistory>>> GetAllClubHistory()
         {
             var clubHistories = await _clubHistoryRepository.GetAllClubHistory();
             return Ok(clubHistories);
         }
 
-        // GET: api/users/:userId/club-history
-        [HttpGet("users/{userId}/club-history")]
-        public async Task<ActionResult<IEnumerable<ClubHistory>>> GetUserClubHistory(string userId)
-        {
-            var userClubHistories = await _clubHistoryRepository.GetUserClubHistory(userId);
-            return Ok(userClubHistories);
-        }
-
         // POST: api/club-history
-        [HttpPost("club-history")]
+        [HttpPost]
         public async Task<ActionResult> CreateClubHistory([FromBody] ClubHistoryCreateDTO dto)
         {
             if (dto == null)
@@ -68,7 +60,7 @@ namespace FootScout.WebAPI.Controllers
         }
 
         // PUT: api/club-history/:clubHistoryId
-        [HttpPut("club-history/{clubHistoryId}")]
+        [HttpPut("{clubHistoryId}")]
         public async Task<ActionResult> UpdateClubHistory(int clubHistoryId, [FromBody] ClubHistory clubHistory)
         {
             if (clubHistoryId != clubHistory.Id)
@@ -82,7 +74,7 @@ namespace FootScout.WebAPI.Controllers
         }
 
         // DELETE: api/club-history/:clubHistoryId
-        [HttpDelete("club-history/{clubHistoryId}")]
+        [HttpDelete("{clubHistoryId}")]
         public async Task<ActionResult> DeleteClubHistory(int clubHistoryId)
         {
             var clubHistory = await _clubHistoryRepository.GetClubHistory(clubHistoryId);

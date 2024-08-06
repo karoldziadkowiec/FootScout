@@ -16,6 +16,6 @@
         public const string LeftMidfield = "Left Midfield";
         public const string LeftWing = "Left-Wing";
         public const string CentreForward = "Centre-Forward";
-        public const string Stiker = "Stiker";
+        public const string Striker = "Striker";
     }
 }
