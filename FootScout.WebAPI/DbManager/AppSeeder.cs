@@ -13,6 +13,8 @@ namespace FootScout.WebAPI.DbManager
             {
                 await SeedRoles(services);
                 await SeedAdminRole(services);
+                await SeedPlayerPositions(services, dbContext);
+                await SeedPlayerFeet(services, dbContext);
                 await SeedAdvertisementStatuses(services, dbContext);
             }
         }
@@ -69,6 +71,42 @@ namespace FootScout.WebAPI.DbManager
                         StatusName = status,
                     };
                     dbContext.AdvertisementStatuses.Add(newStatus);
+                }
+            }
+            await dbContext.SaveChangesAsync();
+        }
+
+        private static async Task SeedPlayerPositions(IServiceProvider services, AppDbContext dbContext)
+        {
+            var positions = new List<string> { Position.Goalkeeper, Position.RightBack, Position.CenterBack, Position.LeftBack, Position.RightWingBack, Position.LeftWingBack, Position.CentralDefensiveMidfield, Position.CentralMidfield, Position.CentralAttackingMidfield, Position.RightMidfield, Position.RightWing, Position.LeftMidfield, Position.LeftWing, Position.CentreForward, Position.Stiker };
+
+            foreach (var position in positions)
+            {
+                if (!await dbContext.PlayerPositions.AnyAsync(p => p.PositionName == position))
+                {
+                    PlayerPosition newPosition = new PlayerPosition
+                    {
+                        PositionName = position,
+                    };
+                    dbContext.PlayerPositions.Add(newPosition);
+                }
+            }
+            await dbContext.SaveChangesAsync();
+        }
+
+        private static async Task SeedPlayerFeet(IServiceProvider services, AppDbContext dbContext)
+        {
+            var feet = new List<string> { Foot.Left, Foot.Right, Foot.TwoFooted };
+
+            foreach (var foot in feet)
+            {
+                if (!await dbContext.PlayerFeet.AnyAsync(p => p.FootName == foot))
+                {
+                    PlayerFoot newFoot = new PlayerFoot
+                    {
+                        FootName = foot,
+                    };
+                    dbContext.PlayerFeet.Add(newFoot);
                 }
             }
             await dbContext.SaveChangesAsync();

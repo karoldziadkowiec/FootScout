@@ -15,7 +15,9 @@ namespace FootScout.WebAPI.DbManager
         public DbSet<ClubOffer> ClubOffers { get; set; }
         public DbSet<PlayerAdvertisement> PlayerAdvertisements { get; set; }
         public DbSet<PlayerAdvertisementFavorite> PlayerAdvertisementFavorites { get; set; }
+        public DbSet<PlayerFoot> PlayerFeet { get; set; }
         public DbSet<PlayerOffer> PlayerOffers { get; set; }
+        public DbSet<PlayerPosition> PlayerPositions { get; set; }
         public DbSet<SalaryRange> SalaryRanges { get; set; }
         public DbSet<User> Users { get; set; }
 
@@ -28,6 +30,18 @@ namespace FootScout.WebAPI.DbManager
                 .WithMany()
                 .HasForeignKey(ca => ca.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ClubAdvertisement>()
+               .HasOne(ca => ca.PlayerPosition)
+               .WithMany()
+               .HasForeignKey(ca => ca.PlayerPositionId)
+               .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ClubAdvertisement>()
+               .HasOne(ca => ca.PlayerFoot)
+               .WithMany()
+               .HasForeignKey(ca => ca.PlayerFootId)
+               .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ClubAdvertisement>()
                 .HasOne(ca => ca.SalaryRange)
@@ -72,6 +86,12 @@ namespace FootScout.WebAPI.DbManager
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ClubHistory>()
+               .HasOne(ca => ca.PlayerPosition)
+               .WithMany()
+               .HasForeignKey(ca => ca.PlayerPositionId)
+               .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ClubHistory>()
                 .HasOne(ch => ch.User)
                 .WithMany()
                 .HasForeignKey(ch => ch.UserId)
@@ -82,6 +102,18 @@ namespace FootScout.WebAPI.DbManager
                 .WithMany()
                 .HasForeignKey(pa => pa.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<PlayerAdvertisement>()
+               .HasOne(pa => pa.PlayerPosition)
+               .WithMany()
+               .HasForeignKey(pa => pa.PlayerPositionId)
+               .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<PlayerAdvertisement>()
+               .HasOne(pa => pa.PlayerFoot)
+               .WithMany()
+               .HasForeignKey(pa => pa.PlayerFootId)
+               .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<PlayerAdvertisement>()
                 .HasOne(pa => pa.SalaryRange)

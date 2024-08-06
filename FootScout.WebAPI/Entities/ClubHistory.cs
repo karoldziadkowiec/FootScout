@@ -8,7 +8,9 @@ namespace FootScout.WebAPI.Entities
         [Key]
         public int Id { get; set; }
         [Required]
-        public string Position { get; set; }
+        public int PlayerPositionId { get; set; }
+        [ForeignKey("PlayerPositionId")]
+        public virtual PlayerPosition PlayerPosition { get; set; }
         [Required]
         public string ClubName { get; set; }
         [Required]

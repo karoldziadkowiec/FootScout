@@ -73,11 +73,10 @@ namespace FootScout.WebAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ClubName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
 
-                    b.Property<string>("ContractType")
+                    b.Property<string>("ClubName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -87,13 +86,18 @@ namespace FootScout.WebAPI.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Height")
+                        .HasColumnType("int");
+
                     b.Property<string>("League")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Position")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("PlayerFootId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlayerPositionId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Region")
                         .IsRequired()
@@ -110,6 +114,10 @@ namespace FootScout.WebAPI.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PlayerFootId");
+
+                    b.HasIndex("PlayerPositionId");
 
                     b.HasIndex("SalaryRangeId");
 
@@ -164,9 +172,8 @@ namespace FootScout.WebAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Position")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("PlayerPositionId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Region")
                         .IsRequired()
@@ -183,6 +190,8 @@ namespace FootScout.WebAPI.Migrations
 
                     b.HasIndex("AchievementsId")
                         .IsUnique();
+
+                    b.HasIndex("PlayerPositionId");
 
                     b.HasIndex("UserId");
 
@@ -229,9 +238,8 @@ namespace FootScout.WebAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ContractType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Age")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
@@ -239,13 +247,18 @@ namespace FootScout.WebAPI.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("Height")
+                        .HasColumnType("int");
+
                     b.Property<string>("League")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Position")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("PlayerFootId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlayerPositionId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Region")
                         .IsRequired()
@@ -262,6 +275,10 @@ namespace FootScout.WebAPI.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PlayerFootId");
+
+                    b.HasIndex("PlayerPositionId");
 
                     b.HasIndex("SalaryRangeId");
 
@@ -294,6 +311,23 @@ namespace FootScout.WebAPI.Migrations
                     b.ToTable("PlayerAdvertisementFavorites");
                 });
 
+            modelBuilder.Entity("FootScout.WebAPI.Entities.PlayerFoot", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("FootName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PlayerFeet");
+                });
+
             modelBuilder.Entity("FootScout.WebAPI.Entities.PlayerOffer", b =>
                 {
                     b.Property<int>("Id")
@@ -324,6 +358,23 @@ namespace FootScout.WebAPI.Migrations
                     b.HasIndex("UserPlayerId");
 
                     b.ToTable("PlayerOffers");
+                });
+
+            modelBuilder.Entity("FootScout.WebAPI.Entities.PlayerPosition", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("PositionName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PlayerPositions");
                 });
 
             modelBuilder.Entity("FootScout.WebAPI.Entities.SalaryRange", b =>
@@ -563,6 +614,18 @@ namespace FootScout.WebAPI.Migrations
 
             modelBuilder.Entity("FootScout.WebAPI.Entities.ClubAdvertisement", b =>
                 {
+                    b.HasOne("FootScout.WebAPI.Entities.PlayerFoot", "PlayerFoot")
+                        .WithMany()
+                        .HasForeignKey("PlayerFootId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FootScout.WebAPI.Entities.PlayerPosition", "PlayerPosition")
+                        .WithMany()
+                        .HasForeignKey("PlayerPositionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("FootScout.WebAPI.Entities.SalaryRange", "SalaryRange")
                         .WithMany()
                         .HasForeignKey("SalaryRangeId")
@@ -574,6 +637,10 @@ namespace FootScout.WebAPI.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("PlayerFoot");
+
+                    b.Navigation("PlayerPosition");
 
                     b.Navigation("SalaryRange");
 
@@ -607,6 +674,12 @@ namespace FootScout.WebAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("FootScout.WebAPI.Entities.PlayerPosition", "PlayerPosition")
+                        .WithMany()
+                        .HasForeignKey("PlayerPositionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("FootScout.WebAPI.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -614,6 +687,8 @@ namespace FootScout.WebAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("Achievements");
+
+                    b.Navigation("PlayerPosition");
 
                     b.Navigation("User");
                 });
@@ -647,6 +722,18 @@ namespace FootScout.WebAPI.Migrations
 
             modelBuilder.Entity("FootScout.WebAPI.Entities.PlayerAdvertisement", b =>
                 {
+                    b.HasOne("FootScout.WebAPI.Entities.PlayerFoot", "PlayerFoot")
+                        .WithMany()
+                        .HasForeignKey("PlayerFootId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FootScout.WebAPI.Entities.PlayerPosition", "PlayerPosition")
+                        .WithMany()
+                        .HasForeignKey("PlayerPositionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("FootScout.WebAPI.Entities.SalaryRange", "SalaryRange")
                         .WithMany()
                         .HasForeignKey("SalaryRangeId")
@@ -658,6 +745,10 @@ namespace FootScout.WebAPI.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("PlayerFoot");
+
+                    b.Navigation("PlayerPosition");
 
                     b.Navigation("SalaryRange");
 

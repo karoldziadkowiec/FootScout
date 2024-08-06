@@ -7,27 +7,27 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FootScout.WebAPI.Controllers
 {
-    [Route("api")]
+    [Route("api2")]
     [Authorize(Policy = "AdminOrUserRights")]
     [ApiController]
-    public class ClubHistoryController : ControllerBase
+    public class PlayerAdvertisementController : ControllerBase
     {
-        private readonly IClubHistoryRepository _clubHistoryRepository;
+        private readonly IPlayerAdvertisementRepository _playerAdvertisementRepository;
         private readonly IAchievementsRepository _achievementsRepository;
         private readonly IMapper _mapper;
 
-        public ClubHistoryController(IClubHistoryRepository clubHistoryRepository, IAchievementsRepository achievementsRepository, IMapper mapper)
+        public PlayerAdvertisementController(IPlayerAdvertisementRepository playerAdvertisementRepository, IAchievementsRepository achievementsRepository, IMapper mapper)
         {
-            _clubHistoryRepository = clubHistoryRepository;
+            _playerAdvertisementRepository = playerAdvertisementRepository;
             _achievementsRepository = achievementsRepository;
             _mapper = mapper;
         }
 
         // GET: api/club-history/:clubHistoryId
-        [HttpGet("club-history/{clubHistoryId}")]
-        public async Task<ActionResult<ClubHistory>> GetClubHistory(int clubHistoryId)
+        [HttpGet("club-history/{playerAdvertisementId}")]
+        public async Task<ActionResult<ClubHistory>> GetClubHistory(int playerAdvertisementId)
         {
-            var clubHistory = await _clubHistoryRepository.GetClubHistory(clubHistoryId);
+            var clubHistory = await _playerAdvertisementRepository.GetPlayerAdvertisement(playerAdvertisementId);
             if (clubHistory == null)
                 return NotFound();
 
@@ -38,7 +38,7 @@ namespace FootScout.WebAPI.Controllers
         [HttpGet("club-history")]
         public async Task<ActionResult<IEnumerable<ClubHistory>>> GetAllClubHistory()
         {
-            var clubHistories = await _clubHistoryRepository.GetAllClubHistory();
+            var clubHistories = await _playerAdvertisementRepository.GetAllPlayerAdvertisements();
             return Ok(clubHistories);
         }
 
@@ -46,7 +46,7 @@ namespace FootScout.WebAPI.Controllers
         [HttpGet("users/{userId}/club-history")]
         public async Task<ActionResult<IEnumerable<ClubHistory>>> GetUserClubHistory(string userId)
         {
-            var userClubHistories = await _clubHistoryRepository.GetUserClubHistory(userId);
+            var userClubHistories = await _playerAdvertisementRepository.GetUserPlayerAdvertisement(userId);
             return Ok(userClubHistories);
         }
 
@@ -62,34 +62,34 @@ namespace FootScout.WebAPI.Controllers
 
             var clubHistory = _mapper.Map<ClubHistory>(dto);
             clubHistory.AchievementsId = achievements.Id;
-            await _clubHistoryRepository.CreateClubHistory(clubHistory);
+            await _playerAdvertisementRepository.CreatePlayerAdvertisement(clubHistory);
 
             return Ok(clubHistory);
         }
 
-        // PUT: api/club-history/:clubHistoryId
-        [HttpPut("club-history/{clubHistoryId}")]
-        public async Task<ActionResult> UpdateClubHistory(int clubHistoryId, [FromBody] ClubHistory clubHistory)
+        // PUT: api/club-history/:playerAdvertisementId
+        [HttpPut("club-history/{playerAdvertisementId}")]
+        public async Task<ActionResult> UpdateClubHistory(int playerAdvertisementId, [FromBody] ClubHistory clubHistory)
         {
-            if (clubHistoryId != clubHistory.Id)
+            if (playerAdvertisementId != clubHistory.Id)
                 return BadRequest();
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            await _clubHistoryRepository.UpdateClubHistory(clubHistory);
+            await _playerAdvertisementRepository.UpdatePlayerAdvertisement(clubHistory);
             return NoContent();
         }
 
-        // DELETE: api/club-history/:clubHistoryId
-        [HttpDelete("club-history/{clubHistoryId}")]
-        public async Task<ActionResult> DeleteClubHistory(int clubHistoryId)
+        // DELETEs: api/club-history/:playerAdvertisementId
+        [HttpDelete("club-history/{playerAdvertisementId}")]
+        public async Task<ActionResult> DeleteClubHistory(int playerAdvertisementId)
         {
-            var clubHistory = await _clubHistoryRepository.GetClubHistory(clubHistoryId);
+            var clubHistory = await _playerAdvertisementRepository.GetPlayerAdvertisement(playerAdvertisementId);
             if (clubHistory == null)
                 return NotFound();
 
-            await _clubHistoryRepository.DeleteClubHistory(clubHistoryId);
+            await _playerAdvertisementRepository.DeletePlayerAdvertisement(playerAdvertisementId);
             return NoContent();
         }
     }

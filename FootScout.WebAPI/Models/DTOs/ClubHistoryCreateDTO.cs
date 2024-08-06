@@ -1,12 +1,10 @@
 ﻿using FootScout.WebAPI.Entities;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
 
 namespace FootScout.WebAPI.Models.DTOs
 {
     public class ClubHistoryCreateDTO
     {
-        public string Position { get; set; }
+        public int PlayerPositionId { get; set; }
         public string ClubName { get; set; }
         public string League { get; set; }
         public string Region { get; set; }
