@@ -11,9 +11,15 @@ const AccountService = {
     try {
       const response = await axios.post(`${ApiURL}/account/register`, registerDTO);
       return response.data;
-    } catch (error) {
-      console.error('Registration failed:', error);
-      throw new Error('Registration failed');
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Registration failed, details:', error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
+      throw error;
     }
   },
 
@@ -28,9 +34,15 @@ const AccountService = {
       } else {
         console.error('Token not found in response');
       }
-    } catch (error) {
-      console.error('Login failed:', error);
-      throw new Error('Login failed');
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Login failed, details:', error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
+      throw error;
     }
   },
 
@@ -57,7 +69,8 @@ const AccountService = {
       try {
         const decodedToken = jwtDecode<any>(token);
         return decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
-      } catch (error) {
+      }
+      catch (error) {
         console.error('Failed to decode token:', error);
       }
     }
@@ -67,7 +80,7 @@ const AccountService = {
   async getAuthorizationHeader(): Promise<string> {
     const tokenType = 'Bearer';
     const tokenJWT = await AccountService.getToken();
-    if(tokenJWT)
+    if (tokenJWT)
       return `${tokenType} ${tokenJWT}`;
 
     else

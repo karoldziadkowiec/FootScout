@@ -40,11 +40,11 @@ const MyProfile = () => {
                         confirmPasswordHash: ''
                     });
                 }
-            } 
+            }
             catch (error) {
                 console.error('Failed to fetch user data:', error);
                 toast.error('Failed to load user data.');
-            } 
+            }
             finally {
                 setLoading(false);
             }
@@ -117,7 +117,7 @@ const MyProfile = () => {
             // Refresh the user data
             const updatedUser = await UserService.getUser(user.id);
             setUser(updatedUser);
-        } 
+        }
         catch (error) {
             console.error('Failed to update user data:', error);
             toast.error('Failed to update user data.');
@@ -131,7 +131,7 @@ const MyProfile = () => {
         try {
             await UserService.deleteUser(user.id);
             navigate('/', { state: { toastMessage: "Your account has been deleted successfully." } });
-        } 
+        }
         catch (error) {
             console.error('Failed to delete user:', error);
             toast.error('Failed to delete user.');
@@ -148,10 +148,16 @@ const MyProfile = () => {
             <div className="buttons-container mb-3">
                 <Row>
                     <Col>
-                        <Button variant="success" className="form-button" onClick={() => setShowEditModal(true)}>Edit profile</Button>
+                        <Button variant="success" className="form-button" onClick={() => setShowEditModal(true)}>
+                            <i className="bi bi-pencil-square"></i>
+                            Edit profile
+                        </Button>
                     </Col>
                     <Col>
-                        <Button variant="danger" className="form-button" onClick={() => setShowDeleteModal(true)}>Delete profile</Button>
+                        <Button variant="danger" className="form-button" onClick={() => setShowDeleteModal(true)}>
+                            <i className="bi bi-trash"></i>
+                            Delete profile
+                        </Button>
                     </Col>
                 </Row>
             </div>

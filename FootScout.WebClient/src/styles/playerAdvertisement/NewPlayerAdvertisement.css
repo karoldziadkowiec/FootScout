@@ -1,0 +1,31 @@
+.NewPlayerAdvertisement {
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.modal-content-centered {
+    text-align: center;
+    margin: 0 auto;
+}
+
+.button-spacing {
+    margin-right: 10px;
+}
+
+/* Responsive Table */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive table {
+    min-width: 600px;
+}
+
+/* Mobile Specific Styles */
+@media (max-width: 576px) {
+    .table-responsive table {
+        min-width: 100%;
+    }
+}

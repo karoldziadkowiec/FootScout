@@ -3,6 +3,7 @@ import ApiURL from '../../config/ApiConfig';
 import AccountService from '../../services/api/AccountService';
 import UserDTO from '../../models/dtos/UserDTO';
 import UserUpdateDTO from '../../models/dtos/UserUpdateDTO';
+import ClubHistoryModel from '../../models/interfaces/ClubHistory';
 
 const UserService = {
   async getUser(userId: string): Promise<UserDTO> {
@@ -14,8 +15,14 @@ const UserService = {
         }
       });
       return response.data;
-    } catch (error) {
-      console.error("Error fetching user:", error);
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Error fetching user, details:', error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
       throw error;
     }
   },
@@ -29,8 +36,14 @@ const UserService = {
         }
       });
       return response.data;
-    } catch (error) {
-      console.error("Error fetching users:", error);
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Error fetching users, details:', error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
       throw error;
     }
   },
@@ -43,8 +56,14 @@ const UserService = {
           'Authorization': authorizationHeader
         }
       });
-    } catch (error) {
-      console.error("Error updating user:", error);
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Error updating user, details:', error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
       throw error;
     }
   },
@@ -57,8 +76,35 @@ const UserService = {
           'Authorization': authorizationHeader
         }
       });
-    } catch (error) {
-      console.error("Error deleting user:", error);
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Error deleting user, details:', error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
+      throw error;
+    }
+  },
+
+  async getUserClubHistory(userId: string): Promise<ClubHistoryModel[]> {
+    try {
+      const authorizationHeader = await AccountService.getAuthorizationHeader();
+      const response = await axios.get<ClubHistoryModel[]>(`${ApiURL}/users/${userId}/club-history`, {
+        headers: {
+          'Authorization': authorizationHeader
+        }
+      });
+      return response.data;
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error("Error fetching user's club histories, details:", error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
       throw error;
     }
   }

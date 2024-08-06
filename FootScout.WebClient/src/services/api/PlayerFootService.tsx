@@ -1,13 +1,13 @@
 import axios from 'axios';
 import ApiURL from '../../config/ApiConfig';
 import AccountService from './AccountService';
-import PlayerPosition from '../../models/interfaces/PlayerPosition';
+import PlayerFoot from '../../models/interfaces/PlayerFoot';
 
-const PlayerPositionService = {
-    async getPlayerPositions(): Promise<PlayerPosition[]> {
+const PlayerFootService = {
+    async getPlayerFeet(): Promise<PlayerFoot[]> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
-            const response = await axios.get<PlayerPosition[]>(`${ApiURL}/player-positions`, {
+            const response = await axios.get<PlayerFoot[]>(`${ApiURL}/player-feet`, {
                 headers: {
                     'Authorization': authorizationHeader
                 }
@@ -16,7 +16,7 @@ const PlayerPositionService = {
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                console.error('Error fetching player positions, details:', error.response?.data || error.message);
+                console.error('Error fetching player feet, details:', error.response?.data || error.message);
             }
             else {
                 console.error('Unexpected error:', error);
@@ -25,10 +25,10 @@ const PlayerPositionService = {
         }
     },
 
-    async getPlayerPositionName(positionId: number): Promise<string> {
+    async getPlayerFootName(footId: number): Promise<string> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
-            const response = await axios.get<string>(`${ApiURL}/player-positions/${positionId}`, {
+            const response = await axios.get<string>(`${ApiURL}/player-feet/${footId}`, {
                 headers: {
                     'Authorization': authorizationHeader
                 }
@@ -37,7 +37,7 @@ const PlayerPositionService = {
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                console.error('Error fetching selected player position, details:', error.response?.data || error.message);
+                console.error('Error fetching selected player foot, details:', error.response?.data || error.message);
             }
             else {
                 console.error('Unexpected error:', error);
@@ -47,4 +47,4 @@ const PlayerPositionService = {
     }
 };
 
-export default PlayerPositionService;
+export default PlayerFootService;

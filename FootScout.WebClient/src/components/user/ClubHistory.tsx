@@ -47,7 +47,7 @@ const ClubHistory = () => {
                     const userData = await UserService.getUser(userId);
                     setUser(userData);
 
-                    const _userClubHistories = await ClubHistoryService.getUserClubHistory(userId);
+                    const _userClubHistories = await UserService.getUserClubHistory(userId);
                     setUserClubHistories(_userClubHistories);
                 }
             }
@@ -94,7 +94,7 @@ const ClubHistory = () => {
             setShowCreateModal(false);
             toast.success('Club history created successfully!');
             // Refresh the user data
-            const _userClubHistories = await ClubHistoryService.getUserClubHistory(user.id);
+            const _userClubHistories = await UserService.getUserClubHistory(user.id);
             setUserClubHistories(_userClubHistories);
         }
         catch (error) {
@@ -137,32 +137,31 @@ const ClubHistory = () => {
 
     const handleEditClubHistory = async () => {
         if (!user || !editFormData) return;
-    
+
         const validationError = validateForm(editFormData);
         if (validationError) {
             toast.error(validationError);
             return;
         }
-    
+
         const position = positions.find(pos => pos.id === editFormData.playerPositionId);
-    
+
         if (!position) {
             toast.error('Invalid player position.');
             return;
         }
-    
+
         try {
             const updatedFormData = {
                 ...editFormData,
                 playerPosition: position
             };
-    
-            console.log('Updating club history with data:', updatedFormData);
+
             await ClubHistoryService.updateClubHistory(editFormData.id, updatedFormData);
             setShowEditModal(false);
             toast.success('Club history updated successfully!');
             // Refresh the user data
-            const _userClubHistories = await ClubHistoryService.getUserClubHistory(user.id);
+            const _userClubHistories = await UserService.getUserClubHistory(user.id);
             setUserClubHistories(_userClubHistories);
         } catch (error) {
             console.error('Failed to update club history:', error);
@@ -185,7 +184,7 @@ const ClubHistory = () => {
             setShowDeleteModal(false);
             setDeleteHistoryId(null);
             // Refresh the user data
-            const _userClubHistories = await ClubHistoryService.getUserClubHistory(user.id);
+            const _userClubHistories = await UserService.getUserClubHistory(user.id);
             setUserClubHistories(_userClubHistories);
         }
         catch (error) {
@@ -215,7 +214,10 @@ const ClubHistory = () => {
         <div className="ClubHistory">
             <ToastContainer />
             <h1>Club History</h1>
-            <Button variant="success" className="form-button" onClick={() => setShowCreateModal(true)}>Create Club History</Button>
+            <Button variant="success" className="form-button" onClick={() => setShowCreateModal(true)}>
+                <i className="bi bi-file-earmark-plus"></i>
+                Create Club History
+            </Button>
             <div className="table-responsive">
                 <Table striped bordered hover>
                     <thead>
@@ -238,9 +240,15 @@ const ClubHistory = () => {
                                     <td>{history.region}</td>
                                     <td>{getPositionNameById(history.playerPositionId)}</td>
                                     <td>
-                                        <Button variant="dark" className="button-spacing" onClick={() => handleShowDetails(history)}>Details</Button>
-                                        <Button variant="warning" className="button-spacing" onClick={() => handleShowEditModal(history)}>Edit</Button>
-                                        <Button variant="danger" onClick={() => handleShowDeleteModal(history.id)}>Delete</Button>
+                                        <Button variant="dark" className="button-spacing" onClick={() => handleShowDetails(history)}>
+                                            <i className="bi bi-info-square"></i>
+                                        </Button>
+                                        <Button variant="warning" className="button-spacing" onClick={() => handleShowEditModal(history)}>
+                                            <i className="bi bi-pencil-square"></i>
+                                        </Button>
+                                        <Button variant="danger" onClick={() => handleShowDeleteModal(history.id)}>
+                                            <i className="bi bi-trash"></i>
+                                        </Button>
                                     </td>
                                 </tr>
                             ))
@@ -263,7 +271,7 @@ const ClubHistory = () => {
                         <Form.Group as={Row} controlId="formPosition">
                             <Form.Label column sm="3">Position</Form.Label>
                             <Col sm="9">
-                            <FormSelect
+                                <FormSelect
                                     value={createFormData.playerPositionId}
                                     onChange={(e) => setCreateFormData({
                                         ...createFormData,
@@ -466,20 +474,20 @@ const ClubHistory = () => {
                             <Form.Group as={Row} controlId="formPosition">
                                 <Form.Label column sm="3">Position</Form.Label>
                                 <Col sm="9">
-                                <FormSelect
-                                    value={editFormData.playerPositionId}
-                                    onChange={(e) => setEditFormData({
-                                        ...editFormData,
-                                        playerPositionId: parseInt(e.target.value, 10)
-                                    })}
-                                >
-                                    <option value="">Select Position</option>
-                                    {positions.map((position) => (
-                                        <option key={position.id} value={position.id}>
-                                            {position.positionName}
-                                        </option>
-                                    ))}
-                                </FormSelect>
+                                    <FormSelect
+                                        value={editFormData.playerPositionId}
+                                        onChange={(e) => setEditFormData({
+                                            ...editFormData,
+                                            playerPositionId: parseInt(e.target.value, 10)
+                                        })}
+                                    >
+                                        <option value="">Select Position</option>
+                                        {positions.map((position) => (
+                                            <option key={position.id} value={position.id}>
+                                                {position.positionName}
+                                            </option>
+                                        ))}
+                                    </FormSelect>
                                 </Col>
                             </Form.Group>
 

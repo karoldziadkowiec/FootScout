@@ -14,9 +14,14 @@ const ClubHistoryService = {
                 }
             });
             return response.data;
-        } 
+        }
         catch (error) {
-            console.error("Error fetching club history:", error);
+            if (axios.isAxiosError(error)) {
+                console.error('Error fetching club history, details:', error.response?.data || error.message);
+            }
+            else {
+                console.error('Unexpected error:', error);
+            }
             throw error;
         }
     },
@@ -30,25 +35,14 @@ const ClubHistoryService = {
                 }
             });
             return response.data;
-        } 
-        catch (error) {
-            console.error("Error fetching all club histories:", error);
-            throw error;
         }
-    },
-
-    async getUserClubHistory(userId: string): Promise<ClubHistoryModel[]> {
-        try {
-            const authorizationHeader = await AccountService.getAuthorizationHeader();
-            const response = await axios.get<ClubHistoryModel[]>(`${ApiURL}/users/${userId}/club-history`, {
-                headers: {
-                    'Authorization': authorizationHeader
-                }
-            });
-            return response.data;
-        } 
         catch (error) {
-            console.error("Error fetching user's club histories:", error);
+            if (axios.isAxiosError(error)) {
+                console.error('Error fetching all club histories, details:', error.response?.data || error.message);
+            }
+            else {
+                console.error('Unexpected error:', error);
+            }
             throw error;
         }
     },
@@ -61,9 +55,14 @@ const ClubHistoryService = {
                     'Authorization': authorizationHeader
                 }
             });
-        } 
+        }
         catch (error) {
-            console.error("Error adding new club history:", error);
+            if (axios.isAxiosError(error)) {
+                console.error('Error creating new club history, details:', error.response?.data || error.message);
+            }
+            else {
+                console.error('Unexpected error:', error);
+            }
             throw error;
         }
     },
@@ -76,11 +75,12 @@ const ClubHistoryService = {
                     'Authorization': authorizationHeader
                 }
             });
-        } 
+        }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                console.error('Error details:', error.response?.data || error.message);
-            } else {
+                console.error('Error updating club history, details:', error.response?.data || error.message);
+            }
+            else {
                 console.error('Unexpected error:', error);
             }
             throw error;
@@ -95,9 +95,14 @@ const ClubHistoryService = {
                     'Authorization': authorizationHeader
                 }
             });
-        } 
+        }
         catch (error) {
-            console.error("Error deleting club history:", error);
+            if (axios.isAxiosError(error)) {
+                console.error('Error deleting club history, details:', error.response?.data || error.message);
+            }
+            else {
+                console.error('Unexpected error:', error);
+            }
             throw error;
         }
     }

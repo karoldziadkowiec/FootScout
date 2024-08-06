@@ -41,7 +41,7 @@ const Home = () => {
                 <p></p>
                 <Container className="links">
                     <Row>
-                        <Col><Button variant="success" onClick={() => moveToPage("my-profile")}>Advertisements</Button></Col>
+                        <Col><Button variant="success" onClick={() => moveToPage("new-player-advertisement")}>Advertisements</Button></Col>
                         <Col><Button variant="success" onClick={() => moveToPage("my-profile")}>Recommendations</Button></Col>
                         <Col><Button variant="success" onClick={() => moveToPage("my-profile")}>New Ad</Button></Col>
                     </Row>

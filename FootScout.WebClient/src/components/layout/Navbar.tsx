@@ -26,7 +26,7 @@ const NavbarComponent = () => {
               <NavDropdown.Item as={NavLink} to="/my-profile">for Clubs</NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="New Advertisement" id="basic-nav-dropdown">
-              <NavDropdown.Item as={NavLink} to="/my-profile">as Player</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/new-player-advertisement">as Player</NavDropdown.Item>
               <NavDropdown.Item as={NavLink} to="/my-profile">as Club</NavDropdown.Item>
             </NavDropdown>
           </Nav>
