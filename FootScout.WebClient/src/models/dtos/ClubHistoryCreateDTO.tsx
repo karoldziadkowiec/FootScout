@@ -1,7 +1,7 @@
 import Achievements from './AchievementsDTO';
 
-interface ClubHistoryModel {
-    position: string;
+interface ClubHistoryModelDTO {
+    playerPositionId: number;
     clubName: string;
     league: string;
     region: string;
@@ -11,4 +11,4 @@ interface ClubHistoryModel {
     userId: string;
 }
 
-export default ClubHistoryModel;
+export default ClubHistoryModelDTO;

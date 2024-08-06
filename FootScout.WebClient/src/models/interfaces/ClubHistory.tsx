@@ -1,9 +1,11 @@
 import Achievements from '../dtos/AchievementsDTO';
 import UserDTO from '../dtos/UserDTO';
+import PlayerPosition from './PlayerPosition';
 
 interface ClubHistoryModel {
     id: number;
-    position: string;
+    playerPositionId: number;
+    playerPosition: PlayerPosition;
     clubName: string;
     league: string;
     region: string;

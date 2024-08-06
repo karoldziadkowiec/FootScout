@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Form, Button, Row, Col, Modal } from 'react-bootstrap';
+import { Table, Form, Button, Row, Col, Modal, FormSelect } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
 import ClubHistoryService from '../../services/api/ClubHistoryService';
+import PlayerPositionService from '../../services/api/PlayerPositionService';
 import ClubHistoryModel from '../../models/interfaces/ClubHistory';
+import PlayerPosition from '../../models/interfaces/PlayerPosition';
 import ClubHistoryCreateDTO from '../../models/dtos/ClubHistoryCreateDTO';
 import UserDTO from '../../models/dtos/UserDTO';
 import '../../App.css';
@@ -13,12 +15,13 @@ import '../../styles/user/ClubHistory.css';
 const ClubHistory = () => {
     const [user, setUser] = useState<UserDTO | null>(null);
     const [userClubHistories, setUserClubHistories] = useState<ClubHistoryModel[]>([]);
+    const [positions, setPositions] = useState<PlayerPosition[]>([]);
     const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
     const [showDetailsModal, setShowDetailsModal] = useState<boolean>(false);
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
     const [createFormData, setCreateFormData] = useState<ClubHistoryCreateDTO>({
-        position: '',
+        playerPositionId: 0,
         clubName: '',
         league: '',
         region: '',
@@ -56,6 +59,24 @@ const ClubHistory = () => {
         fetchUserData();
     }, []);
 
+    useEffect(() => {
+        const fetchPositions = async () => {
+            try {
+                const positionsData = await PlayerPositionService.getPlayerPositions();
+                setPositions(positionsData);
+            } catch (error) {
+                console.error('Failed to fetch positions:', error);
+                toast.error('Failed to load positions.');
+            }
+        };
+        fetchPositions();
+    }, []);
+
+    const getPositionNameById = (id: number) => {
+        const position = positions.find(p => p.id === id);
+        return position ? position.positionName : 'Unknown';
+    };
+
     const handleCreateClubHistory = async () => {
         if (!user)
             return;
@@ -83,10 +104,10 @@ const ClubHistory = () => {
     };
 
     const validateForm = (formData: ClubHistoryCreateDTO | ClubHistoryModel) => {
-        const { position, clubName, league, region, startDate, endDate, achievements } = formData;
+        const { playerPositionId, clubName, league, region, startDate, endDate, achievements } = formData;
         const { numberOfMatches, goals, assists } = achievements;
 
-        if (!position || !clubName || !league || !region || !startDate || !endDate)
+        if (!playerPositionId || !clubName || !league || !region || !startDate || !endDate)
             return 'All fields are required.';
 
         if (isNaN(Number(numberOfMatches)) || isNaN(Number(goals)) || isNaN(Number(assists)))
@@ -115,24 +136,35 @@ const ClubHistory = () => {
     };
 
     const handleEditClubHistory = async () => {
-        if (!user || !editFormData)
-            return;
-
+        if (!user || !editFormData) return;
+    
         const validationError = validateForm(editFormData);
         if (validationError) {
             toast.error(validationError);
             return;
         }
-
+    
+        const position = positions.find(pos => pos.id === editFormData.playerPositionId);
+    
+        if (!position) {
+            toast.error('Invalid player position.');
+            return;
+        }
+    
         try {
-            await ClubHistoryService.updateClubHistory(editFormData.id, editFormData);
+            const updatedFormData = {
+                ...editFormData,
+                playerPosition: position
+            };
+    
+            console.log('Updating club history with data:', updatedFormData);
+            await ClubHistoryService.updateClubHistory(editFormData.id, updatedFormData);
             setShowEditModal(false);
             toast.success('Club history updated successfully!');
             // Refresh the user data
             const _userClubHistories = await ClubHistoryService.getUserClubHistory(user.id);
             setUserClubHistories(_userClubHistories);
-        }
-        catch (error) {
+        } catch (error) {
             console.error('Failed to update club history:', error);
             toast.error('Failed to update club history.');
         }
@@ -170,6 +202,15 @@ const ClubHistory = () => {
         return `${day}-${month}-${year}`;
     };
 
+    const formatDate2 = (dateString: string): string => {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${year}-${month}-${day}`;
+    };
+
+
     return (
         <div className="ClubHistory">
             <ToastContainer />
@@ -195,7 +236,7 @@ const ClubHistory = () => {
                                     <td>{history.clubName}</td>
                                     <td>{history.league}</td>
                                     <td>{history.region}</td>
-                                    <td>{history.position}</td>
+                                    <td>{getPositionNameById(history.playerPositionId)}</td>
                                     <td>
                                         <Button variant="dark" className="button-spacing" onClick={() => handleShowDetails(history)}>Details</Button>
                                         <Button variant="warning" className="button-spacing" onClick={() => handleShowEditModal(history)}>Edit</Button>
@@ -222,14 +263,20 @@ const ClubHistory = () => {
                         <Form.Group as={Row} controlId="formPosition">
                             <Form.Label column sm="3">Position</Form.Label>
                             <Col sm="9">
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Position"
-                                    value={createFormData.position}
-                                    onChange={(e) => setCreateFormData({ ...createFormData, position: e.target.value })}
-                                    maxLength={20}
-                                    required
-                                />
+                            <FormSelect
+                                    value={createFormData.playerPositionId}
+                                    onChange={(e) => setCreateFormData({
+                                        ...createFormData,
+                                        playerPositionId: parseInt(e.target.value, 10)
+                                    })}
+                                >
+                                    <option value="">Select Position</option>
+                                    {positions.map((position) => (
+                                        <option key={position.id} value={position.id}>
+                                            {position.positionName}
+                                        </option>
+                                    ))}
+                                </FormSelect>
                             </Col>
                         </Form.Group>
 
@@ -395,7 +442,7 @@ const ClubHistory = () => {
                             <p><strong>Region:</strong> {selectedClubHistory.region}</p>
                             <p><strong>Start Date:</strong> {formatDate(selectedClubHistory.startDate)}</p>
                             <p><strong>End Date:</strong> {formatDate(selectedClubHistory.endDate)}</p>
-                            <p><strong>Position:</strong> {selectedClubHistory.position}</p>
+                            <p><strong>Position:</strong> {getPositionNameById(selectedClubHistory.playerPositionId)}</p>
                             <p><strong>Matches:</strong> {selectedClubHistory.achievements.numberOfMatches}</p>
                             <p><strong>Goals:</strong> {selectedClubHistory.achievements.goals}</p>
                             <p><strong>Assists:</strong> {selectedClubHistory.achievements.assists}</p>
@@ -419,14 +466,20 @@ const ClubHistory = () => {
                             <Form.Group as={Row} controlId="formPosition">
                                 <Form.Label column sm="3">Position</Form.Label>
                                 <Col sm="9">
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Position"
-                                        value={editFormData.position}
-                                        onChange={(e) => setEditFormData({ ...editFormData, position: e.target.value })}
-                                        maxLength={20}
-                                        required
-                                    />
+                                <FormSelect
+                                    value={editFormData.playerPositionId}
+                                    onChange={(e) => setEditFormData({
+                                        ...editFormData,
+                                        playerPositionId: parseInt(e.target.value, 10)
+                                    })}
+                                >
+                                    <option value="">Select Position</option>
+                                    {positions.map((position) => (
+                                        <option key={position.id} value={position.id}>
+                                            {position.positionName}
+                                        </option>
+                                    ))}
+                                </FormSelect>
                                 </Col>
                             </Form.Group>
 
@@ -477,7 +530,7 @@ const ClubHistory = () => {
                                 <Col sm="9">
                                     <Form.Control
                                         type="date"
-                                        value={editFormData.startDate}
+                                        value={formatDate2(editFormData.startDate)}
                                         onChange={(e) => setEditFormData({ ...editFormData, startDate: e.target.value })}
                                         required
                                     />
@@ -489,7 +542,7 @@ const ClubHistory = () => {
                                 <Col sm="9">
                                     <Form.Control
                                         type="date"
-                                        value={editFormData.endDate}
+                                        value={formatDate2(editFormData.endDate)}
                                         onChange={(e) => setEditFormData({ ...editFormData, endDate: e.target.value })}
                                         required
                                     />

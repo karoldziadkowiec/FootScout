@@ -78,7 +78,11 @@ const ClubHistoryService = {
             });
         } 
         catch (error) {
-            console.error("Error updating club history:", error);
+            if (axios.isAxiosError(error)) {
+                console.error('Error details:', error.response?.data || error.message);
+            } else {
+                console.error('Unexpected error:', error);
+            }
             throw error;
         }
     },
