@@ -56,19 +56,19 @@ const ClubHistory = () => {
                 toast.error('Failed to load user data.');
             }
         };
-        fetchUserData();
-    }, []);
 
-    useEffect(() => {
         const fetchPositions = async () => {
             try {
                 const positionsData = await PlayerPositionService.getPlayerPositions();
                 setPositions(positionsData);
-            } catch (error) {
+            } 
+            catch (error) {
                 console.error('Failed to fetch positions:', error);
                 toast.error('Failed to load positions.');
             }
         };
+
+        fetchUserData();
         fetchPositions();
     }, []);
 
@@ -208,7 +208,6 @@ const ClubHistory = () => {
         const year = date.getFullYear();
         return `${year}-${month}-${day}`;
     };
-
 
     return (
         <div className="ClubHistory">

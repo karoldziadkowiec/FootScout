@@ -33,10 +33,12 @@ const Login = () => {
       await AccountService.login(loginDTO);
       if (await AccountService.isRoleAdmin()) {
         navigate('/admin-home');
-      } else {
+      } 
+      else {
         navigate('/home');
       }
-    } catch (error) {
+    } 
+    catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response) {
           if (error.response.status === 401) {
@@ -96,9 +98,15 @@ const Login = () => {
             />
           </Form.Group>
           <div className="d-grid">
-            <Button variant="success" type="submit">Log in</Button>
+            <Button variant="success" type="submit">
+              <i className="bi bi-box-arrow-in-right"></i>
+              Log in
+            </Button>
             <p></p>
-            <Button variant="outline-light" onClick={moveToRegistrationPage}>Register account</Button>
+            <Button variant="outline-light" onClick={moveToRegistrationPage}>
+              <i className="bi bi-person-plus-fill"></i>
+              Register account
+            </Button>
           </div>
         </Form>
       </div>

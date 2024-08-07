@@ -22,7 +22,7 @@ const Registration: React.FC = () => {
     useEffect(() => {
         // Clearing AuthToken when the Registration component is rendered
         const clearAuthToken = async () => {
-          await AccountService.logout();
+            await AccountService.logout();
         };
         clearAuthToken();
     }, []);
@@ -54,33 +54,33 @@ const Registration: React.FC = () => {
 
     const validateForm = () => {
         const { email, password, confirmPassword, firstName, lastName, phoneNumber, location } = registerDTO;
-    
+
         // Checking empty fields
         if (!email || !password || !confirmPassword || !firstName || !lastName || !phoneNumber || !location)
             return 'All fields are required.';
-    
+
         // E-mail validation
         const emailError = emailValidator(email);
-        if (emailError) 
+        if (emailError)
             return emailError;
-    
+
         // Password validation
         const passwordError = passwordValidator(password);
-        if (passwordError) 
+        if (passwordError)
             return passwordError;
-    
+
         // Passwords matcher
         if (password !== confirmPassword)
             return 'Passwords do not match.';
-    
+
         // Checking phone number type
         if (isNaN(Number(phoneNumber)))
             return 'Phone number must be a number.';
-    
+
         // Checking phone number length
         if (phoneNumber.length !== 9)
             return 'Phone number must contain exactly 9 digits.';
-    
+
         return null;
     };
 
@@ -91,7 +91,7 @@ const Registration: React.FC = () => {
 
         return null;
     };
-    
+
     const passwordValidator = (password: string): string | null => {
         const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{7,}$/;
         if (!passwordRegex.test(password))
@@ -217,7 +217,10 @@ const Registration: React.FC = () => {
                                         </Form.Group>
                                     </Col>
                                 </Row>
-                                <Button variant="success" type="submit" className="mb-3">Register account</Button>
+                                <Button variant="success" type="submit" className="mb-3">
+                                    <i className="bi bi-person-plus-fill"></i>
+                                    Register account
+                                </Button>
                                 <Row>
                                     <Col>
                                         <Button variant="outline-light" onClick={() => navigate('/')} className="mb-3">Back</Button>

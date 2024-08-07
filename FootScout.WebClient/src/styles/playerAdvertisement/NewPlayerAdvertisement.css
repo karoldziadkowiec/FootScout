@@ -1,31 +1,18 @@
 .NewPlayerAdvertisement {
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding-top: 20px;
-    padding-bottom: 20px;
+    font-size: 17px;
 }
 
-.modal-content-centered {
-    text-align: center;
-    margin: 0 auto;
+.forms-container {
+    background-color: rgb(39, 37, 37);
+    width: 70%;
+    padding: 2% 2% 1% ;
+    border-radius: 40px;
 }
 
-.button-spacing {
-    margin-right: 10px;
-}
-
-/* Responsive Table */
-.table-responsive {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-}
-
-.table-responsive table {
-    min-width: 600px;
-}
-
-/* Mobile Specific Styles */
-@media (max-width: 576px) {
-    .table-responsive table {
-        min-width: 100%;
-    }
+.white-label {
+    color: white;
 }

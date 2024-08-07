@@ -4,6 +4,7 @@ import AccountService from '../../services/api/AccountService';
 import UserDTO from '../../models/dtos/UserDTO';
 import UserUpdateDTO from '../../models/dtos/UserUpdateDTO';
 import ClubHistoryModel from '../../models/interfaces/ClubHistory';
+import PlayerAdvertisement from '../../models/interfaces/PlayerAdvertisement';
 
 const UserService = {
   async getUser(userId: string): Promise<UserDTO> {
@@ -101,6 +102,27 @@ const UserService = {
     catch (error) {
       if (axios.isAxiosError(error)) {
         console.error("Error fetching user's club histories, details:", error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
+      throw error;
+    }
+  },
+
+  async getUserPlayerAdvertisements(userId: string): Promise<PlayerAdvertisement[]> {
+    try {
+      const authorizationHeader = await AccountService.getAuthorizationHeader();
+      const response = await axios.get<PlayerAdvertisement[]>(`${ApiURL}/users/${userId}/player-advertisements`, {
+        headers: {
+          'Authorization': authorizationHeader
+        }
+      });
+      return response.data;
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error("Error fetching user's player advertisements, details:", error.response?.data || error.message);
       }
       else {
         console.error('Unexpected error:', error);
