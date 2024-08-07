@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FootScout.WebAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240806092059_Migration1")]
+    [Migration("20240807175003_Migration1")]
     partial class Migration1
     {
         /// <inheritdoc />

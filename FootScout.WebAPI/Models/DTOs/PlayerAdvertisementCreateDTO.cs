@@ -10,7 +10,7 @@ namespace FootScout.WebAPI.Models.DTOs
         public int Age { get; set; }
         public int Height { get; set; }
         public int PlayerFootId { get; set; }
-        public SalaryRange SalaryRange { get; set; }
+        public SalaryRangeDTO SalaryRangeDTO { get; set; }
         public string UserId { get; set; }
     }
 }

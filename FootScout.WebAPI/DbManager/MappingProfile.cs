@@ -19,10 +19,12 @@ namespace FootScout.WebAPI.DbManager
             CreateMap<ClubHistoryCreateDTO, ClubHistory>()
                 .ForMember(dest => dest.Achievements, opt => opt.MapFrom(src => src.Achievements));
             CreateMap<AchievementsDTO, Achievements>();
-            CreateMap<ClubHistory, ClubHistoryCreateDTO>();
             CreateMap<Achievements, AchievementsDTO>();
+            CreateMap<ClubHistory, ClubHistoryCreateDTO>();
             CreateMap<PlayerAdvertisement, PlayerAdvertisementCreateDTO>();
+            CreateMap<PlayerAdvertisementCreateDTO, PlayerAdvertisement>();
             CreateMap<SalaryRange, SalaryRangeDTO>();
+            CreateMap<SalaryRangeDTO, SalaryRange>();
         }
     }
 }

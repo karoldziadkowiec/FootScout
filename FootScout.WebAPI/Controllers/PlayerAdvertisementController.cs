@@ -36,7 +36,7 @@ namespace FootScout.WebAPI.Controllers
 
         // GET: api/player-advertisements
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PlayerAdvertisement>>> GetPlayerAdvertisement()
+        public async Task<ActionResult<IEnumerable<PlayerAdvertisement>>> GetPlayerAdvertisements()
         {
             var playerAdvertisements = await _playerAdvertisementRepository.GetPlayerAdvertisements();
             return Ok(playerAdvertisements);
@@ -49,7 +49,7 @@ namespace FootScout.WebAPI.Controllers
             if (dto == null)
                 return BadRequest("Invalid dto data.");
 
-            var salaryRange = _mapper.Map<SalaryRange>(dto.SalaryRange);
+            var salaryRange = _mapper.Map<SalaryRange>(dto.SalaryRangeDTO);
             await _salaryRangeRepository.CreateSalaryRange(salaryRange);
 
             var playerAdvertisement = _mapper.Map<PlayerAdvertisement>(dto);
