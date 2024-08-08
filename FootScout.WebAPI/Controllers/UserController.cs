@@ -95,5 +95,13 @@ namespace FootScout.WebAPI.Controllers
             var userPlayerAdvertisements = await _userRepository.GetUserPlayerAdvertisements(userId);
             return Ok(userPlayerAdvertisements);
         }
+
+        // GET: api/users/:userId/player-advertisements/active
+        [HttpGet("{userId}/player-advertisements/active")]
+        public async Task<ActionResult<IEnumerable<PlayerAdvertisement>>> GetUserActivePlayerAdvertisements(string userId)
+        {
+            var userActivePlayerAdvertisements = await _userRepository.GetUserActivePlayerAdvertisements(userId);
+            return Ok(userActivePlayerAdvertisements);
+        }
     }
 }

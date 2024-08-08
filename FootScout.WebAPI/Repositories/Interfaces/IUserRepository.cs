@@ -11,5 +11,6 @@ namespace FootScout.WebAPI.Repositories.Interfaces
         Task DeleteUser(string userId);
         Task<IEnumerable<ClubHistory>> GetUserClubHistory(string userId);
         Task<IEnumerable<PlayerAdvertisement>> GetUserPlayerAdvertisements(string userId);
+        Task<IEnumerable<PlayerAdvertisement>> GetUserActivePlayerAdvertisements(string userId);
     }
 }

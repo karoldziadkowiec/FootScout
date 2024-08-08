@@ -36,10 +36,26 @@ namespace FootScout.WebAPI.Controllers
 
         // GET: api/player-advertisements
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PlayerAdvertisement>>> GetPlayerAdvertisements()
+        public async Task<ActionResult<IEnumerable<PlayerAdvertisement>>> GetAllPlayerAdvertisements()
         {
-            var playerAdvertisements = await _playerAdvertisementRepository.GetPlayerAdvertisements();
+            var playerAdvertisements = await _playerAdvertisementRepository.GetAllPlayerAdvertisements();
             return Ok(playerAdvertisements);
+        }
+
+        // GET: api/player-advertisements/active
+        [HttpGet("active")]
+        public async Task<ActionResult<IEnumerable<PlayerAdvertisement>>> GetActivePlayerAdvertisements()
+        {
+            var activePlayerAdvertisements = await _playerAdvertisementRepository.GetActivePlayerAdvertisements();
+            return Ok(activePlayerAdvertisements);
+        }
+
+        // GET: api/player-advertisements/inactive
+        [HttpGet("inactive")]
+        public async Task<ActionResult<IEnumerable<PlayerAdvertisement>>> GetInactivePlayerAdvertisements()
+        {
+            var inactivePlayerAdvertisements = await _playerAdvertisementRepository.GetInactivePlayerAdvertisements();
+            return Ok(inactivePlayerAdvertisements);
         }
 
         // POST: api/player-advertisements

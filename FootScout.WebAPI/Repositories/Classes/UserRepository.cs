@@ -87,5 +87,17 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .OrderByDescending(pa => pa.EndDate)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<PlayerAdvertisement>> GetUserActivePlayerAdvertisements(string userId)
+        {
+            return await _dbContext.PlayerAdvertisements
+                .Include(pa => pa.PlayerPosition)
+                .Include(pa => pa.PlayerFoot)
+                .Include(pa => pa.SalaryRange)
+                .Include(pa => pa.User)
+                .Where(pa => pa.UserId == userId & pa.EndDate >= DateTime.Now)
+                .OrderByDescending(pa => pa.EndDate)
+                .ToListAsync();
+        }
     }
 }

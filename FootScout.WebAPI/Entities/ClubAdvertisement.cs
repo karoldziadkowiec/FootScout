@@ -32,8 +32,6 @@ namespace FootScout.WebAPI.Entities
         [Required]
         public DateTime CreationDate { get; set; }
         [Required]
-        public DateTime StartDate { get; set; }
-        [Required]
         public DateTime EndDate { get; set; }
         [Required]
         public string UserId { get; set; }

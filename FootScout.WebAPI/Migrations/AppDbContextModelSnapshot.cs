@@ -106,9 +106,6 @@ namespace FootScout.WebAPI.Migrations
                     b.Property<int>("SalaryRangeId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -266,9 +263,6 @@ namespace FootScout.WebAPI.Migrations
 
                     b.Property<int>("SalaryRangeId")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
                         .IsRequired()

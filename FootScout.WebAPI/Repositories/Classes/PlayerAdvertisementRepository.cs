@@ -24,7 +24,7 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .FirstOrDefaultAsync(pa => pa.Id == playerAdvertisementId);
         }
 
-        public async Task<IEnumerable<PlayerAdvertisement>> GetPlayerAdvertisements()
+        public async Task<IEnumerable<PlayerAdvertisement>> GetAllPlayerAdvertisements()
         {
             return await _dbContext.PlayerAdvertisements
                 .Include(pa => pa.PlayerPosition)
@@ -35,10 +35,33 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<PlayerAdvertisement>> GetActivePlayerAdvertisements()
+        {
+            return await _dbContext.PlayerAdvertisements
+                .Include(pa => pa.PlayerPosition)
+                .Include(pa => pa.PlayerFoot)
+                .Include(pa => pa.SalaryRange)
+                .Include(pa => pa.User)
+                .Where(pa => pa.EndDate >= DateTime.Now)
+                .OrderByDescending(pa => pa.EndDate)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<PlayerAdvertisement>> GetInactivePlayerAdvertisements()
+        {
+            return await _dbContext.PlayerAdvertisements
+                .Include(pa => pa.PlayerPosition)
+                .Include(pa => pa.PlayerFoot)
+                .Include(pa => pa.SalaryRange)
+                .Include(pa => pa.User)
+                .Where(pa => pa.EndDate < DateTime.Now)
+                .OrderByDescending(pa => pa.EndDate)
+                .ToListAsync();
+        }
+
         public async Task CreatePlayerAdvertisement(PlayerAdvertisement playerAdvertisement)
         {
             playerAdvertisement.CreationDate = DateTime.Now;
-            playerAdvertisement.StartDate = DateTime.Now;
             playerAdvertisement.EndDate = DateTime.Now.AddDays(30);
 
             await _dbContext.PlayerAdvertisements.AddAsync(playerAdvertisement);
