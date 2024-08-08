@@ -16,7 +16,6 @@ interface PlayerAdvertisement {
     salaryRangeId: number;
     salaryRange: SalaryRange;
     creationDate: string;
-    startDate: string;
     endDate: string;
     userId: string;
     user: UserDTO;

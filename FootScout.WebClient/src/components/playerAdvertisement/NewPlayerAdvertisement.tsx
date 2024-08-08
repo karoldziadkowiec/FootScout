@@ -140,7 +140,7 @@ const NewPlayerAdvertisement = () => {
                                 <Row>
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formLeague">
-                                            <Form.Label className="white-label">League</Form.Label>
+                                            <Form.Label className="white-label">Preferred League</Form.Label>
                                             <Form.Control
                                                 type="text"
                                                 placeholder="League"

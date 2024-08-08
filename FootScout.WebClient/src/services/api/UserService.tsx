@@ -129,6 +129,27 @@ const UserService = {
       }
       throw error;
     }
+  },
+
+  async getUserActivePlayerAdvertisements(userId: string): Promise<PlayerAdvertisement[]> {
+    try {
+      const authorizationHeader = await AccountService.getAuthorizationHeader();
+      const response = await axios.get<PlayerAdvertisement[]>(`${ApiURL}/users/${userId}/player-advertisements/active`, {
+        headers: {
+          'Authorization': authorizationHeader
+        }
+      });
+      return response.data;
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error("Error fetching user's active player advertisements, details:", error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
+      throw error;
+    }
   }
 };
 
