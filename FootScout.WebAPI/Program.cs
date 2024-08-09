@@ -74,13 +74,14 @@ namespace FootScout.WebAPI
             builder.Services.AddScoped<ICookieService, CookieService>();
 
             // Repositories
+            builder.Services.AddScoped<IPlayerPositionRepository, PlayerPositionRepository>();
+            builder.Services.AddScoped<IPlayerFootRepository, PlayerFootRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IClubHistoryRepository, ClubHistoryRepository>();
             builder.Services.AddScoped<IAchievementsRepository, AchievementsRepository>();
             builder.Services.AddScoped<IPlayerAdvertisementRepository, PlayerAdvertisementRepository>();
             builder.Services.AddScoped<ISalaryRangeRepository, SalaryRangeRepository>();
-            builder.Services.AddScoped<IPlayerPositionRepository, PlayerPositionRepository>();
-            builder.Services.AddScoped<IPlayerFootRepository, PlayerFootRepository>();
+            builder.Services.AddScoped<IPlayerAdvertisementFavoriteRepository, PlayerAdvertisementFavoriteRepository>();
 
             // AutoMapper service
             builder.Services.AddAutoMapper(typeof(Program));

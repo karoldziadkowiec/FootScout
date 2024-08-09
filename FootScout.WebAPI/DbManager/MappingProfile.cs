@@ -25,6 +25,8 @@ namespace FootScout.WebAPI.DbManager
             CreateMap<PlayerAdvertisementCreateDTO, PlayerAdvertisement>();
             CreateMap<SalaryRange, SalaryRangeDTO>();
             CreateMap<SalaryRangeDTO, SalaryRange>();
+            CreateMap<PlayerAdvertisementFavorite, PlayerAdvertisementFavoriteCreateDTO>();
+            CreateMap<PlayerAdvertisementFavoriteCreateDTO, PlayerAdvertisementFavorite>();
         }
     }
 }

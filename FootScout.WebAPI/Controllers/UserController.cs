@@ -103,5 +103,37 @@ namespace FootScout.WebAPI.Controllers
             var userActivePlayerAdvertisements = await _userRepository.GetUserActivePlayerAdvertisements(userId);
             return Ok(userActivePlayerAdvertisements);
         }
+
+        // GET: api/users/:userId/player-advertisements/inactive
+        [HttpGet("{userId}/player-advertisements/inactive")]
+        public async Task<ActionResult<IEnumerable<PlayerAdvertisement>>> GetUserInactivePlayerAdvertisements(string userId)
+        {
+            var userInactivePlayerAdvertisements = await _userRepository.GetUserInactivePlayerAdvertisements(userId);
+            return Ok(userInactivePlayerAdvertisements);
+        }
+
+        // GET: api/users/:userId/player-advertisements/favorites
+        [HttpGet("{userId}/player-advertisements/favorites")]
+        public async Task<ActionResult<IEnumerable<PlayerAdvertisementFavorite>>> GetUserFavoritePlayerAdvertisements(string userId)
+        {
+            var userFavoritePlayerAdvertisements = await _userRepository.GetUserFavoritePlayerAdvertisements(userId);
+            return Ok(userFavoritePlayerAdvertisements);
+        }
+
+        // GET: api/users/:userId/player-advertisements/favorites/active
+        [HttpGet("{userId}/player-advertisements/favorites/active")]
+        public async Task<ActionResult<IEnumerable<PlayerAdvertisementFavorite>>> GetUserActiveFavoritePlayerAdvertisements(string userId)
+        {
+            var userActiveFavoritePlayerAdvertisements = await _userRepository.GetUserActiveFavoritePlayerAdvertisements(userId);
+            return Ok(userActiveFavoritePlayerAdvertisements);
+        }
+
+        // GET: api/users/:userId/player-advertisements/favorites/inactive
+        [HttpGet("{userId}/player-advertisements/favorites/inactive")]
+        public async Task<ActionResult<IEnumerable<PlayerAdvertisementFavorite>>> GetUserInactiveFavoritePlayerAdvertisements(string userId)
+        {
+            var userInactiveFavoritePlayerAdvertisements = await _userRepository.GetUserInactiveFavoritePlayerAdvertisements(userId);
+            return Ok(userInactiveFavoritePlayerAdvertisements);
+        }
     }
 }
