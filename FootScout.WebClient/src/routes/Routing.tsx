@@ -10,6 +10,7 @@ import MyProfile from '../components/user/MyProfile';
 import ClubHistory from '../components/user/ClubHistory';
 import PlayerAdvertisement from '../components/playerAdvertisement/PlayerAdvertisement';
 import MyPlayerAdvertisements from '../components/user/MyPlayerAdvertisements';
+import MyFavoritePlayerAdvertisements from '../components/user/MyFavoritePlayerAdvertisements';
 import NewPlayerAdvertisement from '../components/playerAdvertisement/NewPlayerAdvertisement';
 import AdminHome from '../components/admin/AdminHome';
 import Users from '../components/admin/Users';
@@ -25,6 +26,7 @@ const Routing = () => {
         <Route path="/club-history" element={<ProtectedRoute element={<DynamicNavbar><ClubHistory /></DynamicNavbar>} allowedRoles={[Role.User]} />} />
         <Route path="/player-advertisement/:id" element={<ProtectedRoute element={<DynamicNavbar><PlayerAdvertisement /></DynamicNavbar>} allowedRoles={[Role.Admin, Role.User]} />} />
         <Route path="/my-player-advertisements" element={<ProtectedRoute element={<DynamicNavbar><MyPlayerAdvertisements /></DynamicNavbar>} allowedRoles={[Role.User]} />} />
+        <Route path="/my-favorite-player-advertisements" element={<ProtectedRoute element={<DynamicNavbar><MyFavoritePlayerAdvertisements /></DynamicNavbar>} allowedRoles={[Role.User]} />} />
         <Route path="/new-player-advertisement" element={<ProtectedRoute element={<DynamicNavbar><NewPlayerAdvertisement /></DynamicNavbar>} allowedRoles={[Role.User]} />} />
         <Route path="/admin-home" element={<ProtectedRoute element={<DynamicNavbar><AdminHome /></DynamicNavbar>} allowedRoles={[Role.Admin]} />} />
         <Route path="/admin-users" element={<ProtectedRoute element={<DynamicNavbar><Users /></DynamicNavbar>} allowedRoles={[Role.Admin]} />} />

@@ -41,7 +41,7 @@ const NavbarComponent = () => {
               <NavDropdown.Item as={NavLink} to="/club-history">Club History</NavDropdown.Item>
               <NavDropdown.Item as={NavLink} to="/my-player-advertisements">Player Ads</NavDropdown.Item>
               <NavDropdown.Item as={NavLink} to="/my-profile">Club Ads</NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/my-profile">Player Favorites</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/my-favorite-player-advertisements">Player Favorites</NavDropdown.Item>
               <NavDropdown.Item as={NavLink} to="/my-profile">Club Favorites</NavDropdown.Item>
               <NavDropdown.Item onClick={AccountService.logout} as={NavLink} to="/">Log out</NavDropdown.Item>
             </NavDropdown>

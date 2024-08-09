@@ -6,27 +6,66 @@
     font-size: 17px;
 }
 
-.buttons-container {
+.ad-buttons-container {
+    background-color: rgb(71, 71, 71);
     display: flex;
     gap: 10px;
-    margin-top: 20px;
+    border-radius: 20px;
+    margin-top: 10px;
     margin-bottom: 10px;
+    padding: 15px;
 }
 
-.form-button {
+.ad-form-button {
     width: 200px;
 }
 
-.ad-container {
-    background-color: rgb(227, 227, 227);
-    width: 60%;
+.ad-status-container {
+    background-color: rgb(255, 161, 161);
+    width: 150px;
     border-radius: 30px;
-    padding-top: 40px;
-    padding-bottom: 20px;
+    padding-top: 10px;
 }
 
-.ad-green-label {
-    color: rgb(25, 95, 22);
+.ad-container {
+    background-color: rgb(246, 241, 237);
+    width: 70%;
+    border-radius: 30px;
+    padding-top: 10px;
+    padding-bottom: 1cap;
+    margin-bottom: 20px;
+}
+
+.ad-name-label {
+    color: rgb(175, 164, 0);
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 36px;
     font-weight: bold;
-    margin-left: 10px;
+}
+
+.ad-section {
+    color: rgb(89, 89, 89);
+    font-family:'Times New Roman', Times, serif;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.ad-data-label {
+    color: rgb(120, 112, 1);
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.ad-creationDate-label {
+    color: rgb(165, 170, 108);
+    font-style: italic;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.ad-table-responsive {
+    padding-left: 5%;
+    padding-right: 5%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }

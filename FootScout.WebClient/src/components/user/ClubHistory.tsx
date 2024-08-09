@@ -136,7 +136,8 @@ const ClubHistory = () => {
     };
 
     const handleEditClubHistory = async () => {
-        if (!user || !editFormData) return;
+        if (!user || !editFormData) 
+            return;
 
         const validationError = validateForm(editFormData);
         if (validationError) {

@@ -5,6 +5,7 @@ import UserDTO from '../../models/dtos/UserDTO';
 import UserUpdateDTO from '../../models/dtos/UserUpdateDTO';
 import ClubHistoryModel from '../../models/interfaces/ClubHistory';
 import PlayerAdvertisement from '../../models/interfaces/PlayerAdvertisement';
+import PlayerAdvertisementFavorite from '../../models/interfaces/PlayerAdvertisementFavorite';
 
 const UserService = {
   async getUser(userId: string): Promise<UserDTO> {
@@ -144,6 +145,90 @@ const UserService = {
     catch (error) {
       if (axios.isAxiosError(error)) {
         console.error("Error fetching user's active player advertisements, details:", error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
+      throw error;
+    }
+  },
+
+  async getUserInactivePlayerAdvertisements(userId: string): Promise<PlayerAdvertisement[]> {
+    try {
+      const authorizationHeader = await AccountService.getAuthorizationHeader();
+      const response = await axios.get<PlayerAdvertisement[]>(`${ApiURL}/users/${userId}/player-advertisements/inactive`, {
+        headers: {
+          'Authorization': authorizationHeader
+        }
+      });
+      return response.data;
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error("Error fetching user's inactive player advertisements, details:", error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
+      throw error;
+    }
+  },
+
+  async getUserPlayerAdvertisementFavorites(userId: string): Promise<PlayerAdvertisementFavorite[]> {
+    try {
+      const authorizationHeader = await AccountService.getAuthorizationHeader();
+      const response = await axios.get<PlayerAdvertisementFavorite[]>(`${ApiURL}/users/${userId}/player-advertisements/favorites`, {
+        headers: {
+          'Authorization': authorizationHeader
+        }
+      });
+      return response.data;
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error("Error fetching user's favorite player advertisements, details:", error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
+      throw error;
+    }
+  },
+
+  async getUserActivePlayerAdvertisementFavorites(userId: string): Promise<PlayerAdvertisementFavorite[]> {
+    try {
+      const authorizationHeader = await AccountService.getAuthorizationHeader();
+      const response = await axios.get<PlayerAdvertisementFavorite[]>(`${ApiURL}/users/${userId}/player-advertisements/favorites/active`, {
+        headers: {
+          'Authorization': authorizationHeader
+        }
+      });
+      return response.data;
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error("Error fetching user's active favorite player advertisements, details:", error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
+      throw error;
+    }
+  },
+
+  async getUserInactivePlayerAdvertisementFavorites(userId: string): Promise<PlayerAdvertisementFavorite[]> {
+    try {
+      const authorizationHeader = await AccountService.getAuthorizationHeader();
+      const response = await axios.get<PlayerAdvertisementFavorite[]>(`${ApiURL}/users/${userId}/player-advertisements/favorites/inactive`, {
+        headers: {
+          'Authorization': authorizationHeader
+        }
+      });
+      return response.data;
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error("Error fetching user's inactive favorite player advertisements, details:", error.response?.data || error.message);
       }
       else {
         console.error('Unexpected error:', error);

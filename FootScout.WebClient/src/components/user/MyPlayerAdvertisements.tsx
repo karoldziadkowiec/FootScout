@@ -14,7 +14,8 @@ import '../../styles/user/MyPlayerAdvertisements.css';
 const MyPlayerAdvertisements = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const [userPlayerAdvertisements, setUserPlayerAdvertisements] = useState<PlayerAdvertisement[]>([]);
+    const [userActivePlayerAdvertisements, setUserActivePlayerAdvertisements] = useState<PlayerAdvertisement[]>([]);
+    const [userInactivePlayerAdvertisements, setUserInactivePlayerAdvertisements] = useState<PlayerAdvertisement[]>([]);
     const [positions, setPositions] = useState<PlayerPosition[]>([]);
     
     useEffect(() => {
@@ -25,13 +26,16 @@ const MyPlayerAdvertisements = () => {
             try {
                 const userId = await AccountService.getId();
                 if (userId) {
-                    const _userPlayerAdvertisements = await UserService.getUserActivePlayerAdvertisements(userId);
-                    setUserPlayerAdvertisements(_userPlayerAdvertisements);
+                    const _userActivePlayerAdvertisements = await UserService.getUserActivePlayerAdvertisements(userId);
+                    setUserActivePlayerAdvertisements(_userActivePlayerAdvertisements);
+
+                    const _userInactivePlayerAdvertisements = await UserService.getUserInactivePlayerAdvertisements(userId);
+                    setUserInactivePlayerAdvertisements(_userInactivePlayerAdvertisements);
                 }
             }
             catch (error) {
-                console.error('Failed to fetch userId:', error);
-                toast.error('Failed to load userId.');
+                console.error('Failed to fetch user\'s data:', error);
+                toast.error('Failed to load user\'s data.');
             }
         };
 
@@ -79,11 +83,13 @@ const MyPlayerAdvertisements = () => {
         <div className="MyPlayerAdvertisements">
             <ToastContainer />
             <h1>My Player Advertisements</h1>
-            <Button variant="success" onClick={() => navigate('/new-player-advertisement')}>
+            <Button variant="success" className="form-button" onClick={() => navigate('/new-player-advertisement')}>
                 <i className="bi bi-file-earmark-plus-fill"></i>
-                New Player Advertisement
+                New Advertisement
             </Button>
             <div className="table-responsive">
+                {/* Active advertisements*/}
+                <h3>Active advertisements</h3>
                 <Table striped bordered hover>
                     <thead>
                         <tr>
@@ -96,8 +102,8 @@ const MyPlayerAdvertisements = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {userPlayerAdvertisements.length > 0 ? (
-                            userPlayerAdvertisements.map((advertisement, index) => (
+                        {userActivePlayerAdvertisements.length > 0 ? (
+                            userActivePlayerAdvertisements.map((advertisement, index) => (
                                 <tr key={index}>
                                     <td>{formatDate(advertisement.creationDate)} ({calculateDaysLeft(advertisement.endDate)} days)</td>
                                     <td>{getPositionNameById(advertisement.playerPositionId)}</td>
@@ -113,7 +119,44 @@ const MyPlayerAdvertisements = () => {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan={9} className="text-center">No club player advertisement available</td>
+                                <td colSpan={9} className="text-center">No player advertisement available</td>
+                            </tr>
+                        )}
+                    </tbody>
+                </Table>
+
+                {/* Inactive advertisements*/}
+                <h3>Inactive advertisements</h3>
+                <Table striped bordered hover>
+                    <thead>
+                        <tr>
+                            <th>Creation Date (Days left)</th>
+                            <th>Position</th>
+                            <th>League</th>
+                            <th>Region</th>
+                            <th>Salary (zł.)</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {userInactivePlayerAdvertisements.length > 0 ? (
+                            userInactivePlayerAdvertisements.map((advertisement, index) => (
+                                <tr key={index}>
+                                    <td>{formatDate(advertisement.creationDate)} ({calculateDaysLeft(advertisement.endDate)} days)</td>
+                                    <td>{getPositionNameById(advertisement.playerPositionId)}</td>
+                                    <td>{advertisement.league}</td>
+                                    <td>{advertisement.region}</td>
+                                    <td>{advertisement.salaryRange.min} - {advertisement.salaryRange.max}</td>
+                                    <td>
+                                        <Button variant="dark" className="button-spacing" onClick={() => moveToPlayerAdvertisementPage(advertisement.id)}>
+                                            <i className="bi bi-info-square"></i>
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan={9} className="text-center">No player advertisement available</td>
                             </tr>
                         )}
                     </tbody>
