@@ -60,7 +60,7 @@ namespace FootScout.WebAPI.DbManager
 
         private static async Task SeedAdvertisementStatuses(IServiceProvider services, AppDbContext dbContext)
         {
-            var statuses = new List<string> { Status.Accepted, Status.During, Status.Rejected };
+            var statuses = new List<string> { Status.Offered, Status.Accepted, Status.Rejected };
 
             foreach (var status in statuses)
             {

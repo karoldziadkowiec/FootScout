@@ -7,8 +7,8 @@ namespace FootScout.WebAPI.Entities
         [Key]
         public int Id { get; set; }
         [Required]
-        public int Min { get; set; }
+        public double Min { get; set; }
         [Required]
-        public int Max { get; set; }
+        public double Max { get; set; }
     }
 }

@@ -74,6 +74,12 @@ namespace FootScout.WebAPI.DbManager
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ClubOffer>()
+                .HasOne(co => co.PlayerPosition)
+                .WithMany()
+                .HasForeignKey(co => co.PlayerPositionId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ClubOffer>()
                 .HasOne(co => co.UserClub)
                 .WithMany()
                 .HasForeignKey(co => co.UserClubId)
@@ -143,6 +149,18 @@ namespace FootScout.WebAPI.DbManager
                 .HasOne(po => po.AdvertisementStatus)
                 .WithMany()
                 .HasForeignKey(po => po.AdvertisementStatusId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<PlayerOffer>()
+                .HasOne(po => po.PlayerPosition)
+                .WithMany()
+                .HasForeignKey(po => po.PlayerPositionId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<PlayerOffer>()
+                .HasOne(po => po.PlayerFoot)
+                .WithMany()
+                .HasForeignKey(po => po.PlayerFootId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<PlayerOffer>()
