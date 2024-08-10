@@ -6,12 +6,14 @@ import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
 import PlayerAdvertisementService from '../../services/api/PlayerAdvertisementService';
 import PlayerAdvertisementFavoriteService from '../../services/api/PlayerAdvertisementFavoriteService';
+import ClubOfferService from '../../services/api/ClubOfferService';
 import PlayerPositionService from '../../services/api/PlayerPositionService';
 import PlayerFootService from '../../services/api/PlayerFootService';
 import UserDTO from '../../models/dtos/UserDTO';
 import ClubHistoryModel from '../../models/interfaces/ClubHistory';
 import PlayerAdvertisementModel from '../../models/interfaces/PlayerAdvertisement';
 import PlayerAdvertisementFavoriteCreateDTO from '../../models/dtos/PlayerAdvertisementFavoriteCreateDTO';
+import ClubOfferCreateDTO from '../../models/dtos/ClubOfferCreateDTO';
 import PlayerPosition from '../../models/interfaces/PlayerPosition';
 import PlayerFoot from '../../models/interfaces/PlayerFoot';
 import '../../App.css';
@@ -32,9 +34,22 @@ const PlayerAdvertisement = () => {
     const [showClubHistoryDetailsModal, setShowClubHistoryDetailsModal] = useState<boolean>(false);
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+    const [showFinishModal, setShowFinishModal] = useState<boolean>(false);
     const [showDeleteFavoriteModal, setShowDeleteFavoriteModal] = useState<boolean>(false);
+    const [showSubmitClubOfferModal, setShowSubmitClubOfferModal] = useState<boolean>(false);
     const [selectedClubHistory, setSelectedClubHistory] = useState<ClubHistoryModel | null>(null);
     const [editFormData, setEditFormData] = useState<PlayerAdvertisementModel | null>(null);
+    const [createFormData, setCreateFormData] = useState<ClubOfferCreateDTO>({
+        playerAdvertisementId: 0,
+        playerPositionId: 0,
+        clubName: '',
+        league: '',
+        region: '',
+        salary: 0,
+        additionalInformation: '',
+        endDate: '',
+        userClubId: ''
+    });
     const [favoritePlayerAdvertisementDTO, setFavoritePlayerAdvertisementDTO] = useState<PlayerAdvertisementFavoriteCreateDTO>({
         playerAdvertisementId: 0,
         userId: ''
@@ -140,7 +155,7 @@ const PlayerAdvertisement = () => {
         if (!editFormData)
             return;
 
-        const validationError = validateForm(editFormData);
+        const validationError = validateAdvertisementForm(editFormData);
         if (validationError) {
             toast.error(validationError);
             return;
@@ -177,7 +192,7 @@ const PlayerAdvertisement = () => {
         }
     };
 
-    const validateForm = (formData: PlayerAdvertisementModel) => {
+    const validateAdvertisementForm = (formData: PlayerAdvertisementModel) => {
         const { playerPositionId, league, region, age, height, playerFootId, salaryRange } = formData;
         const { min, max } = salaryRange;
 
@@ -206,8 +221,44 @@ const PlayerAdvertisement = () => {
             navigate('/my-player-advertisements', { state: { toastMessage: "Your player advertisement has been deleted successfully." } });
         }
         catch (error) {
-            console.error('Failed to delete user:', error);
-            toast.error('Failed to delete user.');
+            console.error('Failed to delete player advertisement:', error);
+            toast.error('Failed to delete player advertisement.');
+        }
+    };
+
+    const handleFinishPlayerAdvertisement = async () => {
+        if (!playerAdvertisement)
+            return;
+
+        const position = positions.find(pos => pos.id === playerAdvertisement.playerPositionId);
+        if (!position) {
+            toast.error('Invalid player position.');
+            return;
+        }
+
+        const foot = feet.find(f => f.id === playerAdvertisement.playerFootId);
+        if (!foot) {
+            toast.error('Invalid foot name.');
+            return;
+        }
+
+        try {
+            const currentDate = new Date().toISOString();
+
+            const updatedFormData = {
+                ...playerAdvertisement,
+                playerPosition: position,
+                playerFoot: foot,
+                endDate: currentDate
+            };
+
+            await PlayerAdvertisementService.updatePlayerAdvertisement(playerAdvertisement.id, updatedFormData);
+            setShowFinishModal(false);
+            navigate('/my-player-advertisements', { state: { toastMessage: "Your player advertisement has been finished successfully." } });
+        }
+        catch (error) {
+            console.error('Failed to finish player advertisement:', error);
+            toast.error('Failed to finish player advertisement.');
         }
     };
 
@@ -251,6 +302,44 @@ const PlayerAdvertisement = () => {
         }
     };
 
+    const handleSubmitClubOffer = async () => {
+        if (!userId)
+            return;
+
+        const validationError = validateOfferForm(createFormData);
+        if (validationError) {
+            toast.error(validationError);
+            return;
+        }
+
+        try {
+            const newFormData = { ...createFormData, playerAdvertisementId: playerAdvertisement.id, endDate: playerAdvertisement.endDate, userClubId: userId };
+
+            await ClubOfferService.createClubOffer(newFormData);
+            setShowSubmitClubOfferModal(false);
+            navigate('/my-favorite-player-advertisements', { state: { toastMessage: "The club offer was submitted successfully." } });
+        }
+        catch (error) {
+            console.error('Failed to submit club offer:', error);
+            toast.error('Failed to submit club offer.');
+        }
+    };
+
+    const validateOfferForm = (formData: ClubOfferCreateDTO) => {
+        const { playerPositionId, league, region, salary, additionalInformation } = formData;
+
+        if (!playerPositionId || !league || !region || !salary || !additionalInformation)
+            return 'All fields are required.';
+
+        if (isNaN(Number(salary)))
+            return 'salary must be numbers.';
+
+        if (Number(salary) < 0)
+            return 'salary must be greater than or equal to 0.';
+
+        return null;
+    };
+
     const formatDate = (dateString: string): string => {
         const date = new Date(dateString);
         const day = String(date.getDate()).padStart(2, '0');
@@ -267,6 +356,14 @@ const PlayerAdvertisement = () => {
         return Math.ceil(daysLeft);
     };
 
+    const calculateDaysFromEndDate = (endDate: string): number => {
+        const currentDate = new Date();
+        const end = new Date(endDate);
+        const timeDiff = currentDate.getTime() - end.getTime();
+        const days = timeDiff / (1000 * 3600 * 24);
+        return Math.floor(days);
+    };
+
     return (
         <div className="PlayerAdvertisement">
             <ToastContainer />
@@ -281,6 +378,11 @@ const PlayerAdvertisement = () => {
                                 </Button>
                             </Col>
                             <Col>
+                                <Button variant="secondary" className="ad-form-button" onClick={() => setShowFinishModal(true)}>
+                                    <i className="bi bi-calendar-x"></i> Finish ad
+                                </Button>
+                            </Col>
+                            <Col>
                                 <Button variant="danger" className="ad-form-button" onClick={() => setShowDeleteModal(true)}>
                                     <i className="bi bi-trash"></i> Delete
                                 </Button>
@@ -289,8 +391,8 @@ const PlayerAdvertisement = () => {
                     ) : (
                         <Row>
                             <Col>
-                                <Button variant="primary" className="ad-form-button">
-                                    <i className="bi bi-pen"></i> Propose contract
+                                <Button variant="primary" className="ad-form-button" onClick={() => setShowSubmitClubOfferModal(true)}>
+                                    <i className="bi bi-pen"></i> Submit an offer
                                 </Button>
                             </Col>
                             {favoriteId === 0 ? (
@@ -311,6 +413,15 @@ const PlayerAdvertisement = () => {
                 ) : (
                     <div className="ad-status-container">
                         <p>Status: <strong>Inactive</strong></p>
+                        {(playerAdvertisement.userId === userId || isAdminRole) && (
+                            <Row>
+                                <Col>
+                                    <Button variant="danger" onClick={() => setShowDeleteModal(true)}>
+                                        <i className="bi bi-trash"></i> Delete
+                                    </Button>
+                                </Col>
+                            </Row>
+                        )}
                     </div>
                 )}
             </div>
@@ -390,12 +501,19 @@ const PlayerAdvertisement = () => {
                                     )}
                                 </tbody>
                             </Table>
-
-                            <p><Form.Label>Creation Date (Days left): </Form.Label>
-                                <Form.Label className="ad-creationDate-label">
-                                    {formatDate(playerAdvertisement.creationDate)} ({calculateDaysLeft(playerAdvertisement.endDate)} days)
-                                </Form.Label>
-                            </p>
+                            {playerAdvertisementStatus ? (
+                                <p><Form.Label>Creation Date (days left): </Form.Label>
+                                    <Form.Label className="ad-creationDate-label">
+                                        {formatDate(playerAdvertisement.creationDate)} ({calculateDaysLeft(playerAdvertisement.endDate)} days)
+                                    </Form.Label>
+                                </p>
+                            ) : (
+                                <p><Form.Label>Ended Date (days ago): </Form.Label>
+                                    <Form.Label className="ad-creationDate-label">
+                                        {formatDate(playerAdvertisement.endDate)} ({calculateDaysFromEndDate(playerAdvertisement.endDate)} days ago)
+                                    </Form.Label>
+                                </p>
+                            )}
                         </div>
                     </div>
                 )}
@@ -536,7 +654,7 @@ const PlayerAdvertisement = () => {
                                                     ...editFormData,
                                                     salaryRange: {
                                                         ...editFormData.salaryRange,
-                                                        min: parseInt(e.target.value)
+                                                        min: parseFloat(e.target.value)
                                                     }
                                                 })}
                                                 required
@@ -554,7 +672,7 @@ const PlayerAdvertisement = () => {
                                                     ...editFormData,
                                                     salaryRange: {
                                                         ...editFormData.salaryRange,
-                                                        max: parseInt(e.target.value)
+                                                        max: parseFloat(e.target.value)
                                                     }
                                                 })}
                                                 required
@@ -577,10 +695,22 @@ const PlayerAdvertisement = () => {
                 <Modal.Header closeButton>
                     <Modal.Title>Confirm action</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Are you sure you want to delete your advertisement?</Modal.Body>
+                <Modal.Body>Are you sure you want to delete this advertisement?</Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>Cancel</Button>
                     <Button variant="danger" onClick={handleDeletePlayerAdvertisement}>Delete</Button>
+                </Modal.Footer>
+            </Modal>
+
+            {/* Finish Player Advertisement */}
+            <Modal show={showFinishModal} onHide={() => setShowFinishModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirm action</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure you want to finish this advertisement?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowFinishModal(false)}>Cancel</Button>
+                    <Button variant="dark" onClick={handleFinishPlayerAdvertisement}>Finish</Button>
                 </Modal.Footer>
             </Modal>
 
@@ -593,6 +723,108 @@ const PlayerAdvertisement = () => {
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowDeleteFavoriteModal(false)}>Cancel</Button>
                     <Button variant="danger" onClick={handleDeleteFromFavorites}>Delete</Button>
+                </Modal.Footer>
+            </Modal>
+
+            {/* Create Submit Club Offer Modal */}
+            <Modal show={showSubmitClubOfferModal} onHide={() => setShowSubmitClubOfferModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Submit club offer</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form>
+                        <Form.Group as={Row} controlId="formPosition">
+                            <Form.Label column sm="3">Position</Form.Label>
+                            <Col sm="9">
+                                <FormSelect
+                                    value={createFormData.playerPositionId}
+                                    onChange={(e) => setCreateFormData({
+                                        ...createFormData,
+                                        playerPositionId: parseInt(e.target.value, 10)
+                                    })}
+                                >
+                                    <option value="">Select Position</option>
+                                    {positions.map((position) => (
+                                        <option key={position.id} value={position.id}>
+                                            {position.positionName}
+                                        </option>
+                                    ))}
+                                </FormSelect>
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} controlId="formClubName">
+                            <Form.Label column sm="3">Club name</Form.Label>
+                            <Col sm="9">
+                                <Form.Control
+                                    type="text"
+                                    placeholder="ClubName"
+                                    value={createFormData.clubName}
+                                    onChange={(e) => setCreateFormData({ ...createFormData, clubName: e.target.value })}
+                                    maxLength={30}
+                                    required
+                                />
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} controlId="formLeague">
+                            <Form.Label column sm="3">League</Form.Label>
+                            <Col sm="9">
+                                <Form.Control
+                                    type="text"
+                                    placeholder="League"
+                                    value={createFormData.league}
+                                    onChange={(e) => setCreateFormData({ ...createFormData, league: e.target.value })}
+                                    maxLength={30}
+                                    required
+                                />
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} controlId="formRegion">
+                            <Form.Label column sm="3">Region</Form.Label>
+                            <Col sm="9">
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Region"
+                                    value={createFormData.region}
+                                    onChange={(e) => setCreateFormData({ ...createFormData, region: e.target.value })}
+                                    maxLength={30}
+                                    required
+                                />
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} controlId="formSalary">
+                            <Form.Label column sm="3">Salary</Form.Label>
+                            <Col sm="9">
+                                <Form.Control
+                                    type="number"
+                                    placeholder="Salary"
+                                    value={createFormData.salary}
+                                    onChange={(e) => setCreateFormData({ ...createFormData, salary: parseFloat(e.target.value) })}
+                                    required
+                                />
+                            </Col>
+                        </Form.Group>
+
+                        <Form.Group as={Row} controlId="formAdditionalInformation">
+                            <Form.Label column sm="3">Additional Information</Form.Label>
+                            <Col sm="9">
+                                <Form.Control
+                                    as="textarea"
+                                    placeholder="Additional Information"
+                                    value={createFormData.additionalInformation}
+                                    onChange={(e) => setCreateFormData({ ...createFormData, additionalInformation: e.target.value })}
+                                    maxLength={200}
+                                />
+                            </Col>
+                        </Form.Group>
+                    </Form>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowSubmitClubOfferModal(false)}>Close</Button>
+                    <Button variant="success" onClick={handleSubmitClubOffer}>Submit</Button>
                 </Modal.Footer>
             </Modal>
         </div >

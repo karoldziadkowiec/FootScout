@@ -220,7 +220,7 @@ const NewPlayerAdvertisement = () => {
                                                     ...playerAdvertisementDTO,
                                                     salaryRangeDTO: {
                                                         ...playerAdvertisementDTO.salaryRangeDTO,
-                                                        min: parseInt(e.target.value)
+                                                        min: parseFloat(e.target.value)
                                                     }
                                                 })}
                                                 required
@@ -238,7 +238,7 @@ const NewPlayerAdvertisement = () => {
                                                     ...playerAdvertisementDTO,
                                                     salaryRangeDTO: {
                                                         ...playerAdvertisementDTO.salaryRangeDTO,
-                                                        max: parseInt(e.target.value)
+                                                        max: parseFloat(e.target.value)
                                                     }
                                                 })}
                                                 required
