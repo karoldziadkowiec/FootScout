@@ -6,7 +6,6 @@ interface ClubOfferCreateDTO {
     region: string;
     salary: number;
     additionalInformation: string;
-    endDate: string;
     userClubId: string;
 }
 

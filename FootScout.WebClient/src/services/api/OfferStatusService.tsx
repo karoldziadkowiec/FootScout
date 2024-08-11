@@ -1,13 +1,13 @@
 import axios from 'axios';
 import ApiURL from '../../config/ApiConfig';
 import AccountService from './AccountService';
-import AdvertisementStatus from '../../models/interfaces/AdvertisementStatus';
+import OfferStatus from '../../models/interfaces/OfferStatus';
 
-const AdvertisementStatusService = {
-    async getAdvertisementStatuses(): Promise<AdvertisementStatus[]> {
+const OfferStatusService = {
+    async getOfferStatuses(): Promise<OfferStatus[]> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
-            const response = await axios.get<AdvertisementStatus[]>(`${ApiURL}/advertisement-statuses`, {
+            const response = await axios.get<OfferStatus[]>(`${ApiURL}/offer-statuses`, {
                 headers: {
                     'Authorization': authorizationHeader
                 }
@@ -16,7 +16,7 @@ const AdvertisementStatusService = {
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                console.error('Error fetching advertisement statuses, details:', error.response?.data || error.message);
+                console.error('Error fetching offer statuses, details:', error.response?.data || error.message);
             }
             else {
                 console.error('Unexpected error:', error);
@@ -25,10 +25,10 @@ const AdvertisementStatusService = {
         }
     },
 
-    async getAdvertisementStatusName(statusId: number): Promise<string> {
+    async getOfferStatus(statusId: number): Promise<OfferStatus> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
-            const response = await axios.get<string>(`${ApiURL}/advertisement-statuses/${statusId}`, {
+            const response = await axios.get<OfferStatus>(`${ApiURL}/offer-statuses/${statusId}`, {
                 headers: {
                     'Authorization': authorizationHeader
                 }
@@ -37,7 +37,7 @@ const AdvertisementStatusService = {
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                console.error('Error fetching selected status name, details:', error.response?.data || error.message);
+                console.error('Error fetching offer status, details:', error.response?.data || error.message);
             }
             else {
                 console.error('Unexpected error:', error);
@@ -46,10 +46,31 @@ const AdvertisementStatusService = {
         }
     },
 
-    async getAdvertisementStatusId(statusName: string): Promise<number> {
+    async getOfferStatusName(statusId: number): Promise<string> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
-            const response = await axios.get<number>(`${ApiURL}/advertisement-statuses/name/${statusName}`, {
+            const response = await axios.get<string>(`${ApiURL}/offer-statuses/name/${statusId}`, {
+                headers: {
+                    'Authorization': authorizationHeader
+                }
+            });
+            return response.data;
+        }
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.error('Error fetching selected offer name, details:', error.response?.data || error.message);
+            }
+            else {
+                console.error('Unexpected error:', error);
+            }
+            throw error;
+        }
+    },
+
+    async getOfferStatusId(statusName: string): Promise<number> {
+        try {
+            const authorizationHeader = await AccountService.getAuthorizationHeader();
+            const response = await axios.get<number>(`${ApiURL}/offer-statuses/id/${statusName}`, {
                 headers: {
                     'Authorization': authorizationHeader
                 }
@@ -68,4 +89,4 @@ const AdvertisementStatusService = {
     }
 };
 
-export default AdvertisementStatusService;
+export default OfferStatusService;

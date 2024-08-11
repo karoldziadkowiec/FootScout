@@ -1,15 +1,14 @@
 import PlayerAdvertisement from './PlayerAdvertisement';
-import AdvertisementStatus from './AdvertisementStatus';
+import OfferStatus from './OfferStatus';
 import PlayerPosition from './PlayerPosition';
-import SalaryRange from "./SalaryRange";
 import UserDTO from '../dtos/UserDTO';
 
 interface ClubOffer {
     id: number;
     playerAdvertisementId: number;
     playerAdvertisement: PlayerAdvertisement;
-    advertisementStatusId: number;
-    advertisementStatus: AdvertisementStatus;
+    offerStatusId: number;
+    offerStatus: OfferStatus;
     playerPositionId: number;
     playerPosition: PlayerPosition;
     clubName: string;
@@ -18,7 +17,6 @@ interface ClubOffer {
     salary: number;
     additionalInformation: string;
     creationDate: string;
-    endDate: string;
     userClubId: string;
     userClub: UserDTO;
 }

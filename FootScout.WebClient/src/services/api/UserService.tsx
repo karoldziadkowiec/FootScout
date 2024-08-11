@@ -6,6 +6,7 @@ import UserUpdateDTO from '../../models/dtos/UserUpdateDTO';
 import ClubHistoryModel from '../../models/interfaces/ClubHistory';
 import PlayerAdvertisement from '../../models/interfaces/PlayerAdvertisement';
 import PlayerAdvertisementFavorite from '../../models/interfaces/PlayerAdvertisementFavorite';
+import ClubOffer from '../../models/interfaces/ClubOffer';
 
 const UserService = {
   async getUser(userId: string): Promise<UserDTO> {
@@ -229,6 +230,48 @@ const UserService = {
     catch (error) {
       if (axios.isAxiosError(error)) {
         console.error("Error fetching user's inactive favorite player advertisements, details:", error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
+      throw error;
+    }
+  },
+
+  async getReceivedClubOffers(userId: string): Promise<ClubOffer[]> {
+    try {
+      const authorizationHeader = await AccountService.getAuthorizationHeader();
+      const response = await axios.get<ClubOffer[]>(`${ApiURL}/users/${userId}/club-offers/received`, {
+        headers: {
+          'Authorization': authorizationHeader
+        }
+      });
+      return response.data;
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error("Error fetching user's received club offers, details:", error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
+      throw error;
+    }
+  },
+
+  async getSentClubOffers(userId: string): Promise<ClubOffer[]> {
+    try {
+      const authorizationHeader = await AccountService.getAuthorizationHeader();
+      const response = await axios.get<ClubOffer[]>(`${ApiURL}/users/${userId}/club-offers/sent`, {
+        headers: {
+          'Authorization': authorizationHeader
+        }
+      });
+      return response.data;
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error("Error fetching user's sent club offers, details:", error.response?.data || error.message);
       }
       else {
         console.error('Unexpected error:', error);

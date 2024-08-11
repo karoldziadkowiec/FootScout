@@ -79,6 +79,14 @@ const MyPlayerAdvertisements = () => {
         return Math.ceil(daysLeft);
     };
 
+    const calculateSkippedDays = (endDate: string): number => {
+        const currentDate = new Date();
+        const end = new Date(endDate);
+        const timeDiff = currentDate.getTime() - end.getTime();
+        const days = timeDiff / (1000 * 3600 * 24);
+        return Math.floor(days);
+    };
+
     return (
         <div className="MyPlayerAdvertisements">
             <ToastContainer />
@@ -93,11 +101,11 @@ const MyPlayerAdvertisements = () => {
                 <Table striped bordered hover>
                     <thead>
                         <tr>
-                            <th>Creation Date (Days left)</th>
+                            <th>Creation Date (days left)</th>
                             <th>Position</th>
                             <th>League</th>
                             <th>Region</th>
-                            <th>Salary (zł.)</th>
+                            <th>Salary (zł.) / month</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -126,15 +134,15 @@ const MyPlayerAdvertisements = () => {
                 </Table>
 
                 {/* Inactive advertisements*/}
-                <h3>Inactive advertisements</h3>
+                <h3>Archived advertisements</h3>
                 <Table striped bordered hover>
                     <thead>
                         <tr>
-                            <th>Creation Date (Days left)</th>
+                            <th>Ended Date (days ago)</th>
                             <th>Position</th>
                             <th>League</th>
                             <th>Region</th>
-                            <th>Salary (zł.)</th>
+                            <th>Salary (zł.) / month</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -142,7 +150,7 @@ const MyPlayerAdvertisements = () => {
                         {userInactivePlayerAdvertisements.length > 0 ? (
                             userInactivePlayerAdvertisements.map((advertisement, index) => (
                                 <tr key={index}>
-                                    <td>{formatDate(advertisement.creationDate)} ({calculateDaysLeft(advertisement.endDate)} days)</td>
+                                    <td>{formatDate(advertisement.endDate)} ({calculateSkippedDays(advertisement.endDate)} days)</td>
                                     <td>{getPositionNameById(advertisement.playerPositionId)}</td>
                                     <td>{advertisement.league}</td>
                                     <td>{advertisement.region}</td>

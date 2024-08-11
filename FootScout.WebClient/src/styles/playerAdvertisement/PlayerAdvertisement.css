@@ -20,6 +20,12 @@
     width: 200px;
 }
 
+.status-label {
+    width: 200px;
+    font-size: 20px;
+    color: rgb(240, 255, 108);
+}
+
 .ad-status-container {
     background-color: rgb(255, 161, 161);
     width: 150px;

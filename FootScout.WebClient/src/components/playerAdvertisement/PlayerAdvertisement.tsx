@@ -7,6 +7,7 @@ import UserService from '../../services/api/UserService';
 import PlayerAdvertisementService from '../../services/api/PlayerAdvertisementService';
 import PlayerAdvertisementFavoriteService from '../../services/api/PlayerAdvertisementFavoriteService';
 import ClubOfferService from '../../services/api/ClubOfferService';
+import OfferStatusService from '../../services/api/OfferStatusService';
 import PlayerPositionService from '../../services/api/PlayerPositionService';
 import PlayerFootService from '../../services/api/PlayerFootService';
 import UserDTO from '../../models/dtos/UserDTO';
@@ -16,6 +17,7 @@ import PlayerAdvertisementFavoriteCreateDTO from '../../models/dtos/PlayerAdvert
 import ClubOfferCreateDTO from '../../models/dtos/ClubOfferCreateDTO';
 import PlayerPosition from '../../models/interfaces/PlayerPosition';
 import PlayerFoot from '../../models/interfaces/PlayerFoot';
+import OfferStatus from '../../models/interfaces/OfferStatus';
 import '../../App.css';
 import '../../styles/playerAdvertisement/PlayerAdvertisement.css';
 
@@ -28,8 +30,10 @@ const PlayerAdvertisement = () => {
     const [playerClubHistories, setPlayerClubHistories] = useState<ClubHistoryModel[]>([]);
     const [playerAdvertisementStatus, setPlayerAdvertisementStatus] = useState<boolean | null>(null);
     const [favoriteId, setFavoriteId] = useState<number>(0);
+    const [offerStatusId, setOfferStatusId] = useState<number>(0);
     const [positions, setPositions] = useState<PlayerPosition[]>([]);
     const [feet, setFeet] = useState<PlayerFoot[]>([]);
+    const [offerStatuses, setOfferStatuses] = useState<OfferStatus[]>([]);
     const [isAdminRole, setIsAdminRole] = useState<boolean | null>(null);
     const [showClubHistoryDetailsModal, setShowClubHistoryDetailsModal] = useState<boolean>(false);
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
@@ -47,7 +51,6 @@ const PlayerAdvertisement = () => {
         region: '',
         salary: 0,
         additionalInformation: '',
-        endDate: '',
         userClubId: ''
     });
     const [favoritePlayerAdvertisementDTO, setFavoritePlayerAdvertisementDTO] = useState<PlayerAdvertisementFavoriteCreateDTO>({
@@ -90,6 +93,9 @@ const PlayerAdvertisement = () => {
                 if (userId) {
                     const favoriteId = await PlayerAdvertisementFavoriteService.checkPlayerAdvertisementIsFavorite(playerAdvertisement.id, userId);
                     setFavoriteId(favoriteId);
+
+                    const offferStatusId = await ClubOfferService.getClubOfferStatusId(playerAdvertisement.id, userId);
+                    setOfferStatusId(offferStatusId);
                 }
             }
             catch (error) {
@@ -119,11 +125,23 @@ const PlayerAdvertisement = () => {
             }
         };
 
+        const fetchOfferStatuses = async () => {
+            try {
+                const offerStatuses = await OfferStatusService.getOfferStatuses();
+                setOfferStatuses(offerStatuses);
+            }
+            catch (error) {
+                console.error('Failed to fetch offer statuses:', error);
+                toast.error('Failed to load offer statuses.');
+            }
+        };
+
         if (id) {
             fetchUserData();
-            fetchPlayerAdvertisementData(Number(id));
             fetchPositions();
             fetchFeet();
+            fetchOfferStatuses();
+            fetchPlayerAdvertisementData(Number(id));
         }
     }, [id, userId]);
 
@@ -139,6 +157,11 @@ const PlayerAdvertisement = () => {
     const getFootNameById = (id: number) => {
         const foot = feet.find(f => f.id === id);
         return foot ? foot.footName : 'Unknown';
+    };
+
+    const getOfferStatusNameById = (id: number) => {
+        const offerStatus = offerStatuses.find(os => os.id === id);
+        return offerStatus ? offerStatus.statusName : 'Unknown';
     };
 
     const handleShowClubHistoryDetails = (clubHistory: ClubHistoryModel) => {
@@ -313,11 +336,11 @@ const PlayerAdvertisement = () => {
         }
 
         try {
-            const newFormData = { ...createFormData, playerAdvertisementId: playerAdvertisement.id, endDate: playerAdvertisement.endDate, userClubId: userId };
+            const newFormData = { ...createFormData, playerAdvertisementId: playerAdvertisement.id, userClubId: userId };
 
             await ClubOfferService.createClubOffer(newFormData);
             setShowSubmitClubOfferModal(false);
-            navigate('/my-favorite-player-advertisements', { state: { toastMessage: "The club offer was submitted successfully." } });
+            navigate('/my-offers-as-player', { state: { toastMessage: "The club offer was submitted successfully." } });
         }
         catch (error) {
             console.error('Failed to submit club offer:', error);
@@ -356,7 +379,7 @@ const PlayerAdvertisement = () => {
         return Math.ceil(daysLeft);
     };
 
-    const calculateDaysFromEndDate = (endDate: string): number => {
+    const calculateSkippedDays = (endDate: string): number => {
         const currentDate = new Date();
         const end = new Date(endDate);
         const timeDiff = currentDate.getTime() - end.getTime();
@@ -390,11 +413,18 @@ const PlayerAdvertisement = () => {
                         </Row>
                     ) : (
                         <Row>
-                            <Col>
-                                <Button variant="primary" className="ad-form-button" onClick={() => setShowSubmitClubOfferModal(true)}>
-                                    <i className="bi bi-pen"></i> Submit an offer
-                                </Button>
-                            </Col>
+                            {offerStatusId === 0 ? (
+                                <Col>
+                                    <Button variant="primary" className="ad-form-button" onClick={() => setShowSubmitClubOfferModal(true)}>
+                                        <i className="bi bi-pen"></i> Submit an offer
+                                    </Button>
+                                </Col>
+                            ) : (
+                                <Col>
+                                    <p><Form.Label  className="status-label">Offer status: {getOfferStatusNameById(offerStatusId)}</Form.Label></p>
+                                </Col>
+                            )}
+
                             {favoriteId === 0 ? (
                                 <Col>
                                     <Button variant="success" onClick={handleAddToFavorite}>
@@ -462,7 +492,7 @@ const PlayerAdvertisement = () => {
                                 <p><Form.Label>League (Region): </Form.Label>
                                     <Form.Label className="ad-data-label">{playerAdvertisement.league} ({playerAdvertisement.region})</Form.Label>
                                 </p>
-                                <p><Form.Label>Salary (zł.): </Form.Label>
+                                <p><Form.Label>Salary (zł.) / month: </Form.Label>
                                     <Form.Label className="ad-data-label">{playerAdvertisement.salaryRange.min} - {playerAdvertisement.salaryRange.max}</Form.Label>
                                 </p>
                             </Col>
@@ -510,7 +540,7 @@ const PlayerAdvertisement = () => {
                             ) : (
                                 <p><Form.Label>Ended Date (days ago): </Form.Label>
                                     <Form.Label className="ad-creationDate-label">
-                                        {formatDate(playerAdvertisement.endDate)} ({calculateDaysFromEndDate(playerAdvertisement.endDate)} days ago)
+                                        {formatDate(playerAdvertisement.endDate)} ({calculateSkippedDays(playerAdvertisement.endDate)} days ago)
                                     </Form.Label>
                                 </p>
                             )}
@@ -545,9 +575,8 @@ const PlayerAdvertisement = () => {
                 </Modal.Footer>
             </Modal>
 
-            {/* Edit Club History Modal */}
-            {
-                editFormData && (
+            {/* Edit PlayerAdvertisement Modal */}
+            { editFormData && (
                     <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
                         <Modal.Header closeButton>
                             <Modal.Title>Edit Club History</Modal.Title>
@@ -645,7 +674,7 @@ const PlayerAdvertisement = () => {
                                 <Row>
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formMin">
-                                            <Form.Label>Min Salary (zł.)</Form.Label>
+                                            <Form.Label>Min Salary (zł.) / month</Form.Label>
                                             <Form.Control
                                                 type="number"
                                                 placeholder="Min"
@@ -663,7 +692,7 @@ const PlayerAdvertisement = () => {
                                     </Col>
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formMax">
-                                            <Form.Label>Max Salary (zł.)</Form.Label>
+                                            <Form.Label>Max Salary (zł.) / month</Form.Label>
                                             <Form.Control
                                                 type="number"
                                                 placeholder="Max"
@@ -796,7 +825,7 @@ const PlayerAdvertisement = () => {
                         </Form.Group>
 
                         <Form.Group as={Row} controlId="formSalary">
-                            <Form.Label column sm="3">Salary</Form.Label>
+                            <Form.Label column sm="3">Salary (zł.) / month</Form.Label>
                             <Col sm="9">
                                 <Form.Control
                                     type="number"

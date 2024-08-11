@@ -110,6 +110,14 @@ const MyFavoritePlayerAdvertisements = () => {
         return Math.ceil(daysLeft);
     };
 
+    const calculateSkippedDays = (endDate: string): number => {
+        const currentDate = new Date();
+        const end = new Date(endDate);
+        const timeDiff = currentDate.getTime() - end.getTime();
+        const days = timeDiff / (1000 * 3600 * 24);
+        return Math.floor(days);
+    };
+
     return (
         <div className="MyPlayerFavoriteAdvertisements">
             <ToastContainer />
@@ -120,11 +128,11 @@ const MyFavoritePlayerAdvertisements = () => {
                 <Table striped bordered hover>
                     <thead>
                         <tr>
-                            <th>Creation Date (Days left)</th>
+                            <th>Creation Date (days left)</th>
                             <th>Name</th>
                             <th>Position</th>
                             <th>League (Region)</th>
-                            <th>Salary (zł.)</th>
+                            <th>Salary (zł.) / month</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -156,15 +164,15 @@ const MyFavoritePlayerAdvertisements = () => {
                 </Table>
 
                 {/* Inactive favorite advertisements*/}
-                <h3>Inactive advertisements</h3>
+                <h3>Archived advertisements</h3>
                 <Table striped bordered hover>
                     <thead>
                         <tr>
-                            <th>Creation Date (Days left)</th>
+                            <th>Ended Date (days ago)</th>
                             <th>Name</th>
                             <th>Position</th>
                             <th>League (Region)</th>
-                            <th>Salary (zł.)</th>
+                            <th>Salary (zł.) / month</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -172,7 +180,7 @@ const MyFavoritePlayerAdvertisements = () => {
                         {userInactiveFavoritePlayerAdvertisements.length > 0 ? (
                             userInactiveFavoritePlayerAdvertisements.map((favoriteAdvertisement, index) => (
                                 <tr key={index}>
-                                    <td>{formatDate(favoriteAdvertisement.playerAdvertisement.creationDate)} ({calculateDaysLeft(favoriteAdvertisement.playerAdvertisement.endDate)} days)</td>
+                                    <td>{formatDate(favoriteAdvertisement.playerAdvertisement.endDate)} ({calculateSkippedDays(favoriteAdvertisement.playerAdvertisement.endDate)} days)</td>
                                     <td>{favoriteAdvertisement.playerAdvertisement.user.firstName} {favoriteAdvertisement.playerAdvertisement.user.lastName}</td>
                                     <td>{getPositionNameById(favoriteAdvertisement.playerAdvertisement.playerPositionId)}</td>
                                     <td>{favoriteAdvertisement.playerAdvertisement.league} ({favoriteAdvertisement.playerAdvertisement.region})</td>

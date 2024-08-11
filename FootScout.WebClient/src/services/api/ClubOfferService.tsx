@@ -129,10 +129,10 @@ const ClubOfferService = {
         }
     },
 
-    async checkClubOfferIsSubmitted(playerAdvertisementId: number, userId: string): Promise<number> {
+    async getClubOfferStatusId(playerAdvertisementId: number, userId: string): Promise<number> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
-            const response = await axios.get<number>(`${ApiURL}/club-offers/submit-check/${playerAdvertisementId}/${userId}`, {
+            const response = await axios.get<number>(`${ApiURL}/club-offers/status/${playerAdvertisementId}/${userId}`, {
                 headers: {
                     'Authorization': authorizationHeader
                 }
@@ -141,7 +141,7 @@ const ClubOfferService = {
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                console.error('Error checking if club offer is submitted, details:', error.response?.data || error.message);
+                console.error('Error getting offer status id, details:', error.response?.data || error.message);
             }
             else {
                 console.error('Unexpected error:', error);

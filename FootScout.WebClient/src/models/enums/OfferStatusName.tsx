@@ -1,7 +1,7 @@
-enum Status {
+enum OfferStatusName {
     Offered = "Offered",
     Accepted = "Accepted",
     Rejected = "Rejected"
   }
   
-  export default Status;
+  export default OfferStatusName;
