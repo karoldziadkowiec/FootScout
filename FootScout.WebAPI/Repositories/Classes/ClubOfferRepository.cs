@@ -22,7 +22,7 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(pa => pa.PlayerAdvertisement.PlayerFoot)
                 .Include(pa => pa.PlayerAdvertisement.SalaryRange)
                 .Include(pa => pa.PlayerAdvertisement.User)
-                .Include(co => co.AdvertisementStatus)
+                .Include(co => co.OfferStatus)
                 .Include(co => co.PlayerPosition)
                 .Include(co => co.UserClub)
                 .FirstOrDefaultAsync(co => co.Id == clubOfferId);
@@ -36,10 +36,10 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(pa => pa.PlayerAdvertisement.PlayerFoot)
                 .Include(pa => pa.PlayerAdvertisement.SalaryRange)
                 .Include(pa => pa.PlayerAdvertisement.User)
-                .Include(co => co.AdvertisementStatus)
+                .Include(co => co.OfferStatus)
                 .Include(co => co.PlayerPosition)
                 .Include(co => co.UserClub)
-                .OrderByDescending(co => co.EndDate)
+                .OrderByDescending(co => co.CreationDate)
                 .ToListAsync();
         }
 
@@ -51,11 +51,11 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(pa => pa.PlayerAdvertisement.PlayerFoot)
                 .Include(pa => pa.PlayerAdvertisement.SalaryRange)
                 .Include(pa => pa.PlayerAdvertisement.User)
-                .Include(co => co.AdvertisementStatus)
+                .Include(co => co.OfferStatus)
                 .Include(co => co.PlayerPosition)
                 .Include(co => co.UserClub)
-                .Where(co => co.EndDate >= DateTime.Now)
-                .OrderByDescending(co => co.EndDate)
+                .Where(co => co.PlayerAdvertisement.EndDate >= DateTime.Now)
+                .OrderByDescending(co => co.CreationDate)
                 .ToListAsync();
         }
 
@@ -67,11 +67,11 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(pa => pa.PlayerAdvertisement.PlayerFoot)
                 .Include(pa => pa.PlayerAdvertisement.SalaryRange)
                 .Include(pa => pa.PlayerAdvertisement.User)
-                .Include(co => co.AdvertisementStatus)
+                .Include(co => co.OfferStatus)
                 .Include(co => co.PlayerPosition)
                 .Include(co => co.UserClub)
-                .Where(co => co.EndDate < DateTime.Now)
-                .OrderByDescending(co => co.EndDate)
+                .Where(co => co.PlayerAdvertisement.EndDate < DateTime.Now)
+                .OrderByDescending(co => co.CreationDate)
                 .ToListAsync();
         }
 
@@ -79,9 +79,10 @@ namespace FootScout.WebAPI.Repositories.Classes
         {
             clubOffer.CreationDate = DateTime.Now;
 
-            var offeredStatus = await _dbContext.AdvertisementStatuses
+            var offeredStatus = await _dbContext.OfferStatuses
                 .FirstOrDefaultAsync(a => a.StatusName == "Offered");
-            clubOffer.AdvertisementStatus = offeredStatus;
+            clubOffer.OfferStatusId = offeredStatus.Id;
+            clubOffer.OfferStatus = offeredStatus;
 
             await _dbContext.ClubOffers.AddAsync(clubOffer);
             await _dbContext.SaveChangesAsync();
@@ -93,18 +94,14 @@ namespace FootScout.WebAPI.Repositories.Classes
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<int> CheckClubOfferIsSubmitted(int playerAdvertisementId, string userId)
+        public async Task<int> GetClubOfferStatusId(int playerAdvertisementId, string userId)
         {
-            var offeredStatusId = await _dbContext.AdvertisementStatuses
-                .Where(a => a.StatusName == "Offered")
-                .Select(a => a.Id)
+            var offerStatusId = await _dbContext.ClubOffers
+                .Where(co => co.PlayerAdvertisementId == playerAdvertisementId && co.UserClubId == userId)
+                .Select(co => co.OfferStatusId)
                 .FirstOrDefaultAsync();
 
-            var clubOffer = await _dbContext.ClubOffers
-                .Where(co => co.AdvertisementStatusId == offeredStatusId && co.PlayerAdvertisementId == playerAdvertisementId && co.UserClubId == userId)
-                .FirstOrDefaultAsync();
-
-            return clubOffer != null ? clubOffer.Id : 0;
+            return offerStatusId;
         }
     }
 }

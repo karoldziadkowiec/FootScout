@@ -135,5 +135,21 @@ namespace FootScout.WebAPI.Controllers
             var userInactiveFavoritePlayerAdvertisements = await _userRepository.GetUserInactiveFavoritePlayerAdvertisements(userId);
             return Ok(userInactiveFavoritePlayerAdvertisements);
         }
+
+        // GET: api/users/:userId/club-offers/received
+        [HttpGet("{userId}/club-offers/received")]
+        public async Task<ActionResult<IEnumerable<ClubOffer>>> GetReceivedClubOffers(string userId)
+        {
+            var receivedClubOffers = await _userRepository.GetReceivedClubOffers(userId);
+            return Ok(receivedClubOffers);
+        }
+
+        // GET: api/users/:userId/club-offers/sent
+        [HttpGet("{userId}/club-offers/sent")]
+        public async Task<ActionResult<IEnumerable<ClubOffer>>> GetSentClubOffers(string userId)
+        {
+            var sentClubOffers = await _userRepository.GetSentClubOffers(userId);
+            return Ok(sentClubOffers);
+        }
     }
 }

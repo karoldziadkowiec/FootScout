@@ -48,23 +48,6 @@ namespace FootScout.WebAPI.Migrations
                     b.ToTable("Achievements");
                 });
 
-            modelBuilder.Entity("FootScout.WebAPI.Entities.AdvertisementStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("StatusName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AdvertisementStatuses");
-                });
-
             modelBuilder.Entity("FootScout.WebAPI.Entities.ClubAdvertisement", b =>
                 {
                     b.Property<int>("Id")
@@ -207,9 +190,6 @@ namespace FootScout.WebAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("AdvertisementStatusId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ClubName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -217,12 +197,12 @@ namespace FootScout.WebAPI.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("League")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OfferStatusId")
+                        .HasColumnType("int");
 
                     b.Property<int>("PlayerAdvertisementId")
                         .HasColumnType("int");
@@ -243,7 +223,7 @@ namespace FootScout.WebAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AdvertisementStatusId");
+                    b.HasIndex("OfferStatusId");
 
                     b.HasIndex("PlayerAdvertisementId");
 
@@ -252,6 +232,23 @@ namespace FootScout.WebAPI.Migrations
                     b.HasIndex("UserClubId");
 
                     b.ToTable("ClubOffers");
+                });
+
+            modelBuilder.Entity("FootScout.WebAPI.Entities.OfferStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("StatusName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OfferStatuses");
                 });
 
             modelBuilder.Entity("FootScout.WebAPI.Entities.PlayerAdvertisement", b =>
@@ -361,9 +358,6 @@ namespace FootScout.WebAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("AdvertisementStatusId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
@@ -373,10 +367,10 @@ namespace FootScout.WebAPI.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("Height")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OfferStatusId")
                         .HasColumnType("int");
 
                     b.Property<int>("PlayerFootId")
@@ -394,9 +388,9 @@ namespace FootScout.WebAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AdvertisementStatusId");
-
                     b.HasIndex("ClubAdvertisementId");
+
+                    b.HasIndex("OfferStatusId");
 
                     b.HasIndex("PlayerFootId");
 
@@ -742,9 +736,9 @@ namespace FootScout.WebAPI.Migrations
 
             modelBuilder.Entity("FootScout.WebAPI.Entities.ClubOffer", b =>
                 {
-                    b.HasOne("FootScout.WebAPI.Entities.AdvertisementStatus", "AdvertisementStatus")
+                    b.HasOne("FootScout.WebAPI.Entities.OfferStatus", "OfferStatus")
                         .WithMany()
-                        .HasForeignKey("AdvertisementStatusId")
+                        .HasForeignKey("OfferStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -766,7 +760,7 @@ namespace FootScout.WebAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AdvertisementStatus");
+                    b.Navigation("OfferStatus");
 
                     b.Navigation("PlayerAdvertisement");
 
@@ -831,16 +825,16 @@ namespace FootScout.WebAPI.Migrations
 
             modelBuilder.Entity("FootScout.WebAPI.Entities.PlayerOffer", b =>
                 {
-                    b.HasOne("FootScout.WebAPI.Entities.AdvertisementStatus", "AdvertisementStatus")
-                        .WithMany()
-                        .HasForeignKey("AdvertisementStatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("FootScout.WebAPI.Entities.ClubAdvertisement", "ClubAdvertisement")
                         .WithMany()
                         .HasForeignKey("ClubAdvertisementId")
                         .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("FootScout.WebAPI.Entities.OfferStatus", "OfferStatus")
+                        .WithMany()
+                        .HasForeignKey("OfferStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FootScout.WebAPI.Entities.PlayerFoot", "PlayerFoot")
@@ -861,9 +855,9 @@ namespace FootScout.WebAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("AdvertisementStatus");
-
                     b.Navigation("ClubAdvertisement");
+
+                    b.Navigation("OfferStatus");
 
                     b.Navigation("PlayerFoot");
 

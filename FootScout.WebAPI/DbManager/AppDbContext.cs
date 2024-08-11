@@ -8,7 +8,7 @@ namespace FootScout.WebAPI.DbManager
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
         public DbSet<Achievements> Achievements { get; set; }
-        public DbSet<AdvertisementStatus> AdvertisementStatuses { get; set; }
+        public DbSet<OfferStatus> OfferStatuses { get; set; }
         public DbSet<ClubAdvertisement> ClubAdvertisements { get; set; }
         public DbSet<ClubAdvertisementFavorite> ClubAdvertisementFavorites { get; set; }
         public DbSet<ClubHistory> ClubHistories { get; set; }
@@ -68,9 +68,9 @@ namespace FootScout.WebAPI.DbManager
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<ClubOffer>()
-                .HasOne(co => co.AdvertisementStatus)
+                .HasOne(co => co.OfferStatus)
                 .WithMany()
-                .HasForeignKey(co => co.AdvertisementStatusId)
+                .HasForeignKey(co => co.OfferStatusId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ClubOffer>()
@@ -146,9 +146,9 @@ namespace FootScout.WebAPI.DbManager
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<PlayerOffer>()
-                .HasOne(po => po.AdvertisementStatus)
+                .HasOne(po => po.OfferStatus)
                 .WithMany()
-                .HasForeignKey(po => po.AdvertisementStatusId)
+                .HasForeignKey(po => po.OfferStatusId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<PlayerOffer>()

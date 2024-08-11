@@ -1,6 +1,6 @@
 ﻿namespace FootScout.WebAPI.Models.Constants
 {
-    public class Status
+    public class OfferStatusName
     {
         public const string Offered = "Offered";
         public const string Accepted = "Accepted";

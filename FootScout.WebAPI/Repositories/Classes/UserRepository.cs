@@ -96,7 +96,7 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(pa => pa.SalaryRange)
                 .Include(pa => pa.User)
                 .Where(pa => pa.UserId == userId && pa.EndDate >= DateTime.Now)
-                .OrderByDescending(pa => pa.EndDate)
+                .OrderBy(pa => pa.EndDate)
                 .ToListAsync();
         }
 
@@ -136,7 +136,7 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(pa => pa.PlayerAdvertisement.User)
                 .Include(pa => pa.User)
                 .Where(pa => pa.UserId == userId && pa.PlayerAdvertisement.EndDate >= DateTime.Now)
-                .OrderByDescending(pa => pa.PlayerAdvertisement.EndDate)
+                .OrderBy(pa => pa.PlayerAdvertisement.EndDate)
                 .ToListAsync();
         }
 
@@ -151,6 +151,38 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(pa => pa.User)
                 .Where(pa => pa.UserId == userId && pa.PlayerAdvertisement.EndDate < DateTime.Now)
                 .OrderByDescending(pa => pa.PlayerAdvertisement.EndDate)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<ClubOffer>> GetReceivedClubOffers(string userId)
+        {
+            return await _dbContext.ClubOffers
+                .Include(co => co.PlayerAdvertisement)
+                .Include(pa => pa.PlayerAdvertisement.PlayerPosition)
+                .Include(pa => pa.PlayerAdvertisement.PlayerFoot)
+                .Include(pa => pa.PlayerAdvertisement.SalaryRange)
+                .Include(pa => pa.PlayerAdvertisement.User)
+                .Include(co => co.OfferStatus)
+                .Include(co => co.PlayerPosition)
+                .Include(co => co.UserClub)
+                .Where(pa => pa.PlayerAdvertisement.UserId == userId)
+                .OrderByDescending(pa => pa.PlayerAdvertisement.EndDate)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<ClubOffer>> GetSentClubOffers(string userId)
+        {
+            return await _dbContext.ClubOffers
+                .Include(co => co.PlayerAdvertisement)
+                .Include(pa => pa.PlayerAdvertisement.PlayerPosition)
+                .Include(pa => pa.PlayerAdvertisement.PlayerFoot)
+                .Include(pa => pa.PlayerAdvertisement.SalaryRange)
+                .Include(pa => pa.PlayerAdvertisement.User)
+                .Include(co => co.OfferStatus)
+                .Include(co => co.PlayerPosition)
+                .Include(co => co.UserClub)
+                .Where(pa => pa.UserClubId == userId)
+                .OrderByDescending(pa => pa.PlayerAdvertisement.CreationDate)
                 .ToListAsync();
         }
     }

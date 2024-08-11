@@ -11,7 +11,6 @@ namespace FootScout.WebAPI.Models.DTOs
         public string Region { get; set; }
         public double Salary { get; set; }
         public string AdditionalInformation { get; set; }
-        public DateTime EndDate { get; set; }
         public string UserClubId { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace FootScout.WebAPI.Entities
 {
-    public class AdvertisementStatus
+    public class OfferStatus
     {
         [Key]
         public int Id { get; set; }

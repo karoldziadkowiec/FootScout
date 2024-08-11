@@ -15,7 +15,7 @@ namespace FootScout.WebAPI.DbManager
                 await SeedAdminRole(services);
                 await SeedPlayerPositions(services, dbContext);
                 await SeedPlayerFeet(services, dbContext);
-                await SeedAdvertisementStatuses(services, dbContext);
+                await SeedOfferStatuses(services, dbContext);
             }
         }
 
@@ -58,19 +58,19 @@ namespace FootScout.WebAPI.DbManager
             }
         }
 
-        private static async Task SeedAdvertisementStatuses(IServiceProvider services, AppDbContext dbContext)
+        private static async Task SeedOfferStatuses(IServiceProvider services, AppDbContext dbContext)
         {
-            var statuses = new List<string> { Status.Offered, Status.Accepted, Status.Rejected };
+            var statuses = new List<string> { OfferStatusName.Offered, OfferStatusName.Accepted, OfferStatusName.Rejected };
 
             foreach (var status in statuses)
             {
-                if (!await dbContext.AdvertisementStatuses.AnyAsync(s => s.StatusName == status))
+                if (!await dbContext.OfferStatuses.AnyAsync(s => s.StatusName == status))
                 {
-                    AdvertisementStatus newStatus = new AdvertisementStatus
+                    OfferStatus newStatus = new OfferStatus
                     {
                         StatusName = status,
                     };
-                    dbContext.AdvertisementStatuses.Add(newStatus);
+                    dbContext.OfferStatuses.Add(newStatus);
                 }
             }
             await dbContext.SaveChangesAsync();

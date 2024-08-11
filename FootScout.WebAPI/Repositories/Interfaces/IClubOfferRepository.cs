@@ -10,6 +10,6 @@ namespace FootScout.WebAPI.Repositories.Interfaces
         Task<IEnumerable<ClubOffer>> GetInactiveClubOffers();
         Task CreateClubOffer(ClubOffer clubOffer);
         Task UpdateClubOffer(ClubOffer clubOffer);
-        Task<int> CheckClubOfferIsSubmitted(int playerAdvertisementId, string userId);
+        Task<int> GetClubOfferStatusId(int playerAdvertisementId, string userId);
     }
 }

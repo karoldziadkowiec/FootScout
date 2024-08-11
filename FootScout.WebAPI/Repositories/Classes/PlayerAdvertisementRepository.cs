@@ -92,6 +92,11 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .ToListAsync();
             _dbContext.PlayerAdvertisementFavorites.RemoveRange(favorites);
 
+            var clubOffers = await _dbContext.ClubOffers
+                .Where(co => co.PlayerAdvertisementId == playerAdvertisementId)
+                .ToListAsync();
+            _dbContext.ClubOffers.RemoveRange(clubOffers);
+
             _dbContext.PlayerAdvertisements.Remove(playerAdvertisement);
             await _dbContext.SaveChangesAsync();
         }

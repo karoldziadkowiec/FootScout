@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using FootScout.WebAPI.Entities;
 using FootScout.WebAPI.Models.DTOs;
-using FootScout.WebAPI.Repositories.Classes;
 using FootScout.WebAPI.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -84,13 +83,12 @@ namespace FootScout.WebAPI.Controllers
             return NoContent();
         }
 
-        // GET: api/club-offers/submit-check/:playerAdvertisementId/:userId
-        [HttpGet("submit-check/{playerAdvertisementId}/{userId}")]
-        public async Task<IActionResult> CheckClubOfferIsSubmitted(int playerAdvertisementId, string userId)
-
+        // GET: api/club-offers/status/:playerAdvertisementId/:userId
+        [HttpGet("status/{playerAdvertisementId}/{userId}")]
+        public async Task<IActionResult> GetClubOfferStatusId(int playerAdvertisementId, string userId)
         {
-            var clubOfferId = await _clubOfferRepository.CheckClubOfferIsSubmitted(playerAdvertisementId, userId);
-            return Ok(clubOfferId);
+            var clubOfferStatusId = await _clubOfferRepository.GetClubOfferStatusId(playerAdvertisementId, userId);
+            return Ok(clubOfferStatusId);
         }
     }
 }
