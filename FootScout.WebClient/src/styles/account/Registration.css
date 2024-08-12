@@ -1,11 +1,11 @@
 .Registration {
-    background-color: rgb(45, 50, 46);
+    background-color: rgb(42, 46, 43);
     background-size: cover;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 110vh;
+    height: 100vh;
 }
 
 .logo-container {

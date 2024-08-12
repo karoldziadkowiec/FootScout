@@ -127,12 +127,20 @@ const MyOffersAsPlayer = () => {
         return `${day}-${month}-${year}`;
     };
 
-    const calculateDaysLeft = (endDate: string): number => {
+    const calculateDaysLeft = (endDate: string): string => {
         const currentDate = new Date();
         const end = new Date(endDate);
-        const timeDiff = end.getTime() - currentDate.getTime();
-        const daysLeft = timeDiff / (1000 * 3600 * 24);
-        return Math.ceil(daysLeft);
+
+        if (currentDate <= end) {
+            const timeDiff = end.getTime() - currentDate.getTime();
+            const daysLeft = timeDiff / (1000 * 3600 * 24);
+            return `${Math.ceil(daysLeft)} days left`;
+        }
+        else {
+            const timeDiff = currentDate.getTime() - end.getTime();
+            const days = timeDiff / (1000 * 3600 * 24);
+            return `${Math.floor(days)} days passed`;
+        }
     };
 
     const calculateSkippedDays = (endDate: string): number => {
@@ -147,13 +155,13 @@ const MyOffersAsPlayer = () => {
         <div className="MyOffersAsPlayer">
             <ToastContainer />
             <h1>My Offers as a Player</h1>
+            {/* Received offers from clubs*/}
+            <h3>Received offers from clubs</h3>
             <div className="table-responsive">
-                {/* Received offers from clubs*/}
-                <h3>Received offers from clubs</h3>
-                <Table striped bordered hover>
-                    <thead>
+                <Table striped bordered hover variant="light">
+                    <thead className="table-dark">
                         <tr>
-                            <th>Received Date (days left)</th>
+                            <th>Received Date (days left/passed)</th>
                             <th>Offer Status</th>
                             <th>Club Name</th>
                             <th>League (Region)</th>
@@ -165,7 +173,7 @@ const MyOffersAsPlayer = () => {
                         {receivedClubOffers.length > 0 ? (
                             receivedClubOffers.map((clubOffer, index) => (
                                 <tr key={index}>
-                                    <td>{formatDate(clubOffer.creationDate)} ({calculateDaysLeft(clubOffer.playerAdvertisement.endDate)} days)</td>
+                                    <td>{formatDate(clubOffer.creationDate)} ({calculateDaysLeft(clubOffer.playerAdvertisement.endDate)})</td>
                                     <td>{clubOffer.offerStatus.statusName}</td>
                                     <td>{clubOffer.clubName}</td>
                                     <td>{clubOffer.league} ({clubOffer.region})</td>
@@ -193,14 +201,16 @@ const MyOffersAsPlayer = () => {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan={9} className="text-center">No club offer available</td>
+                                <td colSpan={9} className="text-center">No received club offer available</td>
                             </tr>
                         )}
                     </tbody>
                 </Table>
+            </div>
 
-                {/* My sent offers to clubs*/}
-                <h3>My sent offers to clubs</h3>
+            {/* My sent offers to clubs*/}
+            <h3>My sent offers to clubs</h3>
+            <div className="table-responsive">
 
             </div>
 
@@ -212,8 +222,9 @@ const MyOffersAsPlayer = () => {
                 <Modal.Body>
                     {selectedReceivedClubOffer && (
                         <div className="modal-content-centered">
-                            <p><strong>Received Date (days left)</strong> {formatDate(selectedReceivedClubOffer.creationDate)} ({calculateDaysLeft(selectedReceivedClubOffer.playerAdvertisement.endDate)} days)</p>
+                            <p><strong>Received Date (days left/passed)</strong> {formatDate(selectedReceivedClubOffer.creationDate)} ({calculateDaysLeft(selectedReceivedClubOffer.playerAdvertisement.endDate)})</p>
                             <p><strong>Offer status:</strong> {selectedReceivedClubOffer.offerStatus.statusName}</p>
+                            <p><strong>DETAILS</strong></p>
                             <p><strong>Club Name:</strong> {selectedReceivedClubOffer.clubName}</p>
                             <p><strong>League:</strong> {selectedReceivedClubOffer.league}</p>
                             <p><strong>Region:</strong> {selectedReceivedClubOffer.region}</p>

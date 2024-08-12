@@ -1,4 +1,4 @@
-.MyOffersAsPlayer {
+.PlayerAdvertisements {
     text-align: center;
     padding: 20px 10% 20px 10%;
 }
@@ -18,6 +18,10 @@
     -webkit-overflow-scrolling: touch;
 }
 
+.table td {
+    line-height: 5;
+}
+
 .table-responsive table {
     min-width: 600px;
 }
@@ -27,4 +31,20 @@
     .table-responsive table {
         min-width: 100%;
     }
+}
+
+.pagination-green .page-item .page-link {
+    background-color: #54c16d;
+    border-color: #54c16d;
+    color: #fff;
+}
+
+.pagination-green .page-item.active .page-link {
+    background-color: #186128; 
+    border-color: #186128;
+}
+
+.pagination-green .page-item .page-link:hover {
+    background-color: #2b8f41;
+    border-color: #2b8f41;
 }

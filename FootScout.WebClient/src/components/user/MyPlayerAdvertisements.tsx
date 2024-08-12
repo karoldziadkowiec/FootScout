@@ -4,25 +4,21 @@ import { Table, Button } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
-import PlayerPositionService from '../../services/api/PlayerPositionService';
 import PlayerAdvertisement from '../../models/interfaces/PlayerAdvertisement';
-import PlayerPosition from '../../models/interfaces/PlayerPosition';
 import '../../App.css';
 import '../../styles/user/MyPlayerAdvertisements.css';
-
 
 const MyPlayerAdvertisements = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [userActivePlayerAdvertisements, setUserActivePlayerAdvertisements] = useState<PlayerAdvertisement[]>([]);
     const [userInactivePlayerAdvertisements, setUserInactivePlayerAdvertisements] = useState<PlayerAdvertisement[]>([]);
-    const [positions, setPositions] = useState<PlayerPosition[]>([]);
-    
+
     useEffect(() => {
         if (location.state && location.state.toastMessage)
             toast.success(location.state.toastMessage);
 
-        const fetchUserData = async () => {
+        const fetchUserPlayerAdvertisements = async () => {
             try {
                 const userId = await AccountService.getId();
                 if (userId) {
@@ -34,30 +30,13 @@ const MyPlayerAdvertisements = () => {
                 }
             }
             catch (error) {
-                console.error('Failed to fetch user\'s data:', error);
-                toast.error('Failed to load user\'s data.');
+                console.error('Failed to fetch user\'s player advertisements:', error);
+                toast.error('Failed to load user\'s player advertisements.');
             }
         };
 
-        const fetchPositions = async () => {
-            try {
-                const positionsData = await PlayerPositionService.getPlayerPositions();
-                setPositions(positionsData);
-            }
-            catch (error) {
-                console.error('Failed to fetch positions:', error);
-                toast.error('Failed to load positions.');
-            }
-        };
-
-        fetchUserData();
-        fetchPositions();
+        fetchUserPlayerAdvertisements();
     }, [location]);
-
-    const getPositionNameById = (id: number) => {
-        const position = positions.find(p => p.id === id);
-        return position ? position.positionName : 'Unknown';
-    };
 
     const moveToPlayerAdvertisementPage = (playerAdvertisementId: number) => {
         navigate(`/player-advertisement/${playerAdvertisementId}`, { state: { playerAdvertisementId } });
@@ -95,15 +74,15 @@ const MyPlayerAdvertisements = () => {
                 <i className="bi bi-file-earmark-plus-fill"></i>
                 New Advertisement
             </Button>
+            {/* Active advertisements*/}
+            <h3>Active advertisements</h3>
             <div className="table-responsive">
-                {/* Active advertisements*/}
-                <h3>Active advertisements</h3>
-                <Table striped bordered hover>
-                    <thead>
+                <Table striped bordered hover variant="success">
+                    <thead className="table-dark">
                         <tr>
                             <th>Creation Date (days left)</th>
                             <th>Position</th>
-                            <th>League</th>
+                            <th>Preferred League</th>
                             <th>Region</th>
                             <th>Salary (zł.) / month</th>
                             <th></th>
@@ -114,7 +93,7 @@ const MyPlayerAdvertisements = () => {
                             userActivePlayerAdvertisements.map((advertisement, index) => (
                                 <tr key={index}>
                                     <td>{formatDate(advertisement.creationDate)} ({calculateDaysLeft(advertisement.endDate)} days)</td>
-                                    <td>{getPositionNameById(advertisement.playerPositionId)}</td>
+                                    <td>{advertisement.playerPosition.positionName}</td>
                                     <td>{advertisement.league}</td>
                                     <td>{advertisement.region}</td>
                                     <td>{advertisement.salaryRange.min} - {advertisement.salaryRange.max}</td>
@@ -132,15 +111,17 @@ const MyPlayerAdvertisements = () => {
                         )}
                     </tbody>
                 </Table>
+            </div>
 
-                {/* Inactive advertisements*/}
-                <h3>Archived advertisements</h3>
-                <Table striped bordered hover>
-                    <thead>
+            {/* Inactive advertisements*/}
+            <h3>Archived advertisements</h3>
+            <div className="table-responsive">
+                <Table striped bordered hover variant="warning">
+                    <thead className="table-dark">
                         <tr>
                             <th>Ended Date (days ago)</th>
                             <th>Position</th>
-                            <th>League</th>
+                            <th>Preferred League</th>
                             <th>Region</th>
                             <th>Salary (zł.) / month</th>
                             <th></th>
@@ -151,7 +132,7 @@ const MyPlayerAdvertisements = () => {
                             userInactivePlayerAdvertisements.map((advertisement, index) => (
                                 <tr key={index}>
                                     <td>{formatDate(advertisement.endDate)} ({calculateSkippedDays(advertisement.endDate)} days)</td>
-                                    <td>{getPositionNameById(advertisement.playerPositionId)}</td>
+                                    <td>{advertisement.playerPosition.positionName}</td>
                                     <td>{advertisement.league}</td>
                                     <td>{advertisement.region}</td>
                                     <td>{advertisement.salaryRange.min} - {advertisement.salaryRange.max}</td>

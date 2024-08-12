@@ -72,11 +72,6 @@ const ClubHistory = () => {
         fetchPositions();
     }, []);
 
-    const getPositionNameById = (id: number) => {
-        const position = positions.find(p => p.id === id);
-        return position ? position.positionName : 'Unknown';
-    };
-
     const handleCreateClubHistory = async () => {
         if (!user)
             return;
@@ -219,8 +214,8 @@ const ClubHistory = () => {
                 Create Club History
             </Button>
             <div className="table-responsive">
-                <Table striped bordered hover>
-                    <thead>
+                <Table striped bordered hover variant="warning">
+                    <thead className="table-dark">
                         <tr>
                             <th>Date</th>
                             <th>Club</th>
@@ -238,7 +233,7 @@ const ClubHistory = () => {
                                     <td>{history.clubName}</td>
                                     <td>{history.league}</td>
                                     <td>{history.region}</td>
-                                    <td>{getPositionNameById(history.playerPositionId)}</td>
+                                    <td>{history.playerPosition.positionName}</td>
                                     <td>
                                         <Button variant="dark" className="button-spacing" onClick={() => handleShowDetails(history)}>
                                             <i className="bi bi-info-square"></i>
@@ -450,7 +445,7 @@ const ClubHistory = () => {
                             <p><strong>Region:</strong> {selectedClubHistory.region}</p>
                             <p><strong>Start Date:</strong> {formatDate(selectedClubHistory.startDate)}</p>
                             <p><strong>End Date:</strong> {formatDate(selectedClubHistory.endDate)}</p>
-                            <p><strong>Position:</strong> {getPositionNameById(selectedClubHistory.playerPositionId)}</p>
+                            <p><strong>Position:</strong> {selectedClubHistory.playerPosition.positionName}</p>
                             <p><strong>Matches:</strong> {selectedClubHistory.achievements.numberOfMatches}</p>
                             <p><strong>Goals:</strong> {selectedClubHistory.achievements.goals}</p>
                             <p><strong>Assists:</strong> {selectedClubHistory.achievements.assists}</p>

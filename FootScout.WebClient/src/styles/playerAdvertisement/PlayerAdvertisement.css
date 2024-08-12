@@ -1,8 +1,9 @@
 .PlayerAdvertisement {
+    background-color: rgb(240, 247, 240);
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 20px;
+    padding: 20px 10% 20px 10%;
     font-size: 17px;
 }
 
@@ -34,8 +35,8 @@
 }
 
 .ad-container {
-    background-color: rgb(246, 241, 237);
-    width: 70%;
+    background-color: rgb(216, 225, 216);
+    width: 90%;
     border-radius: 30px;
     padding-top: 10px;
     padding-bottom: 1cap;
@@ -43,27 +44,27 @@
 }
 
 .ad-name-label {
-    color: rgb(175, 164, 0);
+    color: rgb(100, 97, 66);
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-size: 36px;
     font-weight: bold;
 }
 
 .ad-section {
-    color: rgb(89, 89, 89);
+    color: rgb(127, 121, 89);
     font-family:'Times New Roman', Times, serif;
     font-size: 22px;
     font-weight: bold;
 }
 
 .ad-data-label {
-    color: rgb(120, 112, 1);
+    color: rgb(96, 90, 0);
     font-weight: bold;
     margin-left: 5px;
 }
 
 .ad-creationDate-label {
-    color: rgb(165, 170, 108);
+    color: rgb(126, 130, 79);
     font-style: italic;
     font-weight: bold;
     margin-left: 5px;

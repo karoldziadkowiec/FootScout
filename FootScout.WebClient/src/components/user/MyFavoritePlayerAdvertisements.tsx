@@ -58,11 +58,6 @@ const MyFavoritePlayerAdvertisements = () => {
         fetchPositions();
     }, [location]);
 
-    const getPositionNameById = (id: number) => {
-        const position = positions.find(p => p.id === id);
-        return position ? position.positionName : 'Unknown';
-    };
-
     const moveToPlayerAdvertisementPage = (playerAdvertisementId: number) => {
         navigate(`/player-advertisement/${playerAdvertisementId}`, { state: { playerAdvertisementId } });
     };
@@ -122,16 +117,16 @@ const MyFavoritePlayerAdvertisements = () => {
         <div className="MyPlayerFavoriteAdvertisements">
             <ToastContainer />
             <h1>My Favorite Player Advertisements</h1>
+            {/* Active favorite advertisements*/}
+            <h3>Active advertisements</h3>
             <div className="table-responsive">
-                {/* Active favorite advertisements*/}
-                <h3>Active advertisements</h3>
-                <Table striped bordered hover>
-                    <thead>
+                <Table striped bordered hover variant="success">
+                    <thead className="table-dark">
                         <tr>
                             <th>Creation Date (days left)</th>
                             <th>Name</th>
                             <th>Position</th>
-                            <th>League (Region)</th>
+                            <th>Preferred League (Region)</th>
                             <th>Salary (zł.) / month</th>
                             <th></th>
                         </tr>
@@ -142,7 +137,7 @@ const MyFavoritePlayerAdvertisements = () => {
                                 <tr key={index}>
                                     <td>{formatDate(favoriteAdvertisement.playerAdvertisement.creationDate)} ({calculateDaysLeft(favoriteAdvertisement.playerAdvertisement.endDate)} days)</td>
                                     <td>{favoriteAdvertisement.playerAdvertisement.user.firstName} {favoriteAdvertisement.playerAdvertisement.user.lastName}</td>
-                                    <td>{getPositionNameById(favoriteAdvertisement.playerAdvertisement.playerPositionId)}</td>
+                                    <td>{favoriteAdvertisement.playerAdvertisement.playerPosition.positionName}</td>
                                     <td>{favoriteAdvertisement.playerAdvertisement.league} ({favoriteAdvertisement.playerAdvertisement.region})</td>
                                     <td>{favoriteAdvertisement.playerAdvertisement.salaryRange.min} - {favoriteAdvertisement.playerAdvertisement.salaryRange.max}</td>
                                     <td>
@@ -150,7 +145,7 @@ const MyFavoritePlayerAdvertisements = () => {
                                             <i className="bi bi-info-square"></i>
                                         </Button>
                                         <Button variant="danger" onClick={() => handleShowDeleteModal(favoriteAdvertisement.id)}>
-                                            <i className="bi bi-heart"></i>
+                                            <i className="bi bi-heart-fill"></i>
                                         </Button>
                                     </td>
                                 </tr>
@@ -162,16 +157,18 @@ const MyFavoritePlayerAdvertisements = () => {
                         )}
                     </tbody>
                 </Table>
+            </div>
 
-                {/* Inactive favorite advertisements*/}
-                <h3>Archived advertisements</h3>
-                <Table striped bordered hover>
-                    <thead>
+            {/* Inactive favorite advertisements*/}
+            <h3>Archived advertisements</h3>
+            <div className="table-responsive">
+                <Table striped bordered hover variant="warning">
+                    <thead className="table-dark">
                         <tr>
-                            <th>Ended Date (days ago)</th>
+                            <th>Ended Date (days passed)</th>
                             <th>Name</th>
                             <th>Position</th>
-                            <th>League (Region)</th>
+                            <th>Preferred League (Region)</th>
                             <th>Salary (zł.) / month</th>
                             <th></th>
                         </tr>
@@ -182,7 +179,7 @@ const MyFavoritePlayerAdvertisements = () => {
                                 <tr key={index}>
                                     <td>{formatDate(favoriteAdvertisement.playerAdvertisement.endDate)} ({calculateSkippedDays(favoriteAdvertisement.playerAdvertisement.endDate)} days)</td>
                                     <td>{favoriteAdvertisement.playerAdvertisement.user.firstName} {favoriteAdvertisement.playerAdvertisement.user.lastName}</td>
-                                    <td>{getPositionNameById(favoriteAdvertisement.playerAdvertisement.playerPositionId)}</td>
+                                    <td>{favoriteAdvertisement.playerAdvertisement.playerPosition.positionName}</td>
                                     <td>{favoriteAdvertisement.playerAdvertisement.league} ({favoriteAdvertisement.playerAdvertisement.region})</td>
                                     <td>{favoriteAdvertisement.playerAdvertisement.salaryRange.min} - {favoriteAdvertisement.playerAdvertisement.salaryRange.max}</td>
                                     <td>
@@ -190,7 +187,7 @@ const MyFavoritePlayerAdvertisements = () => {
                                             <i className="bi bi-info-square"></i>
                                         </Button>
                                         <Button variant="danger" onClick={() => handleShowDeleteModal(favoriteAdvertisement.id)}>
-                                            <i className="bi bi-heart"></i>
+                                            <i className="bi bi-heart-fill"></i>
                                         </Button>
                                     </td>
                                 </tr>

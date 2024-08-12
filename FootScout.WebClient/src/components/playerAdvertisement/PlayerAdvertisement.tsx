@@ -292,12 +292,13 @@ const PlayerAdvertisement = () => {
         try {
             const createFormData = { ...favoritePlayerAdvertisementDTO, playerAdvertisementId: playerAdvertisement.id, userId: userId };
             setFavoritePlayerAdvertisementDTO(createFormData);
+
             await PlayerAdvertisementFavoriteService.addToFavorites(createFormData);
             navigate('/my-favorite-player-advertisements', { state: { toastMessage: "Player advertisement has been added to favorites successfully." } });
         }
         catch (error) {
-            console.error('Failed to delete user:', error);
-            toast.error('Failed to delete user.');
+            console.error('Failed to add advertisement to favorites:', error);
+            toast.error('Failed to add advertisement to favorites.');
         }
     };
 
@@ -340,7 +341,7 @@ const PlayerAdvertisement = () => {
 
             await ClubOfferService.createClubOffer(newFormData);
             setShowSubmitClubOfferModal(false);
-            navigate('/my-offers-as-player', { state: { toastMessage: "The club offer was submitted successfully." } });
+            navigate('/my-offers-as-club', { state: { toastMessage: "The club offer was submitted successfully." } });
         }
         catch (error) {
             console.error('Failed to submit club offer:', error);
@@ -428,13 +429,13 @@ const PlayerAdvertisement = () => {
                             {favoriteId === 0 ? (
                                 <Col>
                                     <Button variant="success" onClick={handleAddToFavorite}>
-                                        <i className="bi bi-heart-fill"></i>
+                                        <i className="bi bi-heart"></i>
                                     </Button>
                                 </Col>
                             ) : (
                                 <Col>
                                     <Button variant="danger" onClick={() => handleShowDeleteFavoriteModal(favoriteId)}>
-                                        <i className="bi bi-heart"></i>
+                                        <i className="bi bi-heart-fill"></i>
                                     </Button>
                                 </Col>
                             )}
@@ -499,8 +500,8 @@ const PlayerAdvertisement = () => {
                         </Row>
                         <Form.Label className="ad-section">CLUB HISTORY</Form.Label>
                         <div className="ad-table-responsive">
-                            <Table striped bordered hover>
-                                <thead>
+                            <Table striped bordered hover variant="light">
+                                <thead className="table-dark">
                                     <tr>
                                         <th>Date</th>
                                         <th>Club</th>

@@ -1,5 +1,5 @@
 .Login {
-    background-color: rgb(16, 97, 47);
+    background-color: rgb(22, 65, 38);
     background-size: cover;
     display: flex;
     flex-direction: column;
@@ -25,7 +25,7 @@
 
 .login-container {
     background-color: rgba(0, 0, 0, 0.7);
-    width: 42%;
+    width: 45%;
     padding: 2% 4% 3% ;
     border-radius: 30px;
 }

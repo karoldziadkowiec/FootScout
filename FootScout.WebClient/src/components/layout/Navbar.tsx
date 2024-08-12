@@ -6,6 +6,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { NavLink } from 'react-router-dom';
 import AccountService from '../../services/api/AccountService';
 import '../../App.css';
+import '../../styles/layout/Navbar.css';
 
 const NavbarComponent = () => {
   return (
@@ -18,12 +19,12 @@ const NavbarComponent = () => {
           <Nav className="me-auto green-links">
             <Nav.Link as={NavLink} to="/home">Home</Nav.Link>
             <NavDropdown title="Advertisements" id="basic-nav-dropdown">
-              <NavDropdown.Item as={NavLink} to="/my-profile">for Players</NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/my-profile">for Clubs</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/player-advertisements">Player's</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/my-profile">Club's</NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="Recommendations" id="basic-nav-dropdown">
-              <NavDropdown.Item as={NavLink} to="/my-profile">for Players</NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/my-profile">for Clubs</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/my-profile">Player's</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/my-profile">Club's</NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="New Advertisement" id="basic-nav-dropdown">
               <NavDropdown.Item as={NavLink} to="/new-player-advertisement">as Player</NavDropdown.Item>
@@ -34,15 +35,15 @@ const NavbarComponent = () => {
             <Nav.Link as={NavLink} to="/my-profile">Chat</Nav.Link>
             <NavDropdown title="My Offers" id="basic-nav-dropdown">
               <NavDropdown.Item as={NavLink} to="/my-offers-as-player">as Player</NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/my-profile">as Club</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/my-offers-as-club">as Club</NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="My Profile" id="basic-nav-dropdown">
               <NavDropdown.Item as={NavLink} to="/my-profile">Profile</NavDropdown.Item>
               <NavDropdown.Item as={NavLink} to="/club-history">Club History</NavDropdown.Item>
               <NavDropdown.Item as={NavLink} to="/my-player-advertisements">Player Ads</NavDropdown.Item>
               <NavDropdown.Item as={NavLink} to="/my-profile">Club Ads</NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/my-favorite-player-advertisements">Player Favorites</NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/my-profile">Club Favorites</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/my-favorite-player-advertisements">Favorite Player Ads</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/my-profile">Favorite Club Ads</NavDropdown.Item>
               <NavDropdown.Item onClick={AccountService.logout} as={NavLink} to="/">Log out</NavDropdown.Item>
             </NavDropdown>
           </Nav>
