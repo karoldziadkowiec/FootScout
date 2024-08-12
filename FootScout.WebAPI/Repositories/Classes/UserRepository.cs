@@ -69,6 +69,7 @@ namespace FootScout.WebAPI.Repositories.Classes
         {
             return await _dbContext.ClubHistories
                 .Include(ch => ch.Achievements)
+                .Include(ch => ch.PlayerPosition)
                 .Include(ch => ch.User)
                 .Where(ch => ch.UserId == userId)
                 .OrderByDescending(ch => ch.StartDate)

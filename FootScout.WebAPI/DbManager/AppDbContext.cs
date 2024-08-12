@@ -38,12 +38,6 @@ namespace FootScout.WebAPI.DbManager
                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ClubAdvertisement>()
-               .HasOne(ca => ca.PlayerFoot)
-               .WithMany()
-               .HasForeignKey(ca => ca.PlayerFootId)
-               .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<ClubAdvertisement>()
                 .HasOne(ca => ca.SalaryRange)
                 .WithMany()
                 .HasForeignKey(ca => ca.SalaryRangeId)

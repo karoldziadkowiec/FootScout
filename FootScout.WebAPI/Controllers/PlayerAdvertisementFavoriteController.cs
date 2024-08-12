@@ -45,7 +45,6 @@ namespace FootScout.WebAPI.Controllers
         // GET: api/player-advertisements/favorites/check/:playerAdvertisementId/:userId
         [HttpGet("check/{playerAdvertisementId}/{userId}")]
         public async Task<IActionResult> CheckPlayerAdvertisementIsFavorite(int playerAdvertisementId, string userId)
-        
         {
             var favoriteId = await _playerAdvertisementFavoriteRepository.CheckPlayerAdvertisementIsFavorite(playerAdvertisementId, userId);
             return Ok(favoriteId);
