@@ -29,6 +29,12 @@ namespace FootScout.WebAPI.DbManager
             CreateMap<PlayerAdvertisementFavoriteCreateDTO, PlayerAdvertisementFavorite>();
             CreateMap<ClubOffer, ClubOfferCreateDTO>();
             CreateMap<ClubOfferCreateDTO, ClubOffer>();
+            CreateMap<ClubAdvertisement, ClubAdvertisementCreateDTO>();
+            CreateMap<ClubAdvertisementCreateDTO, ClubAdvertisement>();
+            CreateMap<ClubAdvertisementFavorite, ClubAdvertisementFavoriteCreateDTO>();
+            CreateMap<ClubAdvertisementFavoriteCreateDTO, ClubAdvertisementFavorite>();
+            CreateMap<PlayerOffer, PlayerOfferCreateDTO>();
+            CreateMap<PlayerOfferCreateDTO, PlayerOffer>();
         }
     }
 }

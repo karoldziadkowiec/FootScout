@@ -83,6 +83,34 @@ namespace FootScout.WebAPI.Controllers
             return NoContent();
         }
 
+        // PUT: api/club-offers/accept/:clubOfferId
+        [HttpPut("accept/{clubOfferId}")]
+        public async Task<ActionResult> AcceptClubOffer(int clubOfferId, [FromBody] ClubOffer clubOffer)
+        {
+            if (clubOfferId != clubOffer.Id)
+                return BadRequest();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            await _clubOfferRepository.AcceptClubOffer(clubOffer);
+            return NoContent();
+        }
+
+        // PUT: api/club-offers/reject/:clubOfferId
+        [HttpPut("reject/{clubOfferId}")]
+        public async Task<ActionResult> RejectClubOffer(int clubOfferId, [FromBody] ClubOffer clubOffer)
+        {
+            if (clubOfferId != clubOffer.Id)
+                return BadRequest();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            await _clubOfferRepository.RejectClubOffer(clubOffer);
+            return NoContent();
+        }
+
         // GET: api/club-offers/status/:playerAdvertisementId/:userId
         [HttpGet("status/{playerAdvertisementId}/{userId}")]
         public async Task<IActionResult> GetClubOfferStatusId(int playerAdvertisementId, string userId)

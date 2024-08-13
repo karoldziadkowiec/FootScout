@@ -151,5 +151,69 @@ namespace FootScout.WebAPI.Controllers
             var sentClubOffers = await _userRepository.GetSentClubOffers(userId);
             return Ok(sentClubOffers);
         }
+
+        // GET: api/users/:userId/club-advertisements
+        [HttpGet("{userId}/club-advertisements")]
+        public async Task<ActionResult<IEnumerable<ClubAdvertisement>>> GetUserClubAdvertisements(string userId)
+        {
+            var userClubAdvertisements = await _userRepository.GetUserClubAdvertisements(userId);
+            return Ok(userClubAdvertisements);
+        }
+
+        // GET: api/users/:userId/club-advertisements/active
+        [HttpGet("{userId}/club-advertisements/active")]
+        public async Task<ActionResult<IEnumerable<ClubAdvertisement>>> GetUserActiveClubAdvertisements(string userId)
+        {
+            var userActiveClubAdvertisements = await _userRepository.GetUserActiveClubAdvertisements(userId);
+            return Ok(userActiveClubAdvertisements);
+        }
+
+        // GET: api/users/:userId/club-advertisements/inactive
+        [HttpGet("{userId}/club-advertisements/inactive")]
+        public async Task<ActionResult<IEnumerable<ClubAdvertisement>>> GetUserInactiveClubAdvertisements(string userId)
+        {
+            var userInactiveClubAdvertisements = await _userRepository.GetUserInactiveClubAdvertisements(userId);
+            return Ok(userInactiveClubAdvertisements);
+        }
+
+        // GET: api/users/:userId/club-advertisements/favorites
+        [HttpGet("{userId}/club-advertisements/favorites")]
+        public async Task<ActionResult<IEnumerable<ClubAdvertisementFavorite>>> GetUserFavoriteClubAdvertisements(string userId)
+        {
+            var userFavoriteClubAdvertisements = await _userRepository.GetUserFavoriteClubAdvertisements(userId);
+            return Ok(userFavoriteClubAdvertisements);
+        }
+
+        // GET: api/users/:userId/club-advertisements/favorites/active
+        [HttpGet("{userId}/club-advertisements/favorites/active")]
+        public async Task<ActionResult<IEnumerable<ClubAdvertisementFavorite>>> GetUserActiveFavoriteClubAdvertisements(string userId)
+        {
+            var userActiveFavoriteClubAdvertisements = await _userRepository.GetUserActiveFavoriteClubAdvertisements(userId);
+            return Ok(userActiveFavoriteClubAdvertisements);
+        }
+
+        // GET: api/users/:userId/club-advertisements/favorites/inactive
+        [HttpGet("{userId}/club-advertisements/favorites/inactive")]
+        public async Task<ActionResult<IEnumerable<ClubAdvertisementFavorite>>> GetUserInactiveFavoriteClubAdvertisements(string userId)
+        {
+            var userInactiveFavoriteClubAdvertisements = await _userRepository.GetUserInactiveFavoriteClubAdvertisements(userId);
+            return Ok(userInactiveFavoriteClubAdvertisements);
+        }
+
+        // GET: api/users/:userId/player-offers/received
+        [HttpGet("{userId}/player-offers/received")]
+        public async Task<ActionResult<IEnumerable<PlayerOffer>>> GetReceivedPlayerOffers(string userId)
+        {
+            var receivedPlayerOffers = await _userRepository.GetReceivedPlayerOffers(userId);
+            return Ok(receivedPlayerOffers);
+        }
+
+        // GET: api/users/:userId/player-offers/sent
+        [HttpGet("{userId}/player-offers/sent")]
+        public async Task<ActionResult<IEnumerable<PlayerOffer>>> GetSentPlayerOffers(string userId)
+        {
+            var sentPlayerOffers = await _userRepository.GetSentPlayerOffers(userId);
+            return Ok(sentPlayerOffers);
+        }
     }
 }

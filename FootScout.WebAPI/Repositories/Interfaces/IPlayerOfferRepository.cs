@@ -1,0 +1,17 @@
+﻿using FootScout.WebAPI.Entities;
+
+namespace FootScout.WebAPI.Repositories.Interfaces
+{
+    public interface IPlayerOfferRepository
+    {
+        Task<PlayerOffer> GetPlayerOffer(int playerOfferId);
+        Task<IEnumerable<PlayerOffer>> GetPlayerOffers();
+        Task<IEnumerable<PlayerOffer>> GetActivePlayerOffers();
+        Task<IEnumerable<PlayerOffer>> GetInactivePlayerOffers();
+        Task CreatePlayerOffer(PlayerOffer playerOffer);
+        Task UpdatePlayerOffer(PlayerOffer playerOffer);
+        Task AcceptPlayerOffer(PlayerOffer playerOffer);
+        Task RejectPlayerOffer(PlayerOffer playerOffer);
+        Task<int> GetPlayerOfferStatusId(int clubAdvertisementId, string userId);
+    }
+}

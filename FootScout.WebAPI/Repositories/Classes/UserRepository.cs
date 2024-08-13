@@ -186,5 +186,109 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .OrderByDescending(pa => pa.PlayerAdvertisement.CreationDate)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<ClubAdvertisement>> GetUserClubAdvertisements(string userId)
+        {
+            return await _dbContext.ClubAdvertisements
+                .Include(ca => ca.PlayerPosition)
+                .Include(ca => ca.SalaryRange)
+                .Include(ca => ca.User)
+                .Where(ca => ca.UserId == userId)
+                .OrderByDescending(ca => ca.EndDate)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<ClubAdvertisement>> GetUserActiveClubAdvertisements(string userId)
+        {
+            return await _dbContext.ClubAdvertisements
+                .Include(ca => ca.PlayerPosition)
+                .Include(ca => ca.SalaryRange)
+                .Include(ca => ca.User)
+                .Where(ca => ca.UserId == userId && ca.EndDate >= DateTime.Now)
+                .OrderBy(ca => ca.EndDate)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<ClubAdvertisement>> GetUserInactiveClubAdvertisements(string userId)
+        {
+            return await _dbContext.ClubAdvertisements
+                .Include(ca => ca.PlayerPosition)
+                .Include(ca => ca.SalaryRange)
+                .Include(ca => ca.User)
+                .Where(ca => ca.UserId == userId && ca.EndDate < DateTime.Now)
+                .OrderByDescending(ca => ca.EndDate)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<ClubAdvertisementFavorite>> GetUserFavoriteClubAdvertisements(string userId)
+        {
+            return await _dbContext.ClubAdvertisementFavorites
+                .Include(ca => ca.ClubAdvertisement)
+                .Include(ca => ca.ClubAdvertisement.PlayerPosition)
+                .Include(ca => ca.ClubAdvertisement.SalaryRange)
+                .Include(ca => ca.ClubAdvertisement.User)
+                .Include(ca => ca.User)
+                .Where(ca => ca.UserId == userId)
+                .OrderByDescending(ca => ca.ClubAdvertisement.EndDate)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<ClubAdvertisementFavorite>> GetUserActiveFavoriteClubAdvertisements(string userId)
+        {
+            return await _dbContext.ClubAdvertisementFavorites
+                .Include(ca => ca.ClubAdvertisement)
+                .Include(ca => ca.ClubAdvertisement.PlayerPosition)
+                .Include(ca => ca.ClubAdvertisement.SalaryRange)
+                .Include(ca => ca.ClubAdvertisement.User)
+                .Include(ca => ca.User)
+                .Where(ca => ca.UserId == userId && ca.ClubAdvertisement.EndDate >= DateTime.Now)
+                .OrderBy(ca => ca.ClubAdvertisement.EndDate)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<ClubAdvertisementFavorite>> GetUserInactiveFavoriteClubAdvertisements(string userId)
+        {
+            return await _dbContext.ClubAdvertisementFavorites
+                .Include(ca => ca.ClubAdvertisement)
+                .Include(ca => ca.ClubAdvertisement.PlayerPosition)
+                .Include(ca => ca.ClubAdvertisement.SalaryRange)
+                .Include(ca => ca.ClubAdvertisement.User)
+                .Include(ca => ca.User)
+                .Where(ca => ca.UserId == userId && ca.ClubAdvertisement.EndDate < DateTime.Now)
+                .OrderByDescending(ca => ca.ClubAdvertisement.EndDate)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<PlayerOffer>> GetReceivedPlayerOffers(string userId)
+        {
+            return await _dbContext.PlayerOffers
+                .Include(po => po.ClubAdvertisement)
+                .Include(ca => ca.ClubAdvertisement.PlayerPosition)
+                .Include(ca => ca.ClubAdvertisement.SalaryRange)
+                .Include(ca => ca.ClubAdvertisement.User)
+                .Include(po => po.OfferStatus)
+                .Include(po => po.PlayerPosition)
+                .Include(po => po.PlayerFoot)
+                .Include(po => po.UserPlayer)
+                .Where(pa => pa.ClubAdvertisement.UserId == userId)
+                .OrderByDescending(pa => pa.ClubAdvertisement.EndDate)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<PlayerOffer>> GetSentPlayerOffers(string userId)
+        {
+            return await _dbContext.PlayerOffers
+                .Include(po => po.ClubAdvertisement)
+                .Include(ca => ca.ClubAdvertisement.PlayerPosition)
+                .Include(ca => ca.ClubAdvertisement.SalaryRange)
+                .Include(ca => ca.ClubAdvertisement.User)
+                .Include(po => po.OfferStatus)
+                .Include(po => po.PlayerPosition)
+                .Include(po => po.PlayerFoot)
+                .Include(po => po.UserPlayer)
+                .Where(pa => pa.UserPlayerId == userId)
+                .OrderByDescending(pa => pa.ClubAdvertisement.CreationDate)
+                .ToListAsync();
+        }
     }
 }

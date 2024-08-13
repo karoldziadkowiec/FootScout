@@ -56,9 +56,6 @@ namespace FootScout.WebAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
-
                     b.Property<string>("ClubName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -69,15 +66,9 @@ namespace FootScout.WebAPI.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Height")
-                        .HasColumnType("int");
-
                     b.Property<string>("League")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PlayerFootId")
-                        .HasColumnType("int");
 
                     b.Property<int>("PlayerPositionId")
                         .HasColumnType("int");
@@ -94,8 +85,6 @@ namespace FootScout.WebAPI.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PlayerFootId");
 
                     b.HasIndex("PlayerPositionId");
 
@@ -655,12 +644,6 @@ namespace FootScout.WebAPI.Migrations
 
             modelBuilder.Entity("FootScout.WebAPI.Entities.ClubAdvertisement", b =>
                 {
-                    b.HasOne("FootScout.WebAPI.Entities.PlayerFoot", "PlayerFoot")
-                        .WithMany()
-                        .HasForeignKey("PlayerFootId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("FootScout.WebAPI.Entities.PlayerPosition", "PlayerPosition")
                         .WithMany()
                         .HasForeignKey("PlayerPositionId")
@@ -678,8 +661,6 @@ namespace FootScout.WebAPI.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("PlayerFoot");
 
                     b.Navigation("PlayerPosition");
 

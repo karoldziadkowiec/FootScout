@@ -94,6 +94,28 @@ namespace FootScout.WebAPI.Repositories.Classes
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task AcceptClubOffer(ClubOffer clubOffer)
+        {
+            var acceptedStatus = await _dbContext.OfferStatuses
+                .FirstOrDefaultAsync(a => a.StatusName == "Accepted");
+            clubOffer.OfferStatusId = acceptedStatus.Id;
+            clubOffer.OfferStatus = acceptedStatus;
+
+            _dbContext.ClubOffers.Update(clubOffer);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task RejectClubOffer(ClubOffer clubOffer)
+        {
+            var rejectedStatus = await _dbContext.OfferStatuses
+                .FirstOrDefaultAsync(a => a.StatusName == "Rejected");
+            clubOffer.OfferStatusId = rejectedStatus.Id;
+            clubOffer.OfferStatus = rejectedStatus;
+
+            _dbContext.ClubOffers.Update(clubOffer);
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task<int> GetClubOfferStatusId(int playerAdvertisementId, string userId)
         {
             var offerStatusId = await _dbContext.ClubOffers
