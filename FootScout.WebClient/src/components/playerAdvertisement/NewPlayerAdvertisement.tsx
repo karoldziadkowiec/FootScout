@@ -211,7 +211,7 @@ const NewPlayerAdvertisement = () => {
                                 <Row>
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formMin">
-                                            <Form.Label className="white-label">Min Salary (zł.)</Form.Label>
+                                            <Form.Label className="white-label">Min Salary (zł.)/month</Form.Label>
                                             <Form.Control
                                                 type="number"
                                                 placeholder="Min"
@@ -229,7 +229,7 @@ const NewPlayerAdvertisement = () => {
                                     </Col>
                                     <Col>
                                         <Form.Group className="mb-3" controlId="formMax">
-                                            <Form.Label className="white-label">Max Salary (zł.)</Form.Label>
+                                            <Form.Label className="white-label">Max Salary (zł.)/month</Form.Label>
                                             <Form.Control
                                                 type="number"
                                                 placeholder="Max"

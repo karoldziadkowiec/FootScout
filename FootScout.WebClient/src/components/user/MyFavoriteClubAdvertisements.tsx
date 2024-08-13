@@ -4,17 +4,17 @@ import { Table, Button, Modal } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
-import PlayerAdvertisementFavoriteService from '../../services/api/PlayerAdvertisementFavoriteService';
-import PlayerAdvertisementFavorite from '../../models/interfaces/PlayerAdvertisementFavorite';
+import ClubAdvertisementFavoriteService from '../../services/api/ClubAdvertisementFavoriteService';
+import ClubAdvertisementFavorite from '../../models/interfaces/ClubAdvertisementFavorite';
 import '../../App.css';
-import '../../styles/user/MyFavoritePlayerAdvertisements.css';
+import '../../styles/user/MyFavoriteClubAdvertisements.css';
 
-const MyFavoritePlayerAdvertisements = () => {
+const MyFavoriteClubAdvertisements = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [userId, setUserId] = useState<string | null>();
-    const [userActiveFavoritePlayerAdvertisements, setUserActiveFavoritePlayerAdvertisements] = useState<PlayerAdvertisementFavorite[]>([]);
-    const [userInactiveFavoritePlayerAdvertisements, setUserInactiveFavoritePlayerAdvertisements] = useState<PlayerAdvertisementFavorite[]>([]);
+    const [userActiveFavoriteClubAdvertisements, setUserActiveFavoriteClubAdvertisements] = useState<ClubAdvertisementFavorite[]>([]);
+    const [userInactiveFavoriteClubAdvertisements, setUserInactiveFavoriteClubAdvertisements] = useState<ClubAdvertisementFavorite[]>([]);
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
     const [deleteFavoriteId, setDeleteFavoriteId] = useState<number | null>(null);
 
@@ -27,11 +27,11 @@ const MyFavoritePlayerAdvertisements = () => {
                 const userId = await AccountService.getId();
                 if (userId) {
                     setUserId(userId);
-                    const _userActiveFavoritePlayerAdvertisements = await UserService.getUserActivePlayerAdvertisementFavorites(userId);
-                    setUserActiveFavoritePlayerAdvertisements(_userActiveFavoritePlayerAdvertisements);
+                    const _userActiveFavoriteClubAdvertisements = await UserService.getUserActiveClubAdvertisementFavorites(userId);
+                    setUserActiveFavoriteClubAdvertisements(_userActiveFavoriteClubAdvertisements);
 
-                    const _userInactiveFavoritePlayerAdvertisements = await UserService.getUserInactivePlayerAdvertisementFavorites(userId);
-                    setUserInactiveFavoritePlayerAdvertisements(_userInactiveFavoritePlayerAdvertisements);
+                    const _userInactiveFavoriteClubAdvertisements = await UserService.getUserInactiveClubAdvertisementFavorites(userId);
+                    setUserInactiveFavoriteClubAdvertisements(_userInactiveFavoriteClubAdvertisements);
                 }
             }
             catch (error) {
@@ -43,8 +43,8 @@ const MyFavoritePlayerAdvertisements = () => {
         fetchUserData();
     }, [location]);
 
-    const moveToPlayerAdvertisementPage = (playerAdvertisementId: number) => {
-        navigate(`/player-advertisement/${playerAdvertisementId}`, { state: { playerAdvertisementId } });
+    const moveToClubAdvertisementPage = (clubAdvertisementId: number) => {
+        navigate(`/club-advertisement/${clubAdvertisementId}`, { state: { clubAdvertisementId } });
     };
 
     const handleShowDeleteModal = (favoriteAdvertisementId: number) => {
@@ -57,16 +57,16 @@ const MyFavoritePlayerAdvertisements = () => {
             return;
 
         try {
-            await PlayerAdvertisementFavoriteService.deleteFromFavorites(deleteFavoriteId);
+            await ClubAdvertisementFavoriteService.deleteFromFavorites(deleteFavoriteId);
             toast.success('Your followed advertisement has been deleted from favorites successfully.');
             setShowDeleteModal(false);
             setDeleteFavoriteId(null);
             // Refresh the user data
-            const _userActiveFavoritePlayerAdvertisements = await UserService.getUserActivePlayerAdvertisementFavorites(userId);
-            setUserActiveFavoritePlayerAdvertisements(_userActiveFavoritePlayerAdvertisements);
+            const _userActiveFavoriteClubAdvertisements = await UserService.getUserActiveClubAdvertisementFavorites(userId);
+            setUserActiveFavoriteClubAdvertisements(_userActiveFavoriteClubAdvertisements);
 
-            const _userInactiveFavoritePlayerAdvertisements = await UserService.getUserInactivePlayerAdvertisementFavorites(userId);
-            setUserInactiveFavoritePlayerAdvertisements(_userInactiveFavoritePlayerAdvertisements);
+            const _userInactiveFavoriteClubAdvertisements = await UserService.getUserInactiveClubAdvertisementFavorites(userId);
+            setUserInactiveFavoriteClubAdvertisements(_userInactiveFavoriteClubAdvertisements);
         }
         catch (error) {
             console.error('Failed to delete advertisement from favorites:', error);
@@ -99,9 +99,9 @@ const MyFavoritePlayerAdvertisements = () => {
     };
 
     return (
-        <div className="MyFavoritePlayerAdvertisements">
+        <div className="MyFavoriteClubAdvertisements">
             <ToastContainer />
-            <h1>My Favorite Player Advertisements</h1>
+            <h1>My Favorite Club Advertisements</h1>
             {/* Active favorite advertisements*/}
             <h3>Active advertisements</h3>
             <div className="table-responsive">
@@ -109,24 +109,24 @@ const MyFavoritePlayerAdvertisements = () => {
                     <thead className="table-success">
                         <tr>
                             <th>Creation Date (days left)</th>
-                            <th>Name</th>
+                            <th>Club Name</th>
+                            <th>League (Region)</th>
                             <th>Position</th>
-                            <th>Preferred League (Region)</th>
                             <th>Salary (zł.) / month</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        {userActiveFavoritePlayerAdvertisements.length > 0 ? (
-                            userActiveFavoritePlayerAdvertisements.map((favoriteAdvertisement, index) => (
+                        {userActiveFavoriteClubAdvertisements.length > 0 ? (
+                            userActiveFavoriteClubAdvertisements.map((favoriteAdvertisement, index) => (
                                 <tr key={index}>
-                                    <td>{formatDate(favoriteAdvertisement.playerAdvertisement.creationDate)} ({calculateDaysLeft(favoriteAdvertisement.playerAdvertisement.endDate)} days)</td>
-                                    <td>{favoriteAdvertisement.playerAdvertisement.user.firstName} {favoriteAdvertisement.playerAdvertisement.user.lastName}</td>
-                                    <td>{favoriteAdvertisement.playerAdvertisement.playerPosition.positionName}</td>
-                                    <td>{favoriteAdvertisement.playerAdvertisement.league} ({favoriteAdvertisement.playerAdvertisement.region})</td>
-                                    <td>{favoriteAdvertisement.playerAdvertisement.salaryRange.min} - {favoriteAdvertisement.playerAdvertisement.salaryRange.max}</td>
+                                    <td>{formatDate(favoriteAdvertisement.clubAdvertisement.creationDate)} ({calculateDaysLeft(favoriteAdvertisement.clubAdvertisement.endDate)} days)</td>
+                                    <td>{favoriteAdvertisement.clubAdvertisement.clubName}</td>
+                                    <td>{favoriteAdvertisement.clubAdvertisement.league} ({favoriteAdvertisement.clubAdvertisement.region})</td>
+                                    <td>{favoriteAdvertisement.clubAdvertisement.playerPosition.positionName}</td>
+                                    <td>{favoriteAdvertisement.clubAdvertisement.salaryRange.min} - {favoriteAdvertisement.clubAdvertisement.salaryRange.max}</td>
                                     <td>
-                                        <Button variant="dark" className="button-spacing" onClick={() => moveToPlayerAdvertisementPage(favoriteAdvertisement.playerAdvertisement.id)}>
+                                        <Button variant="dark" className="button-spacing" onClick={() => moveToClubAdvertisementPage(favoriteAdvertisement.clubAdvertisement.id)}>
                                             <i className="bi bi-info-square"></i>
                                         </Button>
                                         <Button variant="danger" onClick={() => handleShowDeleteModal(favoriteAdvertisement.id)}>
@@ -137,7 +137,7 @@ const MyFavoritePlayerAdvertisements = () => {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan={9} className="text-center">No favorite player advertisement available</td>
+                                <td colSpan={9} className="text-center">No favorite club advertisement available</td>
                             </tr>
                         )}
                     </tbody>
@@ -150,25 +150,25 @@ const MyFavoritePlayerAdvertisements = () => {
                 <Table striped bordered hover variant="light">
                     <thead className="table-warning">
                         <tr>
-                            <th>Ended Date (days passed)</th>
-                            <th>Name</th>
+                            <th>Creation Date (days left)</th>
+                            <th>Club Name</th>
+                            <th>League (Region)</th>
                             <th>Position</th>
-                            <th>Preferred League (Region)</th>
                             <th>Salary (zł.) / month</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        {userInactiveFavoritePlayerAdvertisements.length > 0 ? (
-                            userInactiveFavoritePlayerAdvertisements.map((favoriteAdvertisement, index) => (
+                        {userInactiveFavoriteClubAdvertisements.length > 0 ? (
+                            userInactiveFavoriteClubAdvertisements.map((favoriteAdvertisement, index) => (
                                 <tr key={index}>
-                                    <td>{formatDate(favoriteAdvertisement.playerAdvertisement.endDate)} ({calculateSkippedDays(favoriteAdvertisement.playerAdvertisement.endDate)} days)</td>
-                                    <td>{favoriteAdvertisement.playerAdvertisement.user.firstName} {favoriteAdvertisement.playerAdvertisement.user.lastName}</td>
-                                    <td>{favoriteAdvertisement.playerAdvertisement.playerPosition.positionName}</td>
-                                    <td>{favoriteAdvertisement.playerAdvertisement.league} ({favoriteAdvertisement.playerAdvertisement.region})</td>
-                                    <td>{favoriteAdvertisement.playerAdvertisement.salaryRange.min} - {favoriteAdvertisement.playerAdvertisement.salaryRange.max}</td>
+                                    <td>{formatDate(favoriteAdvertisement.clubAdvertisement.creationDate)} ({calculateSkippedDays(favoriteAdvertisement.clubAdvertisement.endDate)} days)</td>
+                                    <td>{favoriteAdvertisement.clubAdvertisement.clubName}</td>
+                                    <td>{favoriteAdvertisement.clubAdvertisement.league} ({favoriteAdvertisement.clubAdvertisement.region})</td>
+                                    <td>{favoriteAdvertisement.clubAdvertisement.playerPosition.positionName}</td>
+                                    <td>{favoriteAdvertisement.clubAdvertisement.salaryRange.min} - {favoriteAdvertisement.clubAdvertisement.salaryRange.max}</td>
                                     <td>
-                                        <Button variant="dark" className="button-spacing" onClick={() => moveToPlayerAdvertisementPage(favoriteAdvertisement.playerAdvertisement.id)}>
+                                        <Button variant="dark" className="button-spacing" onClick={() => moveToClubAdvertisementPage(favoriteAdvertisement.clubAdvertisement.id)}>
                                             <i className="bi bi-info-square"></i>
                                         </Button>
                                         <Button variant="danger" onClick={() => handleShowDeleteModal(favoriteAdvertisement.id)}>
@@ -179,14 +179,14 @@ const MyFavoritePlayerAdvertisements = () => {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan={9} className="text-center">No favorite player advertisement available</td>
+                                <td colSpan={9} className="text-center">No favorite club advertisement available</td>
                             </tr>
                         )}
                     </tbody>
                 </Table>
             </div>
 
-            {/* Delete Favorite Player Advertisement Modal */}
+            {/* Delete Favorite Club Advertisement Modal */}
             <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>Confirm action</Modal.Title>
@@ -201,4 +201,4 @@ const MyFavoritePlayerAdvertisements = () => {
     );
 }
 
-export default MyFavoritePlayerAdvertisements;
+export default MyFavoriteClubAdvertisements;

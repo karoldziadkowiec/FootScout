@@ -4,13 +4,11 @@ import { Table, Button, Modal } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
-import OfferStatusService from '../../services/api/OfferStatusService';
 import ClubOfferService from '../../services/api/ClubOfferService';
 import OfferStatusName from '../../models/enums/OfferStatusName';
 import ClubOffer from '../../models/interfaces/ClubOffer';
 import '../../App.css';
 import '../../styles/user/MyOffersAsPlayer.css';
-
 
 const MyOffersAsPlayer = () => {
     const navigate = useNavigate();
@@ -61,16 +59,11 @@ const MyOffersAsPlayer = () => {
             return;
 
         try {
-            const statusId = await OfferStatusService.getOfferStatusId(OfferStatusName.Accepted);
-            const _offerStatus = await OfferStatusService.getOfferStatus(statusId);
-
             const updatedFormData = {
-                ...receivedClubOfferToAccept,
-                offerStatusId: statusId,
-                offerStatus: _offerStatus
+                ...receivedClubOfferToAccept
             };
 
-            await ClubOfferService.updateClubOffer(receivedClubOfferToAccept.id, updatedFormData);
+            await ClubOfferService.acceptClubOffer(receivedClubOfferToAccept.id, updatedFormData);
             setShowAcceptReceivedClubOfferModal(false);
             toast.success('Received club offer has been accepted successfully.');
             // Refresh data
@@ -93,16 +86,11 @@ const MyOffersAsPlayer = () => {
             return;
 
         try {
-            const statusId = await OfferStatusService.getOfferStatusId(OfferStatusName.Rejected);
-            const _offerStatus = await OfferStatusService.getOfferStatus(statusId);
-
             const updatedFormData = {
-                ...receivedClubOfferToReject,
-                offerStatusId: statusId,
-                offerStatus: _offerStatus
+                ...receivedClubOfferToReject
             };
 
-            await ClubOfferService.updateClubOffer(receivedClubOfferToReject.id, updatedFormData);
+            await ClubOfferService.rejectClubOffer(receivedClubOfferToReject.id, updatedFormData);
             setShowRejectReceivedClubOfferModal(false);
             toast.success('Received club offer has been rejected successfully.');
             // Refresh data
@@ -173,12 +161,12 @@ const MyOffersAsPlayer = () => {
                         {receivedClubOffers.length > 0 ? (
                             receivedClubOffers.map((clubOffer, index) => (
                                 <tr key={index}>
-                                    <td>{formatDate(clubOffer.creationDate)} ({calculateDaysLeft(clubOffer.playerAdvertisement.endDate)})</td>
-                                    <td>{clubOffer.offerStatus.statusName}</td>
-                                    <td>{clubOffer.clubName}</td>
-                                    <td>{clubOffer.league} ({clubOffer.region})</td>
-                                    <td>{clubOffer.playerPosition.positionName}</td>
-                                    <td>
+                                    <td className="offer-row">{formatDate(clubOffer.creationDate)} ({calculateDaysLeft(clubOffer.playerAdvertisement.endDate)})</td>
+                                    <td className="offer-row">{clubOffer.offerStatus.statusName}</td>
+                                    <td className="offer-row">{clubOffer.clubName}</td>
+                                    <td className="offer-row">{clubOffer.league} ({clubOffer.region})</td>
+                                    <td className="offer-row">{clubOffer.playerPosition.positionName}</td>
+                                    <td className="offer-row">
                                         <Button variant="primary" className="button-spacing" onClick={() => handleShowReceivedClubOfferDetails(clubOffer)}>
                                             <i className="bi bi-info-circle"></i> Offer
                                         </Button>

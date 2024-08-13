@@ -4,42 +4,42 @@ import { Table, Button } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
-import PlayerAdvertisement from '../../models/interfaces/PlayerAdvertisement';
+import ClubAdvertisement from '../../models/interfaces/ClubAdvertisement';
 import '../../App.css';
-import '../../styles/user/MyPlayerAdvertisements.css';
+import '../../styles/user/MyClubAdvertisements.css';
 
-const MyPlayerAdvertisements = () => {
+const MyClubAdvertisements = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const [userActivePlayerAdvertisements, setUserActivePlayerAdvertisements] = useState<PlayerAdvertisement[]>([]);
-    const [userInactivePlayerAdvertisements, setUserInactivePlayerAdvertisements] = useState<PlayerAdvertisement[]>([]);
+    const [userActiveClubAdvertisements, setUserActiveClubAdvertisements] = useState<ClubAdvertisement[]>([]);
+    const [userInactiveClubAdvertisements, setUserInactiveClubAdvertisements] = useState<ClubAdvertisement[]>([]);
 
     useEffect(() => {
         if (location.state && location.state.toastMessage)
             toast.success(location.state.toastMessage);
 
-        const fetchUserPlayerAdvertisements = async () => {
+        const fetchUserClubAdvertisements = async () => {
             try {
                 const userId = await AccountService.getId();
                 if (userId) {
-                    const _userActivePlayerAdvertisements = await UserService.getUserActivePlayerAdvertisements(userId);
-                    setUserActivePlayerAdvertisements(_userActivePlayerAdvertisements);
+                    const _userActiveClubAdvertisements = await UserService.getUserActiveClubAdvertisements(userId);
+                    setUserActiveClubAdvertisements(_userActiveClubAdvertisements);
 
-                    const _userInactivePlayerAdvertisements = await UserService.getUserInactivePlayerAdvertisements(userId);
-                    setUserInactivePlayerAdvertisements(_userInactivePlayerAdvertisements);
+                    const _userInactiveClubAdvertisements = await UserService.getUserInactiveClubAdvertisements(userId);
+                    setUserInactiveClubAdvertisements(_userInactiveClubAdvertisements);
                 }
             }
             catch (error) {
-                console.error('Failed to fetch user\'s player advertisements:', error);
-                toast.error('Failed to load user\'s player advertisements.');
+                console.error('Failed to fetch user\'s club advertisements:', error);
+                toast.error('Failed to load user\'s club advertisements.');
             }
         };
 
-        fetchUserPlayerAdvertisements();
+        fetchUserClubAdvertisements();
     }, [location]);
 
-    const moveToPlayerAdvertisementPage = (playerAdvertisementId: number) => {
-        navigate(`/player-advertisement/${playerAdvertisementId}`, { state: { playerAdvertisementId } });
+    const moveToClubAdvertisementPage = (clubAdvertisementId: number) => {
+        navigate(`/club-advertisement/${clubAdvertisementId}`, { state: { clubAdvertisementId } });
     };
 
     const formatDate = (dateString: string): string => {
@@ -67,10 +67,10 @@ const MyPlayerAdvertisements = () => {
     };
 
     return (
-        <div className="MyPlayerAdvertisements">
+        <div className="MyClubAdvertisements">
             <ToastContainer />
-            <h1>My Player Advertisements</h1>
-            <Button variant="success" className="form-button" onClick={() => navigate('/new-player-advertisement')}>
+            <h1>My Club Advertisements</h1>
+            <Button variant="success" className="form-button" onClick={() => navigate('/new-club-advertisement')}>
                 <i className="bi bi-file-earmark-plus-fill"></i>
                 New Advertisement
             </Button>
@@ -82,23 +82,23 @@ const MyPlayerAdvertisements = () => {
                         <tr>
                             <th>Creation Date (days left)</th>
                             <th>Position</th>
-                            <th>Preferred League</th>
-                            <th>Region</th>
+                            <th>Club Name</th>
+                            <th>League (Region)</th>
                             <th>Salary (zł.) / month</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        {userActivePlayerAdvertisements.length > 0 ? (
-                            userActivePlayerAdvertisements.map((advertisement, index) => (
+                        {userActiveClubAdvertisements.length > 0 ? (
+                            userActiveClubAdvertisements.map((advertisement, index) => (
                                 <tr key={index}>
                                     <td>{formatDate(advertisement.creationDate)} ({calculateDaysLeft(advertisement.endDate)} days)</td>
                                     <td>{advertisement.playerPosition.positionName}</td>
-                                    <td>{advertisement.league}</td>
-                                    <td>{advertisement.region}</td>
+                                    <td>{advertisement.clubName}</td>
+                                    <td>{advertisement.league} ({advertisement.region})</td>
                                     <td>{advertisement.salaryRange.min} - {advertisement.salaryRange.max}</td>
                                     <td>
-                                        <Button variant="dark" className="button-spacing" onClick={() => moveToPlayerAdvertisementPage(advertisement.id)}>
+                                        <Button variant="dark" className="button-spacing" onClick={() => moveToClubAdvertisementPage(advertisement.id)}>
                                             <i className="bi bi-info-square"></i>
                                         </Button>
                                     </td>
@@ -106,7 +106,7 @@ const MyPlayerAdvertisements = () => {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan={9} className="text-center">No player advertisement available</td>
+                                <td colSpan={9} className="text-center">No club advertisement available</td>
                             </tr>
                         )}
                     </tbody>
@@ -119,25 +119,25 @@ const MyPlayerAdvertisements = () => {
                 <Table striped bordered hover variant="light">
                     <thead className="table-warning">
                         <tr>
-                            <th>Ended Date (days ago)</th>
+                        <th>Creation Date (days left)</th>
                             <th>Position</th>
-                            <th>Preferred League</th>
-                            <th>Region</th>
+                            <th>Club Name</th>
+                            <th>League (Region)</th>
                             <th>Salary (zł.) / month</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        {userInactivePlayerAdvertisements.length > 0 ? (
-                            userInactivePlayerAdvertisements.map((advertisement, index) => (
+                        {userInactiveClubAdvertisements.length > 0 ? (
+                            userInactiveClubAdvertisements.map((advertisement, index) => (
                                 <tr key={index}>
-                                    <td>{formatDate(advertisement.endDate)} ({calculateSkippedDays(advertisement.endDate)} days)</td>
+                                    <td>{formatDate(advertisement.creationDate)} ({calculateSkippedDays(advertisement.endDate)} days)</td>
                                     <td>{advertisement.playerPosition.positionName}</td>
-                                    <td>{advertisement.league}</td>
-                                    <td>{advertisement.region}</td>
+                                    <td>{advertisement.clubName}</td>
+                                    <td>{advertisement.league} ({advertisement.region})</td>
                                     <td>{advertisement.salaryRange.min} - {advertisement.salaryRange.max}</td>
                                     <td>
-                                        <Button variant="dark" className="button-spacing" onClick={() => moveToPlayerAdvertisementPage(advertisement.id)}>
+                                        <Button variant="dark" className="button-spacing" onClick={() => moveToClubAdvertisementPage(advertisement.id)}>
                                             <i className="bi bi-info-square"></i>
                                         </Button>
                                     </td>
@@ -145,7 +145,7 @@ const MyPlayerAdvertisements = () => {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan={9} className="text-center">No player advertisement available</td>
+                                <td colSpan={9} className="text-center">No club advertisement available</td>
                             </tr>
                         )}
                     </tbody>
@@ -155,4 +155,4 @@ const MyPlayerAdvertisements = () => {
     );
 }
 
-export default MyPlayerAdvertisements;
+export default MyClubAdvertisements;

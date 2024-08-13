@@ -20,7 +20,7 @@ const NavbarComponent = () => {
             <Nav.Link as={NavLink} to="/home">Home</Nav.Link>
             <NavDropdown title="Advertisements" id="basic-nav-dropdown">
               <NavDropdown.Item as={NavLink} to="/player-advertisements">Player's</NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/my-profile">Club's</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/club-advertisements">Club's</NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title="Recommendations" id="basic-nav-dropdown">
               <NavDropdown.Item as={NavLink} to="/my-profile">Player's</NavDropdown.Item>
@@ -28,7 +28,7 @@ const NavbarComponent = () => {
             </NavDropdown>
             <NavDropdown title="New Advertisement" id="basic-nav-dropdown">
               <NavDropdown.Item as={NavLink} to="/new-player-advertisement">as Player</NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/my-profile">as Club</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/new-club-advertisement">as Club</NavDropdown.Item>
             </NavDropdown>
           </Nav>
           <Nav className="ms-auto green-links">
@@ -41,9 +41,9 @@ const NavbarComponent = () => {
               <NavDropdown.Item as={NavLink} to="/my-profile">Profile</NavDropdown.Item>
               <NavDropdown.Item as={NavLink} to="/club-history">Club History</NavDropdown.Item>
               <NavDropdown.Item as={NavLink} to="/my-player-advertisements">Player Ads</NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/my-profile">Club Ads</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/my-club-advertisements">Club Ads</NavDropdown.Item>
               <NavDropdown.Item as={NavLink} to="/my-favorite-player-advertisements">Favorite Player Ads</NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/my-profile">Favorite Club Ads</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/my-favorite-club-advertisements">Favorite Club Ads</NavDropdown.Item>
               <NavDropdown.Item onClick={AccountService.logout} as={NavLink} to="/">Log out</NavDropdown.Item>
             </NavDropdown>
           </Nav>

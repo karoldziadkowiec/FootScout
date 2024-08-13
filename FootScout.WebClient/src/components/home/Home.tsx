@@ -54,9 +54,9 @@ const Home = () => {
                 <p></p>
                 <Container className="links">
                     <Row>
-                        <Col><Button variant="success" onClick={() => moveToPage("my-profile")}>Advertisements</Button></Col>
+                        <Col><Button variant="success" onClick={() => moveToPage("club-advertisements")}>Advertisements</Button></Col>
                         <Col><Button variant="success" onClick={() => moveToPage("my-profile")}>Recommendations</Button></Col>
-                        <Col><Button variant="success" onClick={() => moveToPage("my-profile")}>New Ad</Button></Col>
+                        <Col><Button variant="success" onClick={() => moveToPage("new-club-advertisement")}>New Ad</Button></Col>
                     </Row>
                 </Container>
             </Element>

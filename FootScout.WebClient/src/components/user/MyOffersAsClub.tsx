@@ -104,13 +104,13 @@ const MyOffersAsClub = () => {
                         {sentClubOffers.length > 0 ? (
                             sentClubOffers.map((clubOffer, index) => (
                                 <tr key={index}>
-                                    <td>{formatDate(clubOffer.creationDate)} ({calculateDaysLeft(clubOffer.playerAdvertisement.endDate)})</td>
-                                    <td>{clubOffer.offerStatus.statusName}</td>
-                                    <td>{clubOffer.playerAdvertisement.user.firstName} {clubOffer.playerAdvertisement.user.lastName}</td>
-                                    <td>{clubOffer.playerPosition.positionName}</td>
-                                    <td>{clubOffer.clubName}</td>
-                                    <td>{clubOffer.league} ({clubOffer.region})</td>
-                                    <td>
+                                    <td className="offer-row">{formatDate(clubOffer.creationDate)} ({calculateDaysLeft(clubOffer.playerAdvertisement.endDate)})</td>
+                                    <td className="offer-row">{clubOffer.offerStatus.statusName}</td>
+                                    <td className="offer-row">{clubOffer.playerAdvertisement.user.firstName} {clubOffer.playerAdvertisement.user.lastName}</td>
+                                    <td className="offer-row">{clubOffer.playerPosition.positionName}</td>
+                                    <td className="offer-row">{clubOffer.clubName}</td>
+                                    <td className="offer-row">{clubOffer.league} ({clubOffer.region})</td>
+                                    <td className="offer-row">
                                         <Button variant="primary" className="button-spacing" onClick={() => handleShowSentClubOfferDetails(clubOffer)}>
                                             <i className="bi bi-info-circle"></i> Offer
                                         </Button>

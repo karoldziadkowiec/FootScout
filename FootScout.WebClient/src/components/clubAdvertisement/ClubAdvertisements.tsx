@@ -5,28 +5,28 @@ import { ToastContainer, toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
 import PlayerPositionService from '../../services/api/PlayerPositionService';
-import PlayerAdvertisementService from '../../services/api/PlayerAdvertisementService';
-import PlayerAdvertisementFavoriteService from '../../services/api/PlayerAdvertisementFavoriteService';
+import ClubAdvertisementService from '../../services/api/ClubAdvertisementService';
+import ClubAdvertisementFavoriteService from '../../services/api/ClubAdvertisementFavoriteService';
 import PlayerPosition from '../../models/interfaces/PlayerPosition';
-import PlayerAdvertisement from '../../models/interfaces/PlayerAdvertisement';
-import PlayerAdvertisementFavorite from '../../models/interfaces/PlayerAdvertisementFavorite';
-import PlayerAdvertisementFavoriteCreateDTO from '../../models/dtos/PlayerAdvertisementFavoriteCreateDTO';
+import ClubAdvertisement from '../../models/interfaces/ClubAdvertisement';
+import ClubAdvertisementFavorite from '../../models/interfaces/ClubAdvertisementFavorite';
+import ClubAdvertisementFavoriteCreateDTO from '../../models/dtos/ClubAdvertisementFavoriteCreateDTO';
 import '../../App.css';
-import '../../styles/playerAdvertisement/PlayerAdvertisements.css';
+import '../../styles/clubAdvertisement/ClubAdvertisements.css';
 
-const PlayerAdvertisements = () => {
+const ClubAdvertisements = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [userId, setUserId] = useState<string | null>(null);
     const [isAdminRole, setIsAdminRole] = useState<boolean | null>(null);
     const [positions, setPositions] = useState<PlayerPosition[]>([]);
-    const [playerAdvertisements, setPlayerAdvertisements] = useState<PlayerAdvertisement[]>([]);
-    const [favoritePlayerAdvertisements, setFavoritePlayerAdvertisements] = useState<PlayerAdvertisementFavorite[]>([]);
-    const [favoritePlayerAdvertisementIds, setFavoritePlayerAdvertisementIds] = useState<number[]>([]);
+    const [clubAdvertisements, setClubAdvertisements] = useState<ClubAdvertisement[]>([]);
+    const [favoriteClubAdvertisements, setFavoriteClubAdvertisements] = useState<ClubAdvertisementFavorite[]>([]);
+    const [favoriteClubAdvertisementIds, setFavoriteClubAdvertisementIds] = useState<number[]>([]);
     const [showDeleteFavoriteModal, setShowDeleteFavoriteModal] = useState<boolean>(false);
     const [deleteFavoriteId, setDeleteFavoriteId] = useState<number | null>(null);
-    const [favoritePlayerAdvertisementDTO, setFavoritePlayerAdvertisementDTO] = useState<PlayerAdvertisementFavoriteCreateDTO>({
-        playerAdvertisementId: 0,
+    const [favoriteClubAdvertisementDTO, setFavoriteClubAdvertisementDTO] = useState<ClubAdvertisementFavoriteCreateDTO>({
+        clubAdvertisementId: 0,
         userId: ''
     });
     // Searching term
@@ -68,46 +68,46 @@ const PlayerAdvertisements = () => {
             }
         };
 
-        const fetchPlayerAdvertisements = async () => {
+        const fetchClubAdvertisements = async () => {
             try {
-                const _playerAdvertisements = await PlayerAdvertisementService.getActivePlayerAdvertisements();
-                setPlayerAdvertisements(_playerAdvertisements);
+                const _clubAdvertisements = await ClubAdvertisementService.getActiveClubAdvertisements();
+                setClubAdvertisements(_clubAdvertisements);
             } catch (error) {
-                console.error('Failed to fetch player advertisements:', error);
-                toast.error('Failed to load player advertisements.');
+                console.error('Failed to fetch club advertisements:', error);
+                toast.error('Failed to load club advertisements.');
             }
         };
 
-        const fetchFavoritePlayerAdvertisements = async () => {
+        const fetchFavoriteClubAdvertisements = async () => {
             try {
                 if (userId) {
-                    const _favPlayerAdvertisements = await UserService.getUserActivePlayerAdvertisementFavorites(userId);
-                    setFavoritePlayerAdvertisements(_favPlayerAdvertisements);
+                    const _favClubAdvertisements = await UserService.getUserActiveClubAdvertisementFavorites(userId);
+                    setFavoriteClubAdvertisements(_favClubAdvertisements);
 
-                    const favoriteIds = _favPlayerAdvertisements.map(fav => fav.playerAdvertisementId);
-                    setFavoritePlayerAdvertisementIds(favoriteIds);
+                    const favoriteIds = _favClubAdvertisements.map(fav => fav.clubAdvertisementId);
+                    setFavoriteClubAdvertisementIds(favoriteIds);
                 }
             } catch (error) {
-                console.error('Failed to fetch favorite player advertisements:', error);
-                toast.error('Failed to load favorite player advertisements.');
+                console.error('Failed to fetch favorite club advertisements:', error);
+                toast.error('Failed to load favorite club advertisements.');
             }
         };
 
         if (userId) {
-            fetchFavoritePlayerAdvertisements();
+            fetchFavoriteClubAdvertisements();
         }
 
         fetchUserData();
         fetchPositions();
-        fetchPlayerAdvertisements();
+        fetchClubAdvertisements();
     }, [location, userId]);
 
     const handlePageChange = (pageNumber: number) => {
         setCurrentPage(pageNumber);
     };
 
-    const moveToPlayerAdvertisementPage = (playerAdvertisementId: number) => {
-        navigate(`/player-advertisement/${playerAdvertisementId}`, { state: { playerAdvertisementId } });
+    const moveToClubAdvertisementPage = (clubAdvertisementId: number) => {
+        navigate(`/club-advertisement/${clubAdvertisementId}`, { state: { clubAdvertisementId } });
     };
 
     const handleShowDeleteFavoriteModal = (favoriteAdvertisementId: number) => {
@@ -120,18 +120,18 @@ const PlayerAdvertisements = () => {
             return;
 
         try {
-            await PlayerAdvertisementFavoriteService.deleteFromFavorites(deleteFavoriteId);
+            await ClubAdvertisementFavoriteService.deleteFromFavorites(deleteFavoriteId);
             toast.success('Your followed advertisement has been deleted from favorites successfully.');
             setShowDeleteFavoriteModal(false);
             setDeleteFavoriteId(null);
             // Refresh the user data
-            const _playerAdvertisements = await PlayerAdvertisementService.getActivePlayerAdvertisements();
-            setPlayerAdvertisements(_playerAdvertisements);
+            const _clubAdvertisements = await ClubAdvertisementService.getActiveClubAdvertisements();
+            setClubAdvertisements(_clubAdvertisements);
 
-            const _favPlayerAdvertisements = await UserService.getUserActivePlayerAdvertisementFavorites(userId);
-            setFavoritePlayerAdvertisements(_favPlayerAdvertisements);
-            const favoriteIds = _favPlayerAdvertisements.map(fav => fav.playerAdvertisementId);
-            setFavoritePlayerAdvertisementIds(favoriteIds);
+            const _favClubAdvertisements = await UserService.getUserActiveClubAdvertisementFavorites(userId);
+            setFavoriteClubAdvertisements(_favClubAdvertisements);
+            const favoriteIds = _favClubAdvertisements.map(fav => fav.clubAdvertisementId);
+            setFavoriteClubAdvertisementIds(favoriteIds);
         }
         catch (error) {
             console.error('Failed to delete advertisement from favorites:', error);
@@ -139,25 +139,25 @@ const PlayerAdvertisements = () => {
         }
     };
 
-    const handleAddToFavorite = async (playerAdvertisement: PlayerAdvertisement) => {
-        if (!playerAdvertisement || !userId)
+    const handleAddToFavorite = async (clubAdvertisement: ClubAdvertisement) => {
+        if (!clubAdvertisement || !userId)
             return;
 
         try {
-            const createFormData = { ...favoritePlayerAdvertisementDTO, playerAdvertisementId: playerAdvertisement.id, userId: userId };
-            setFavoritePlayerAdvertisementDTO(createFormData);
+            const createFormData = { ...favoriteClubAdvertisementDTO, clubAdvertisementId: clubAdvertisement.id, userId: userId };
+            setFavoriteClubAdvertisementDTO(createFormData);
 
-            await PlayerAdvertisementFavoriteService.addToFavorites(createFormData);
-            toast.success('Player advertisement has been added to favorites successfully.');
+            await ClubAdvertisementFavoriteService.addToFavorites(createFormData);
+            toast.success('Club advertisement has been added to favorites successfully.');
 
             // Refresh the user data
-            const _playerAdvertisements = await PlayerAdvertisementService.getActivePlayerAdvertisements();
-            setPlayerAdvertisements(_playerAdvertisements);
+            const _clubAdvertisements = await ClubAdvertisementService.getActiveClubAdvertisements();
+            setClubAdvertisements(_clubAdvertisements);
 
-            const _favPlayerAdvertisements = await UserService.getUserActivePlayerAdvertisementFavorites(userId);
-            setFavoritePlayerAdvertisements(_favPlayerAdvertisements);
-            const favoriteIds = _favPlayerAdvertisements.map(fav => fav.playerAdvertisementId);
-            setFavoritePlayerAdvertisementIds(favoriteIds);
+            const _favClubAdvertisements = await UserService.getUserActiveClubAdvertisementFavorites(userId);
+            setFavoriteClubAdvertisements(_favClubAdvertisements);
+            const favoriteIds = _favClubAdvertisements.map(fav => fav.clubAdvertisementId);
+            setFavoriteClubAdvertisementIds(favoriteIds);
         }
         catch (error) {
             console.error('Failed to add advertisement to favorites:', error);
@@ -181,7 +181,7 @@ const PlayerAdvertisements = () => {
         return Math.ceil(daysLeft);
     };
 
-    const searchAdvertisements = (advertisements: PlayerAdvertisement[]) => {
+    const searchAdvertisements = (advertisements: ClubAdvertisement[]) => {
         if (!searchTerm) {
             return advertisements;
         }
@@ -193,14 +193,14 @@ const PlayerAdvertisements = () => {
         );
     };
 
-    const filterAdvertisementsByPosition = (advertisements: PlayerAdvertisement[]) => {
+    const filterAdvertisementsByPosition = (advertisements: ClubAdvertisement[]) => {
         if (!selectedPosition) {
             return advertisements;
         }
         return advertisements.filter(ad => ad.playerPosition.id === parseInt(selectedPosition, 10));
     };
 
-    const sortAdvertisements = (advertisements: PlayerAdvertisement[]) => {
+    const sortAdvertisements = (advertisements: ClubAdvertisement[]) => {
         switch (sortCriteria) {
             case 'creationDateAsc':
                 return [...advertisements].sort((a, b) => new Date(a.creationDate).getTime() - new Date(b.creationDate).getTime());
@@ -210,6 +210,10 @@ const PlayerAdvertisements = () => {
                 return [...advertisements].sort((a, b) => a.playerPosition.positionName.localeCompare(b.playerPosition.positionName));
             case 'positionDesc':
                 return [...advertisements].sort((a, b) => b.playerPosition.positionName.localeCompare(a.playerPosition.positionName));
+            case 'clubNameAsc':
+                return [...advertisements].sort((a, b) => a.clubName.localeCompare(b.clubName));
+            case 'clubNameDesc':
+                return [...advertisements].sort((a, b) => b.clubName.localeCompare(a.clubName));
             case 'leagueAsc':
                 return [...advertisements].sort((a, b) => a.league.localeCompare(b.league));
             case 'leagueDesc':
@@ -227,17 +231,17 @@ const PlayerAdvertisements = () => {
         }
     };
 
-    const searchedAdvertisements = searchAdvertisements(playerAdvertisements);
+    const searchedAdvertisements = searchAdvertisements(clubAdvertisements);
     const filteredAdvertisements = filterAdvertisementsByPosition(searchedAdvertisements);
     const sortedAdvertisements = sortAdvertisements(filteredAdvertisements);
-    const currentPlayerAdvertisementItems = sortedAdvertisements.slice(indexOfFirstItem, indexOfLastItem);
+    const currentClubAdvertisementItems = sortedAdvertisements.slice(indexOfFirstItem, indexOfLastItem);
     const totalPages = Math.ceil(sortedAdvertisements.length / itemsPerPage);
 
     return (
-        <div className="PlayerAdvertisements">
+        <div className="ClubAdvertisements">
             <ToastContainer />
-            <h1>Player Advertisements</h1>
-            <Button variant="success" className="form-button" onClick={() => navigate('/new-player-advertisement')}>
+            <h1>Club Advertisements</h1>
+            <Button variant="success" className="form-button" onClick={() => navigate('/new-club-advertisement')}>
                 <i className="bi bi-file-earmark-plus-fill"></i>
                 New Advertisement
             </Button>
@@ -282,6 +286,8 @@ const PlayerAdvertisements = () => {
                         <option value="creationDateDesc">Creation Date Descending</option>
                         <option value="positionAsc">Position Ascending</option>
                         <option value="positionDesc">Position Descending</option>
+                        <option value="clubNameAsc">Club Name Ascending</option>
+                        <option value="clubNameDesc">Club Name Descending</option>
                         <option value="leagueAsc">League Ascending</option>
                         <option value="leagueDesc">League Descending</option>
                         <option value="regionAsc">Region Ascending</option>
@@ -296,34 +302,34 @@ const PlayerAdvertisements = () => {
                     <thead className="table-dark">
                         <tr>
                             <th>Creation Date (days left)</th>
-                            <th>Name</th>
                             <th>Position</th>
-                            <th>Preferred League</th>
+                            <th>Club Name</th>
+                            <th>League</th>
                             <th>Region</th>
                             <th>Salary (zł.) / month</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        {currentPlayerAdvertisementItems.length > 0 ? (
-                            currentPlayerAdvertisementItems.map((advertisement, index) => (
+                        {currentClubAdvertisementItems.length > 0 ? (
+                            currentClubAdvertisementItems.map((advertisement, index) => (
                                 <tr key={index}>
                                     <td className="ad-row">{formatDate(advertisement.creationDate)} ({calculateDaysLeft(advertisement.endDate)} days)</td>
-                                    <td className="ad-row">{advertisement.user.firstName} {advertisement.user.lastName}</td>
                                     <td className="ad-row">{advertisement.playerPosition.positionName}</td>
+                                    <td className="ad-row">{advertisement.clubName}</td>
                                     <td className="ad-row">{advertisement.league}</td>
                                     <td className="ad-row">{advertisement.region}</td>
                                     <td className="ad-row">{advertisement.salaryRange.min} - {advertisement.salaryRange.max}</td>
                                     <td className="ad-row">
-                                        <Button variant="dark" className="button-spacing" onClick={() => moveToPlayerAdvertisementPage(advertisement.id)}>
+                                        <Button variant="dark" className="button-spacing" onClick={() => moveToClubAdvertisementPage(advertisement.id)}>
                                             <i className="bi bi-info-square"></i>
                                         </Button>
                                         {(advertisement.userId !== userId && !isAdminRole) && (
-                                            favoritePlayerAdvertisementIds.includes(advertisement.id) ? (
+                                            favoriteClubAdvertisementIds.includes(advertisement.id) ? (
                                                 <Button
                                                     variant="danger"
                                                     onClick={() => {
-                                                        const favorite = favoritePlayerAdvertisements.find(fav => fav.playerAdvertisementId === advertisement.id);
+                                                        const favorite = favoriteClubAdvertisements.find(fav => fav.clubAdvertisementId === advertisement.id);
                                                         if (favorite) {
                                                             handleShowDeleteFavoriteModal(favorite.id);
                                                         }
@@ -341,7 +347,7 @@ const PlayerAdvertisements = () => {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan={6} className="text-center">No player advertisement available</td>
+                                <td colSpan={6} className="text-center">No club advertisement available</td>
                             </tr>
                         )}
                     </tbody>
@@ -369,7 +375,7 @@ const PlayerAdvertisements = () => {
                 />
             </Pagination>
 
-            {/* Delete Favorite Player Advertisement Modal */}
+            {/* Delete Favorite Club Advertisement Modal */}
             <Modal show={showDeleteFavoriteModal} onHide={() => setShowDeleteFavoriteModal(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>Confirm action</Modal.Title>
@@ -384,4 +390,4 @@ const PlayerAdvertisements = () => {
     );
 }
 
-export default PlayerAdvertisements;
+export default ClubAdvertisements;

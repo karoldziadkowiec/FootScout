@@ -7,6 +7,9 @@ import ClubHistoryModel from '../../models/interfaces/ClubHistory';
 import PlayerAdvertisement from '../../models/interfaces/PlayerAdvertisement';
 import PlayerAdvertisementFavorite from '../../models/interfaces/PlayerAdvertisementFavorite';
 import ClubOffer from '../../models/interfaces/ClubOffer';
+import ClubAdvertisement from '../../models/interfaces/ClubAdvertisement';
+import ClubAdvertisementFavorite from '../../models/interfaces/ClubAdvertisementFavorite';
+import PlayerOffer from '../../models/interfaces/PlayerOffer';
 
 const UserService = {
   async getUser(userId: string): Promise<UserDTO> {
@@ -272,6 +275,174 @@ const UserService = {
     catch (error) {
       if (axios.isAxiosError(error)) {
         console.error("Error fetching user's sent club offers, details:", error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
+      throw error;
+    }
+  },
+
+  async getUserClubAdvertisements(userId: string): Promise<ClubAdvertisement[]> {
+    try {
+      const authorizationHeader = await AccountService.getAuthorizationHeader();
+      const response = await axios.get<ClubAdvertisement[]>(`${ApiURL}/users/${userId}/club-advertisements`, {
+        headers: {
+          'Authorization': authorizationHeader
+        }
+      });
+      return response.data;
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error("Error fetching user's club advertisements, details:", error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
+      throw error;
+    }
+  },
+
+  async getUserActiveClubAdvertisements(userId: string): Promise<ClubAdvertisement[]> {
+    try {
+      const authorizationHeader = await AccountService.getAuthorizationHeader();
+      const response = await axios.get<ClubAdvertisement[]>(`${ApiURL}/users/${userId}/club-advertisements/active`, {
+        headers: {
+          'Authorization': authorizationHeader
+        }
+      });
+      return response.data;
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error("Error fetching user's active club advertisements, details:", error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
+      throw error;
+    }
+  },
+
+  async getUserInactiveClubAdvertisements(userId: string): Promise<ClubAdvertisement[]> {
+    try {
+      const authorizationHeader = await AccountService.getAuthorizationHeader();
+      const response = await axios.get<ClubAdvertisement[]>(`${ApiURL}/users/${userId}/club-advertisements/inactive`, {
+        headers: {
+          'Authorization': authorizationHeader
+        }
+      });
+      return response.data;
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error("Error fetching user's inactive club advertisements, details:", error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
+      throw error;
+    }
+  },
+
+  async getUserClubAdvertisementFavorites(userId: string): Promise<ClubAdvertisementFavorite[]> {
+    try {
+      const authorizationHeader = await AccountService.getAuthorizationHeader();
+      const response = await axios.get<ClubAdvertisementFavorite[]>(`${ApiURL}/users/${userId}/club-advertisements/favorites`, {
+        headers: {
+          'Authorization': authorizationHeader
+        }
+      });
+      return response.data;
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error("Error fetching user's favorite club advertisements, details:", error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
+      throw error;
+    }
+  },
+
+  async getUserActiveClubAdvertisementFavorites(userId: string): Promise<ClubAdvertisementFavorite[]> {
+    try {
+      const authorizationHeader = await AccountService.getAuthorizationHeader();
+      const response = await axios.get<ClubAdvertisementFavorite[]>(`${ApiURL}/users/${userId}/club-advertisements/favorites/active`, {
+        headers: {
+          'Authorization': authorizationHeader
+        }
+      });
+      return response.data;
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error("Error fetching user's active favorite club advertisements, details:", error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
+      throw error;
+    }
+  },
+
+  async getUserInactiveClubAdvertisementFavorites(userId: string): Promise<ClubAdvertisementFavorite[]> {
+    try {
+      const authorizationHeader = await AccountService.getAuthorizationHeader();
+      const response = await axios.get<ClubAdvertisementFavorite[]>(`${ApiURL}/users/${userId}/club-advertisements/favorites/inactive`, {
+        headers: {
+          'Authorization': authorizationHeader
+        }
+      });
+      return response.data;
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error("Error fetching user's inactive favorite club advertisements, details:", error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
+      throw error;
+    }
+  },
+
+  async getReceivedPlayerOffers(userId: string): Promise<PlayerOffer[]> {
+    try {
+      const authorizationHeader = await AccountService.getAuthorizationHeader();
+      const response = await axios.get<PlayerOffer[]>(`${ApiURL}/users/${userId}/player-offers/received`, {
+        headers: {
+          'Authorization': authorizationHeader
+        }
+      });
+      return response.data;
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error("Error fetching user's received player offers, details:", error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
+      throw error;
+    }
+  },
+
+  async getSentPlayerOffers(userId: string): Promise<PlayerOffer[]> {
+    try {
+      const authorizationHeader = await AccountService.getAuthorizationHeader();
+      const response = await axios.get<PlayerOffer[]>(`${ApiURL}/users/${userId}/player-offers/sent`, {
+        headers: {
+          'Authorization': authorizationHeader
+        }
+      });
+      return response.data;
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error("Error fetching user's sent player offers, details:", error.response?.data || error.message);
       }
       else {
         console.error('Unexpected error:', error);

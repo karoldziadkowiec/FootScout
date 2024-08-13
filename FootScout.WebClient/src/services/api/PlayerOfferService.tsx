@@ -1,14 +1,14 @@
 import axios from 'axios';
 import ApiURL from '../../config/ApiConfig';
 import AccountService from './AccountService';
-import ClubOffer from '../../models/interfaces/ClubOffer';
-import ClubOfferCreateDTO from '../../models/dtos/ClubOfferCreateDTO';
+import PlayerOffer from '../../models/interfaces/PlayerOffer';
+import PlayerOfferCreateDTO from '../../models/dtos/PlayerOfferCreateDTO';
 
-const ClubOfferService = {
-    async getClubOffer(clubOfferId: number): Promise<ClubOffer> {
+const PlayerOfferService = {
+    async getPlayerOffer(clubOfferId: number): Promise<PlayerOffer> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
-            const response = await axios.get<ClubOffer>(`${ApiURL}/club-offers/${clubOfferId}`, {
+            const response = await axios.get<PlayerOffer>(`${ApiURL}/player-offers/${clubOfferId}`, {
                 headers: {
                     'Authorization': authorizationHeader
                 }
@@ -17,7 +17,7 @@ const ClubOfferService = {
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                console.error('Error fetching club offer, details:', error.response?.data || error.message);
+                console.error('Error fetching player offer, details:', error.response?.data || error.message);
             }
             else {
                 console.error('Unexpected error:', error);
@@ -26,10 +26,10 @@ const ClubOfferService = {
         }
     },
 
-    async getClubOffers(): Promise<ClubOffer[]> {
+    async getPlayerOffers(): Promise<PlayerOffer[]> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
-            const response = await axios.get<ClubOffer[]>(`${ApiURL}/club-offers`, {
+            const response = await axios.get<PlayerOffer[]>(`${ApiURL}/player-offers`, {
                 headers: {
                     'Authorization': authorizationHeader
                 }
@@ -38,7 +38,7 @@ const ClubOfferService = {
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                console.error('Error fetching all club offers, details:', error.response?.data || error.message);
+                console.error('Error fetching all player offers, details:', error.response?.data || error.message);
             }
             else {
                 console.error('Unexpected error:', error);
@@ -47,10 +47,10 @@ const ClubOfferService = {
         }
     },
 
-    async getActiveClubOffers(): Promise<ClubOffer[]> {
+    async getActivePlayerOffers(): Promise<PlayerOffer[]> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
-            const response = await axios.get<ClubOffer[]>(`${ApiURL}/club-offers/active`, {
+            const response = await axios.get<PlayerOffer[]>(`${ApiURL}/player-offers/active`, {
                 headers: {
                     'Authorization': authorizationHeader
                 }
@@ -59,7 +59,7 @@ const ClubOfferService = {
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                console.error('Error fetching all active club offers, details:', error.response?.data || error.message);
+                console.error('Error fetching all active player offers, details:', error.response?.data || error.message);
             }
             else {
                 console.error('Unexpected error:', error);
@@ -68,10 +68,10 @@ const ClubOfferService = {
         }
     },
 
-    async getInactiveClubOffers(): Promise<ClubOffer[]> {
+    async getInactivePlayerOffers(): Promise<PlayerOffer[]> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
-            const response = await axios.get<ClubOffer[]>(`${ApiURL}/club-offers/inactive`, {
+            const response = await axios.get<PlayerOffer[]>(`${ApiURL}/player-offers/inactive`, {
                 headers: {
                     'Authorization': authorizationHeader
                 }
@@ -80,7 +80,7 @@ const ClubOfferService = {
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                console.error('Error fetching all inactive club offers, details:', error.response?.data || error.message);
+                console.error('Error fetching all inactive player offers, details:', error.response?.data || error.message);
             }
             else {
                 console.error('Unexpected error:', error);
@@ -89,10 +89,10 @@ const ClubOfferService = {
         }
     },
 
-    async createClubOffer(dto: ClubOfferCreateDTO): Promise<void> {
+    async createPlayerOffer(dto: PlayerOfferCreateDTO): Promise<void> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
-            await axios.post(`${ApiURL}/club-offers`, dto, {
+            await axios.post(`${ApiURL}/player-offers`, dto, {
                 headers: {
                     'Authorization': authorizationHeader
                 }
@@ -100,7 +100,7 @@ const ClubOfferService = {
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                console.error('Error creating new club offer, details:', error.response?.data || error.message);
+                console.error('Error creating new player offer, details:', error.response?.data || error.message);
             }
             else {
                 console.error('Unexpected error:', error);
@@ -109,10 +109,10 @@ const ClubOfferService = {
         }
     },
 
-    async updateClubOffer(clubOfferId: number, clubOffer: ClubOffer): Promise<void> {
+    async updatePlayerOffer(clubOfferId: number, clubOffer: PlayerOffer): Promise<void> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
-            await axios.put(`${ApiURL}/club-offers/${clubOfferId}`, clubOffer, {
+            await axios.put(`${ApiURL}/player-offers/${clubOfferId}`, clubOffer, {
                 headers: {
                     'Authorization': authorizationHeader
                 }
@@ -120,7 +120,7 @@ const ClubOfferService = {
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                console.error('Error updating club offer, details:', error.response?.data || error.message);
+                console.error('Error updating player offer, details:', error.response?.data || error.message);
             }
             else {
                 console.error('Unexpected error:', error);
@@ -129,10 +129,10 @@ const ClubOfferService = {
         }
     },
 
-    async acceptClubOffer(clubOfferId: number, clubOffer: ClubOffer): Promise<void> {
+    async acceptPlayerOffer(clubOfferId: number, clubOffer: PlayerOffer): Promise<void> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
-            await axios.put(`${ApiURL}/club-offers/accept/${clubOfferId}`, clubOffer, {
+            await axios.put(`${ApiURL}/player-offers/accept/${clubOfferId}`, clubOffer, {
                 headers: {
                     'Authorization': authorizationHeader
                 }
@@ -140,7 +140,7 @@ const ClubOfferService = {
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                console.error('Error accepting club offer, details:', error.response?.data || error.message);
+                console.error('Error accepting player offer, details:', error.response?.data || error.message);
             }
             else {
                 console.error('Unexpected error:', error);
@@ -149,10 +149,10 @@ const ClubOfferService = {
         }
     },
 
-    async rejectClubOffer(clubOfferId: number, clubOffer: ClubOffer): Promise<void> {
+    async rejectPlayerOffer(clubOfferId: number, clubOffer: PlayerOffer): Promise<void> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
-            await axios.put(`${ApiURL}/club-offers/reject/${clubOfferId}`, clubOffer, {
+            await axios.put(`${ApiURL}/player-offers/reject/${clubOfferId}`, clubOffer, {
                 headers: {
                     'Authorization': authorizationHeader
                 }
@@ -160,7 +160,7 @@ const ClubOfferService = {
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                console.error('Error rejecting club offer, details:', error.response?.data || error.message);
+                console.error('Error rejecting player offer, details:', error.response?.data || error.message);
             }
             else {
                 console.error('Unexpected error:', error);
@@ -169,10 +169,10 @@ const ClubOfferService = {
         }
     },
 
-    async getClubOfferStatusId(playerAdvertisementId: number, userId: string): Promise<number> {
+    async getPlayerOfferStatusId(playerAdvertisementId: number, userId: string): Promise<number> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
-            const response = await axios.get<number>(`${ApiURL}/club-offers/status/${playerAdvertisementId}/${userId}`, {
+            const response = await axios.get<number>(`${ApiURL}/player-offers/status/${playerAdvertisementId}/${userId}`, {
                 headers: {
                     'Authorization': authorizationHeader
                 }
@@ -191,4 +191,4 @@ const ClubOfferService = {
     }
 };
 
-export default ClubOfferService;
+export default PlayerOfferService;

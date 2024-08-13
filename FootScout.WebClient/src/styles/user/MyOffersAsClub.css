@@ -1,5 +1,6 @@
 .MyOffersAsClub {
     text-align: center;
+    background-color: rgb(240, 247, 240);
     padding: 20px 10% 20px 10%;
 }
 
@@ -20,6 +21,10 @@
 
 .table-responsive table {
     min-width: 600px;
+}
+
+.offer-row {
+    line-height: 4;
 }
 
 /* Mobile Specific Styles */

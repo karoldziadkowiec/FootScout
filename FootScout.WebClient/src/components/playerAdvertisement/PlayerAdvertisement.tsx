@@ -146,7 +146,7 @@ const PlayerAdvertisement = () => {
     }, [id, userId]);
 
     if (!playerAdvertisement) {
-        return <div><p><strong><h2>No advertisement found...</h2></strong></p></div>;
+        return <div><p><strong><h2>No player advertisement found...</h2></strong></p></div>;
     }
 
     const getPositionNameById = (id: number) => {
