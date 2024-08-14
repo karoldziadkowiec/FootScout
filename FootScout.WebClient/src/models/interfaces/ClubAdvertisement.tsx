@@ -13,8 +13,8 @@ interface ClubAdvertisement {
     salaryRange: SalaryRange;
     creationDate: string;
     endDate: string;
-    userId: string;
-    user: UserDTO;
+    clubMemberId: string;
+    clubMember: UserDTO;
 }
 
 export default ClubAdvertisement;

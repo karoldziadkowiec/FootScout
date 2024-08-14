@@ -6,7 +6,7 @@ interface ClubAdvertisementCreateDTO {
     league: string;
     region: string;
     salaryRangeDTO: SalaryRangeCreateDTO;
-    userId: string;
+    clubMemberId: string;
 }
 
 export default ClubAdvertisementCreateDTO;

@@ -13,8 +13,8 @@ interface ClubHistoryModel {
     endDate: string;
     achievementsId: number;
     achievements: Achievements;
-    userId: string;
-    user: UserDTO;
+    playerId: string;
+    player: UserDTO;
 }
 
 export default ClubHistoryModel;

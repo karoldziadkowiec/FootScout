@@ -8,7 +8,7 @@ interface PlayerAdvertisementCreateDTO {
     height: number;
     playerFootId: number;
     salaryRangeDTO: SalaryRangeCreateDTO;
-    userId: string;
+    playerId: string;
 }
 
 export default PlayerAdvertisementCreateDTO;

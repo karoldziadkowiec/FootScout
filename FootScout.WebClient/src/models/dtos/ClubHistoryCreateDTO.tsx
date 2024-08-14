@@ -8,7 +8,7 @@ interface ClubHistoryModelDTO {
     startDate: string;
     endDate: string;
     achievements: Achievements;
-    userId: string;
+    playerId: string;
 }
 
 export default ClubHistoryModelDTO;

@@ -76,3 +76,24 @@
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
 }
+
+.clubHistory-name-label {
+    color: rgb(148, 141, 42);
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.clubHistory-position-label {
+    color: rgb(99, 99, 92);
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.clubHistory-section {
+    color: rgb(98, 96, 83);
+    font-family:'Times New Roman', Times, serif;
+    font-size: 20px;
+    font-weight: bold;
+}

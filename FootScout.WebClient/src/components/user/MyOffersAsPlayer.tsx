@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Table, Button, Modal } from 'react-bootstrap';
+import { Table, Button, Modal, Form } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
@@ -149,7 +149,7 @@ const MyOffersAsPlayer = () => {
                 <Table striped bordered hover variant="light">
                     <thead className="table-dark">
                         <tr>
-                            <th>Received Date (days left/passed)</th>
+                            <th>Received Date</th>
                             <th>Offer Status</th>
                             <th>Club Name</th>
                             <th>League (Region)</th>
@@ -161,7 +161,7 @@ const MyOffersAsPlayer = () => {
                         {receivedClubOffers.length > 0 ? (
                             receivedClubOffers.map((clubOffer, index) => (
                                 <tr key={index}>
-                                    <td className="offer-row">{formatDate(clubOffer.creationDate)} ({calculateDaysLeft(clubOffer.playerAdvertisement.endDate)})</td>
+                                    <td className="offer-row">{formatDate(clubOffer.creationDate)}</td>
                                     <td className="offer-row">{clubOffer.offerStatus.statusName}</td>
                                     <td className="offer-row">{clubOffer.clubName}</td>
                                     <td className="offer-row">{clubOffer.league} ({clubOffer.region})</td>
@@ -197,29 +197,33 @@ const MyOffersAsPlayer = () => {
             </div>
 
             {/* My sent offers to clubs*/}
-            <h3>My sent offers to clubs</h3>
+            <h3>My sent requests to clubs</h3>
             <div className="table-responsive">
 
             </div>
 
             {/* Details of Received Club Offer */}
-            <Modal show={showReceivedClubOfferDetailsModal} onHide={() => setShowReceivedClubOfferDetailsModal(false)}>
+            <Modal size="lg" show={showReceivedClubOfferDetailsModal} onHide={() => setShowReceivedClubOfferDetailsModal(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>Offer Details</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {selectedReceivedClubOffer && (
                         <div className="modal-content-centered">
-                            <p><strong>Received Date (days left/passed)</strong> {formatDate(selectedReceivedClubOffer.creationDate)} ({calculateDaysLeft(selectedReceivedClubOffer.playerAdvertisement.endDate)})</p>
+                            <p><Form.Label className="clubOffer-name-label">{(selectedReceivedClubOffer.clubName).toUpperCase()}</Form.Label></p>
+                            <p><Form.Label className="clubOffer-position-label">{selectedReceivedClubOffer.playerPosition.positionName}</Form.Label></p>
+                            <Form.Label className="clubOffer-section">OFFER INFO</Form.Label>
+                            <p><strong>Received Date</strong> {formatDate(selectedReceivedClubOffer.creationDate)}</p>
+                            <p><strong>End Date (days left/passed)</strong> {formatDate(selectedReceivedClubOffer.playerAdvertisement.endDate)} ({calculateDaysLeft(selectedReceivedClubOffer.playerAdvertisement.endDate)})</p>
                             <p><strong>Offer status:</strong> {selectedReceivedClubOffer.offerStatus.statusName}</p>
-                            <p><strong>DETAILS</strong></p>
+                            <Form.Label className="clubOffer-section">DETAILS</Form.Label>
                             <p><strong>Club Name:</strong> {selectedReceivedClubOffer.clubName}</p>
                             <p><strong>League:</strong> {selectedReceivedClubOffer.league}</p>
                             <p><strong>Region:</strong> {selectedReceivedClubOffer.region}</p>
                             <p><strong>Position:</strong> {selectedReceivedClubOffer.playerPosition.positionName}</p>
                             <p><strong>Salary (zł.) / month:</strong> {selectedReceivedClubOffer.salary}</p>
                             <p><strong>Additional Information:</strong> {selectedReceivedClubOffer.additionalInformation}</p>
-                            <p><strong>RECEIVED FROM</strong></p>
+                            <Form.Label className="clubOffer-section">RECEIVED FROM</Form.Label>
                             <p><strong>Name:</strong> {selectedReceivedClubOffer.clubMember.firstName} {selectedReceivedClubOffer.clubMember.lastName}</p>
                             <p><strong>E-mail:</strong> {selectedReceivedClubOffer.clubMember.email}</p>
                             <p><strong>Phone number:</strong> {selectedReceivedClubOffer.clubMember.phoneNumber}</p>

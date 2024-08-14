@@ -76,7 +76,7 @@ const ClubAdvertisement = () => {
                 const clubAdvertisement = await ClubAdvertisementService.getClubAdvertisement(id);
                 setClubAdvertisement(clubAdvertisement);
 
-                const playerData = await UserService.getUser(clubAdvertisement.userId);
+                const playerData = await UserService.getUser(clubAdvertisement.clubMemberId);
                 setClubMember(playerData);
 
                 const endDate = new Date(clubAdvertisement.endDate);
@@ -358,7 +358,7 @@ const ClubAdvertisement = () => {
             <h1>Club Advertisement</h1>
             <div className="ad-buttons-container mb-3">
                 {clubAdvertisementStatus ? (
-                    clubAdvertisement.userId === userId || isAdminRole ? (
+                    clubAdvertisement.clubMemberId === userId || isAdminRole ? (
                         <Row>
                             <Col>
                                 <Button variant="warning" className="ad-form-button" onClick={() => handleShowEditModal(clubAdvertisement)}>
@@ -408,7 +408,7 @@ const ClubAdvertisement = () => {
                 ) : (
                     <div className="ad-status-container">
                         <p>Status: <strong>Inactive</strong></p>
-                        {(clubAdvertisement.userId === userId || isAdminRole) && (
+                        {(clubAdvertisement.clubMemberId === userId || isAdminRole) && (
                             <Row>
                                 <Col>
                                     <Button variant="danger" onClick={() => setShowDeleteModal(true)}>
@@ -445,11 +445,11 @@ const ClubAdvertisement = () => {
                                 <p><Form.Label>Position: </Form.Label>
                                     <Form.Label className="ad-data-label">{clubAdvertisement.playerPosition.positionName}</Form.Label>
                                 </p>
-                                <p><Form.Label>League: </Form.Label>
-                                    <Form.Label className="ad-data-label">{clubAdvertisement.league}</Form.Label>
+                                <p><Form.Label>Club Name: </Form.Label>
+                                    <Form.Label className="ad-data-label">{clubAdvertisement.clubName}</Form.Label>
                                 </p>
-                                <p><Form.Label>Region: </Form.Label>
-                                    <Form.Label className="ad-data-label">{clubAdvertisement.region}</Form.Label>
+                                <p><Form.Label>League (Region): </Form.Label>
+                                    <Form.Label className="ad-data-label">{clubAdvertisement.league} ({clubAdvertisement.region})</Form.Label>
                                 </p>
                                 <p><Form.Label>Salary (zł.) / month: </Form.Label>
                                     <Form.Label className="ad-data-label">{clubAdvertisement.salaryRange.min} - {clubAdvertisement.salaryRange.max}</Form.Label>
@@ -457,16 +457,21 @@ const ClubAdvertisement = () => {
                             </Col>
                         </Row>
                         <div>
+                            <p><Form.Label>Creation Date: </Form.Label>
+                                <Form.Label className="ad-creationDate-label">
+                                    {formatDate(clubAdvertisement.creationDate)}
+                                </Form.Label>
+                            </p>
                             {clubAdvertisementStatus ? (
-                                <p><Form.Label>Creation Date (days left): </Form.Label>
-                                    <Form.Label className="ad-creationDate-label">
-                                        {formatDate(clubAdvertisement.creationDate)} ({calculateDaysLeft(clubAdvertisement.endDate)} days)
-                                    </Form.Label>
-                                </p>
+                                <p><Form.Label>End Date (days left): </Form.Label>
+                                <Form.Label className="ad-creationDate-label">
+                                    {formatDate(clubAdvertisement.endDate)} ({calculateDaysLeft(clubAdvertisement.endDate)} days)
+                                </Form.Label>
+                            </p>
                             ) : (
-                                <p><Form.Label>Ended Date (days ago): </Form.Label>
+                                <p><Form.Label>End Date (days ago): </Form.Label>
                                     <Form.Label className="ad-creationDate-label">
-                                        {formatDate(clubAdvertisement.endDate)} ({calculateSkippedDays(clubAdvertisement.endDate)} days ago)
+                                        {formatDate(clubAdvertisement.endDate)} ({calculateSkippedDays(clubAdvertisement.endDate)} days)
                                     </Form.Label>
                                 </p>
                             )}

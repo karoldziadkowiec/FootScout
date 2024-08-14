@@ -23,7 +23,7 @@ const NewClubAdvertisement = () => {
             min: 0,
             max: 0,
         },
-        userId: ''
+        clubMemberId: ''
     });
 
     useEffect(() => {
@@ -64,7 +64,7 @@ const NewClubAdvertisement = () => {
         }
 
         try {
-            const createFormData = { ...clubAdvertisementDTO, userId: userId };
+            const createFormData = { ...clubAdvertisementDTO, clubMemberId: userId };
             await ClubAdvertisementService.createClubAdvertisement(createFormData);
             navigate('/my-club-advertisements', { state: { toastMessage: "Club advertisement created successfully!" } });
         }

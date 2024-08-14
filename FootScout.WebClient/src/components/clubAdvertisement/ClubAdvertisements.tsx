@@ -173,21 +173,13 @@ const ClubAdvertisements = () => {
         return `${day}-${month}-${year}`;
     };
 
-    const calculateDaysLeft = (endDate: string): number => {
-        const currentDate = new Date();
-        const end = new Date(endDate);
-        const timeDiff = end.getTime() - currentDate.getTime();
-        const daysLeft = timeDiff / (1000 * 3600 * 24);
-        return Math.ceil(daysLeft);
-    };
-
     const searchAdvertisements = (advertisements: ClubAdvertisement[]) => {
         if (!searchTerm) {
             return advertisements;
         }
         const lowerCaseSearchTerm = searchTerm.toLowerCase();
         return advertisements.filter(advertisement =>
-            (advertisement.user.firstName + ' ' + advertisement.user.lastName).toLowerCase().includes(lowerCaseSearchTerm) ||
+            (advertisement.clubMember.firstName + ' ' + advertisement.clubMember.lastName).toLowerCase().includes(lowerCaseSearchTerm) ||
             advertisement.league.toLowerCase().includes(lowerCaseSearchTerm) ||
             advertisement.region.toLowerCase().includes(lowerCaseSearchTerm)
         );
@@ -314,7 +306,7 @@ const ClubAdvertisements = () => {
                         {currentClubAdvertisementItems.length > 0 ? (
                             currentClubAdvertisementItems.map((advertisement, index) => (
                                 <tr key={index}>
-                                    <td className="ad-row">{formatDate(advertisement.creationDate)} ({calculateDaysLeft(advertisement.endDate)} days)</td>
+                                    <td className="ad-row">{formatDate(advertisement.creationDate)}</td>
                                     <td className="ad-row">{advertisement.playerPosition.positionName}</td>
                                     <td className="ad-row">{advertisement.clubName}</td>
                                     <td className="ad-row">{advertisement.league}</td>
@@ -324,7 +316,7 @@ const ClubAdvertisements = () => {
                                         <Button variant="dark" className="button-spacing" onClick={() => moveToClubAdvertisementPage(advertisement.id)}>
                                             <i className="bi bi-info-square"></i>
                                         </Button>
-                                        {(advertisement.userId !== userId && !isAdminRole) && (
+                                        {(advertisement.clubMemberId !== userId && !isAdminRole) && (
                                             favoriteClubAdvertisementIds.includes(advertisement.id) ? (
                                                 <Button
                                                     variant="danger"

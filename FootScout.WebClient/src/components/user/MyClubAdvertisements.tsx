@@ -80,7 +80,7 @@ const MyClubAdvertisements = () => {
                 <Table striped bordered hover variant="light">
                     <thead className="table-success">
                         <tr>
-                            <th>Creation Date (days left)</th>
+                            <th>Creation Date</th>
                             <th>Position</th>
                             <th>Club Name</th>
                             <th>League (Region)</th>
@@ -92,7 +92,7 @@ const MyClubAdvertisements = () => {
                         {userActiveClubAdvertisements.length > 0 ? (
                             userActiveClubAdvertisements.map((advertisement, index) => (
                                 <tr key={index}>
-                                    <td>{formatDate(advertisement.creationDate)} ({calculateDaysLeft(advertisement.endDate)} days)</td>
+                                    <td>{formatDate(advertisement.creationDate)}</td>
                                     <td>{advertisement.playerPosition.positionName}</td>
                                     <td>{advertisement.clubName}</td>
                                     <td>{advertisement.league} ({advertisement.region})</td>
@@ -119,7 +119,7 @@ const MyClubAdvertisements = () => {
                 <Table striped bordered hover variant="light">
                     <thead className="table-warning">
                         <tr>
-                        <th>Creation Date (days left)</th>
+                            <th>End Date (days ago)</th>
                             <th>Position</th>
                             <th>Club Name</th>
                             <th>League (Region)</th>

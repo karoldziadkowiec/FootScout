@@ -80,10 +80,10 @@ const PlayerAdvertisement = () => {
                 const playerAdvertisement = await PlayerAdvertisementService.getPlayerAdvertisement(id);
                 setPlayerAdvertisement(playerAdvertisement);
 
-                const playerData = await UserService.getUser(playerAdvertisement.userId);
+                const playerData = await UserService.getUser(playerAdvertisement.playerId);
                 setPlayer(playerData);
 
-                const playerClubHistories = await UserService.getUserClubHistory(playerAdvertisement.userId);
+                const playerClubHistories = await UserService.getUserClubHistory(playerAdvertisement.playerId);
                 setPlayerClubHistories(playerClubHistories);
 
                 const endDate = new Date(playerAdvertisement.endDate);
@@ -384,7 +384,7 @@ const PlayerAdvertisement = () => {
             <h1>Player Advertisement</h1>
             <div className="ad-buttons-container mb-3">
                 {playerAdvertisementStatus ? (
-                    playerAdvertisement.userId === userId || isAdminRole ? (
+                    playerAdvertisement.playerId === userId || isAdminRole ? (
                         <Row>
                             <Col>
                                 <Button variant="warning" className="ad-form-button" onClick={() => handleShowEditModal(playerAdvertisement)}>
@@ -412,7 +412,7 @@ const PlayerAdvertisement = () => {
                                 </Col>
                             ) : (
                                 <Col>
-                                    <p><Form.Label  className="status-label">Offer status: {getOfferStatusNameById(offerStatusId)}</Form.Label></p>
+                                    <p><Form.Label className="status-label">Offer status: {getOfferStatusNameById(offerStatusId)}</Form.Label></p>
                                 </Col>
                             )}
 
@@ -434,7 +434,7 @@ const PlayerAdvertisement = () => {
                 ) : (
                     <div className="ad-status-container">
                         <p>Status: <strong>Inactive</strong></p>
-                        {(playerAdvertisement.userId === userId || isAdminRole) && (
+                        {(playerAdvertisement.playerId === userId || isAdminRole) && (
                             <Row>
                                 <Col>
                                     <Button variant="danger" onClick={() => setShowDeleteModal(true)}>
@@ -449,7 +449,7 @@ const PlayerAdvertisement = () => {
             <div className="ad-container">
                 {playerAdvertisement && player && (
                     <div>
-                        <p><Form.Label className="ad-name-label">{(player.firstName).toUpperCase()} {(player.lastName).toUpperCase()}</Form.Label></p>
+                        <p><Form.Label className="ad-name-label">{(player.firstName).toUpperCase()} {(player.lastName).toUpperCase()} - {playerAdvertisement.playerPosition.positionName}</Form.Label></p>
                         <Row>
                             <Col>
                                 <Form.Label className="ad-section">CONTACT INFORMATION</Form.Label>
@@ -522,16 +522,21 @@ const PlayerAdvertisement = () => {
                                     )}
                                 </tbody>
                             </Table>
+                            <p><Form.Label>Creation Date: </Form.Label>
+                                <Form.Label className="ad-creationDate-label">
+                                    {formatDate(playerAdvertisement.creationDate)}
+                                </Form.Label>
+                            </p>
                             {playerAdvertisementStatus ? (
-                                <p><Form.Label>Creation Date (days left): </Form.Label>
+                                <p><Form.Label>End Date (days left): </Form.Label>
                                     <Form.Label className="ad-creationDate-label">
-                                        {formatDate(playerAdvertisement.creationDate)} ({calculateDaysLeft(playerAdvertisement.endDate)} days)
+                                        {formatDate(playerAdvertisement.endDate)} ({calculateDaysLeft(playerAdvertisement.endDate)} days)
                                     </Form.Label>
                                 </p>
                             ) : (
-                                <p><Form.Label>Ended Date (days ago): </Form.Label>
+                                <p><Form.Label>End Date (days ago): </Form.Label>
                                     <Form.Label className="ad-creationDate-label">
-                                        {formatDate(playerAdvertisement.endDate)} ({calculateSkippedDays(playerAdvertisement.endDate)} days ago)
+                                        {formatDate(playerAdvertisement.endDate)} ({calculateSkippedDays(playerAdvertisement.endDate)} days)
                                     </Form.Label>
                                 </p>
                             )}
@@ -548,16 +553,24 @@ const PlayerAdvertisement = () => {
                 <Modal.Body>
                     {selectedClubHistory && (
                         <div className="modal-content-centered">
-                            <p><strong>Club Name:</strong> {selectedClubHistory.clubName}</p>
-                            <p><strong>League:</strong> {selectedClubHistory.league}</p>
-                            <p><strong>Region:</strong> {selectedClubHistory.region}</p>
-                            <p><strong>Start Date:</strong> {formatDate(selectedClubHistory.startDate)}</p>
-                            <p><strong>End Date:</strong> {formatDate(selectedClubHistory.endDate)}</p>
-                            <p><strong>Position:</strong> {selectedClubHistory.playerPosition.positionName}</p>
-                            <p><strong>Matches:</strong> {selectedClubHistory.achievements.numberOfMatches}</p>
-                            <p><strong>Goals:</strong> {selectedClubHistory.achievements.goals}</p>
-                            <p><strong>Assists:</strong> {selectedClubHistory.achievements.assists}</p>
-                            <p><strong>Additional Achievements:</strong> {selectedClubHistory.achievements.additionalAchievements}</p>
+                            <p><Form.Label className="clubHistory-name-label">{(selectedClubHistory.clubName).toUpperCase()}</Form.Label></p>
+                            <p><Form.Label className="clubHistory-position-label">{selectedClubHistory.playerPosition.positionName}</Form.Label></p>
+                            <Row>
+                                <Col>
+                                    <Form.Label className="clubHistory-section">CLUB INFO</Form.Label>
+                                    <p><strong>League:</strong> {selectedClubHistory.league}</p>
+                                    <p><strong>Region:</strong> {selectedClubHistory.region}</p>
+                                    <p><strong>Start Date:</strong> {formatDate(selectedClubHistory.startDate)}</p>
+                                    <p><strong>End Date:</strong> {formatDate(selectedClubHistory.endDate)}</p>
+                                </Col>
+                                <Col>
+                                    <Form.Label className="clubHistory-section">ACHIEVEMENTS</Form.Label>
+                                    <p><strong>Matches:</strong> {selectedClubHistory.achievements.numberOfMatches}</p>
+                                    <p><strong>Goals:</strong> {selectedClubHistory.achievements.goals}</p>
+                                    <p><strong>Assists:</strong> {selectedClubHistory.achievements.assists}</p>
+                                    <p><strong>Additional Achievements:</strong> {selectedClubHistory.achievements.additionalAchievements}</p>
+                                </Col>
+                            </Row>
                         </div>
                     )}
                 </Modal.Body>
@@ -567,147 +580,147 @@ const PlayerAdvertisement = () => {
             </Modal>
 
             {/* Edit PlayerAdvertisement Modal */}
-            { editFormData && (
-                    <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>Edit Club History</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <Form>
-                                <Form.Group className="mb-3" controlId="formPosition">
-                                    <Form.Label>Position</Form.Label>
-                                    <FormSelect
-                                        value={editFormData.playerPositionId}
-                                        onChange={(e) => setEditFormData({
-                                            ...editFormData,
-                                            playerPositionId: parseInt(e.target.value, 10)
-                                        })}
-                                    >
-                                        <option value="">Select Position</option>
-                                        {positions.map((position) => (
-                                            <option key={position.id} value={position.id}>
-                                                {position.positionName}
-                                            </option>
-                                        ))}
-                                    </FormSelect>
-                                </Form.Group>
-                                <Row>
-                                    <Col>
-                                        <Form.Group className="mb-3" controlId="formLeague">
-                                            <Form.Label>Preferred League</Form.Label>
-                                            <Form.Control
-                                                type="text"
-                                                placeholder="League"
-                                                value={editFormData.league}
-                                                onChange={(e) => setEditFormData({ ...editFormData, league: e.target.value })}
-                                                maxLength={30}
-                                                required
-                                            />
-                                        </Form.Group>
-                                    </Col>
-                                    <Col>
-                                        <Form.Group className="mb-3" controlId="formRegion">
-                                            <Form.Label>Region</Form.Label>
-                                            <Form.Control
-                                                type="text"
-                                                placeholder="Region"
-                                                value={editFormData.region}
-                                                onChange={(e) => setEditFormData({ ...editFormData, region: e.target.value })}
-                                                maxLength={30}
-                                                required
-                                            />
-                                        </Form.Group>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col>
-                                        <Form.Group className="mb-3" controlId="formAge">
-                                            <Form.Label>Age</Form.Label>
-                                            <Form.Control
-                                                type="number"
-                                                placeholder="Age"
-                                                value={editFormData.age}
-                                                onChange={(e) => setEditFormData({ ...editFormData, age: parseInt(e.target.value) })}
-                                                required
-                                            />
-                                        </Form.Group>
-                                    </Col>
-                                    <Col>
-                                        <Form.Group className="mb-3" controlId="formHeight">
-                                            <Form.Label>Height (cm)</Form.Label>
-                                            <Form.Control
-                                                type="number"
-                                                placeholder="Height"
-                                                value={editFormData.height}
-                                                onChange={(e) => setEditFormData({ ...editFormData, height: parseInt(e.target.value) })}
-                                                required
-                                            />
-                                        </Form.Group>
-                                    </Col>
-                                </Row>
-                                <Form.Group className="mb-3" controlId="formFoot">
-                                    <Form.Label>Foot</Form.Label>
-                                    <FormSelect
-                                        value={editFormData.playerFootId}
-                                        onChange={(e) => setEditFormData({
-                                            ...editFormData,
-                                            playerFootId: parseInt(e.target.value, 10)
-                                        })}
-                                    >
-                                        <option value="">Select Foot</option>
-                                        {feet.map((foot) => (
-                                            <option key={foot.id} value={foot.id}>
-                                                {foot.footName}
-                                            </option>
-                                        ))}
-                                    </FormSelect>
-                                </Form.Group>
-                                <Row>
-                                    <Col>
-                                        <Form.Group className="mb-3" controlId="formMin">
-                                            <Form.Label>Min Salary (zł.) / month</Form.Label>
-                                            <Form.Control
-                                                type="number"
-                                                placeholder="Min"
-                                                value={editFormData.salaryRange.min}
-                                                onChange={(e) => setEditFormData({
-                                                    ...editFormData,
-                                                    salaryRange: {
-                                                        ...editFormData.salaryRange,
-                                                        min: parseFloat(e.target.value)
-                                                    }
-                                                })}
-                                                required
-                                            />
-                                        </Form.Group>
-                                    </Col>
-                                    <Col>
-                                        <Form.Group className="mb-3" controlId="formMax">
-                                            <Form.Label>Max Salary (zł.) / month</Form.Label>
-                                            <Form.Control
-                                                type="number"
-                                                placeholder="Max"
-                                                value={editFormData.salaryRange.max}
-                                                onChange={(e) => setEditFormData({
-                                                    ...editFormData,
-                                                    salaryRange: {
-                                                        ...editFormData.salaryRange,
-                                                        max: parseFloat(e.target.value)
-                                                    }
-                                                })}
-                                                required
-                                            />
-                                        </Form.Group>
-                                    </Col>
-                                </Row>
-                            </Form>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="secondary" onClick={() => setShowEditModal(false)}>Close</Button>
-                            <Button variant="success" onClick={handleEditPlayerAdvertisement}>Update</Button>
-                        </Modal.Footer>
-                    </Modal>
-                )
+            {editFormData && (
+                <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Edit Club History</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form>
+                            <Form.Group className="mb-3" controlId="formPosition">
+                                <Form.Label>Position</Form.Label>
+                                <FormSelect
+                                    value={editFormData.playerPositionId}
+                                    onChange={(e) => setEditFormData({
+                                        ...editFormData,
+                                        playerPositionId: parseInt(e.target.value, 10)
+                                    })}
+                                >
+                                    <option value="">Select Position</option>
+                                    {positions.map((position) => (
+                                        <option key={position.id} value={position.id}>
+                                            {position.positionName}
+                                        </option>
+                                    ))}
+                                </FormSelect>
+                            </Form.Group>
+                            <Row>
+                                <Col>
+                                    <Form.Group className="mb-3" controlId="formLeague">
+                                        <Form.Label>Preferred League</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="League"
+                                            value={editFormData.league}
+                                            onChange={(e) => setEditFormData({ ...editFormData, league: e.target.value })}
+                                            maxLength={30}
+                                            required
+                                        />
+                                    </Form.Group>
+                                </Col>
+                                <Col>
+                                    <Form.Group className="mb-3" controlId="formRegion">
+                                        <Form.Label>Region</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Region"
+                                            value={editFormData.region}
+                                            onChange={(e) => setEditFormData({ ...editFormData, region: e.target.value })}
+                                            maxLength={30}
+                                            required
+                                        />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col>
+                                    <Form.Group className="mb-3" controlId="formAge">
+                                        <Form.Label>Age</Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            placeholder="Age"
+                                            value={editFormData.age}
+                                            onChange={(e) => setEditFormData({ ...editFormData, age: parseInt(e.target.value) })}
+                                            required
+                                        />
+                                    </Form.Group>
+                                </Col>
+                                <Col>
+                                    <Form.Group className="mb-3" controlId="formHeight">
+                                        <Form.Label>Height (cm)</Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            placeholder="Height"
+                                            value={editFormData.height}
+                                            onChange={(e) => setEditFormData({ ...editFormData, height: parseInt(e.target.value) })}
+                                            required
+                                        />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                            <Form.Group className="mb-3" controlId="formFoot">
+                                <Form.Label>Foot</Form.Label>
+                                <FormSelect
+                                    value={editFormData.playerFootId}
+                                    onChange={(e) => setEditFormData({
+                                        ...editFormData,
+                                        playerFootId: parseInt(e.target.value, 10)
+                                    })}
+                                >
+                                    <option value="">Select Foot</option>
+                                    {feet.map((foot) => (
+                                        <option key={foot.id} value={foot.id}>
+                                            {foot.footName}
+                                        </option>
+                                    ))}
+                                </FormSelect>
+                            </Form.Group>
+                            <Row>
+                                <Col>
+                                    <Form.Group className="mb-3" controlId="formMin">
+                                        <Form.Label>Min Salary (zł.) / month</Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            placeholder="Min"
+                                            value={editFormData.salaryRange.min}
+                                            onChange={(e) => setEditFormData({
+                                                ...editFormData,
+                                                salaryRange: {
+                                                    ...editFormData.salaryRange,
+                                                    min: parseFloat(e.target.value)
+                                                }
+                                            })}
+                                            required
+                                        />
+                                    </Form.Group>
+                                </Col>
+                                <Col>
+                                    <Form.Group className="mb-3" controlId="formMax">
+                                        <Form.Label>Max Salary (zł.) / month</Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            placeholder="Max"
+                                            value={editFormData.salaryRange.max}
+                                            onChange={(e) => setEditFormData({
+                                                ...editFormData,
+                                                salaryRange: {
+                                                    ...editFormData.salaryRange,
+                                                    max: parseFloat(e.target.value)
+                                                }
+                                            })}
+                                            required
+                                        />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                        </Form>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => setShowEditModal(false)}>Close</Button>
+                        <Button variant="success" onClick={handleEditPlayerAdvertisement}>Update</Button>
+                    </Modal.Footer>
+                </Modal>
+            )
             }
 
             {/* Delete Player Advertisement */}

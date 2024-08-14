@@ -33,7 +33,7 @@ const ClubHistory = () => {
             assists: 0,
             additionalAchievements: '',
         },
-        userId: ''
+        playerId: ''
     });
     const [selectedClubHistory, setSelectedClubHistory] = useState<ClubHistoryModel | null>(null);
     const [editFormData, setEditFormData] = useState<ClubHistoryModel | null>(null);
@@ -61,7 +61,7 @@ const ClubHistory = () => {
             try {
                 const positionsData = await PlayerPositionService.getPlayerPositions();
                 setPositions(positionsData);
-            } 
+            }
             catch (error) {
                 console.error('Failed to fetch positions:', error);
                 toast.error('Failed to load positions.');
@@ -83,7 +83,7 @@ const ClubHistory = () => {
         }
 
         try {
-            const newFormData = { ...createFormData, userId: user.id };
+            const newFormData = { ...createFormData, playerId: user.id };
 
             await ClubHistoryService.createClubHistory(newFormData);
             setShowCreateModal(false);
@@ -131,7 +131,7 @@ const ClubHistory = () => {
     };
 
     const handleEditClubHistory = async () => {
-        if (!user || !editFormData) 
+        if (!user || !editFormData)
             return;
 
         const validationError = validateForm(editFormData);
@@ -440,16 +440,24 @@ const ClubHistory = () => {
                 <Modal.Body>
                     {selectedClubHistory && (
                         <div className="modal-content-centered">
-                            <p><strong>Club Name:</strong> {selectedClubHistory.clubName}</p>
-                            <p><strong>League:</strong> {selectedClubHistory.league}</p>
-                            <p><strong>Region:</strong> {selectedClubHistory.region}</p>
-                            <p><strong>Start Date:</strong> {formatDate(selectedClubHistory.startDate)}</p>
-                            <p><strong>End Date:</strong> {formatDate(selectedClubHistory.endDate)}</p>
-                            <p><strong>Position:</strong> {selectedClubHistory.playerPosition.positionName}</p>
-                            <p><strong>Matches:</strong> {selectedClubHistory.achievements.numberOfMatches}</p>
-                            <p><strong>Goals:</strong> {selectedClubHistory.achievements.goals}</p>
-                            <p><strong>Assists:</strong> {selectedClubHistory.achievements.assists}</p>
-                            <p><strong>Additional Achievements:</strong> {selectedClubHistory.achievements.additionalAchievements}</p>
+                            <p><Form.Label className="clubHistory-name-label">{(selectedClubHistory.clubName).toUpperCase()}</Form.Label></p>
+                            <p><Form.Label className="clubHistory-position-label">{selectedClubHistory.playerPosition.positionName}</Form.Label></p>
+                            <Row>
+                                <Col>
+                                    <Form.Label className="clubHistory-section">CLUB INFO</Form.Label>
+                                    <p><strong>League:</strong> {selectedClubHistory.league}</p>
+                                    <p><strong>Region:</strong> {selectedClubHistory.region}</p>
+                                    <p><strong>Start Date:</strong> {formatDate(selectedClubHistory.startDate)}</p>
+                                    <p><strong>End Date:</strong> {formatDate(selectedClubHistory.endDate)}</p>
+                                </Col>
+                                <Col>
+                                    <Form.Label className="clubHistory-section">ACHIEVEMENTS</Form.Label>
+                                    <p><strong>Matches:</strong> {selectedClubHistory.achievements.numberOfMatches}</p>
+                                    <p><strong>Goals:</strong> {selectedClubHistory.achievements.goals}</p>
+                                    <p><strong>Assists:</strong> {selectedClubHistory.achievements.assists}</p>
+                                    <p><strong>Additional Achievements:</strong> {selectedClubHistory.achievements.additionalAchievements}</p>
+                                </Col>
+                            </Row>
                         </div>
                     )}
                 </Modal.Body>

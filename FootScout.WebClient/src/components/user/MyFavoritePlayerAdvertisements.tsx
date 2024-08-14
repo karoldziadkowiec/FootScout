@@ -108,8 +108,8 @@ const MyFavoritePlayerAdvertisements = () => {
                 <Table striped bordered hover variant="light">
                     <thead className="table-success">
                         <tr>
-                            <th>Creation Date (days left)</th>
-                            <th>Name</th>
+                            <th>End Date (days left)</th>
+                            <th>Player</th>
                             <th>Position</th>
                             <th>Preferred League (Region)</th>
                             <th>Salary (zł.) / month</th>
@@ -120,8 +120,8 @@ const MyFavoritePlayerAdvertisements = () => {
                         {userActiveFavoritePlayerAdvertisements.length > 0 ? (
                             userActiveFavoritePlayerAdvertisements.map((favoriteAdvertisement, index) => (
                                 <tr key={index}>
-                                    <td>{formatDate(favoriteAdvertisement.playerAdvertisement.creationDate)} ({calculateDaysLeft(favoriteAdvertisement.playerAdvertisement.endDate)} days)</td>
-                                    <td>{favoriteAdvertisement.playerAdvertisement.user.firstName} {favoriteAdvertisement.playerAdvertisement.user.lastName}</td>
+                                    <td>{formatDate(favoriteAdvertisement.playerAdvertisement.endDate)} ({calculateDaysLeft(favoriteAdvertisement.playerAdvertisement.endDate)} days)</td>
+                                    <td>{favoriteAdvertisement.playerAdvertisement.player.firstName} {favoriteAdvertisement.playerAdvertisement.player.lastName}</td>
                                     <td>{favoriteAdvertisement.playerAdvertisement.playerPosition.positionName}</td>
                                     <td>{favoriteAdvertisement.playerAdvertisement.league} ({favoriteAdvertisement.playerAdvertisement.region})</td>
                                     <td>{favoriteAdvertisement.playerAdvertisement.salaryRange.min} - {favoriteAdvertisement.playerAdvertisement.salaryRange.max}</td>
@@ -150,8 +150,8 @@ const MyFavoritePlayerAdvertisements = () => {
                 <Table striped bordered hover variant="light">
                     <thead className="table-warning">
                         <tr>
-                            <th>Ended Date (days passed)</th>
-                            <th>Name</th>
+                            <th>End Date (days passed)</th>
+                            <th>Player</th>
                             <th>Position</th>
                             <th>Preferred League (Region)</th>
                             <th>Salary (zł.) / month</th>
@@ -163,7 +163,7 @@ const MyFavoritePlayerAdvertisements = () => {
                             userInactiveFavoritePlayerAdvertisements.map((favoriteAdvertisement, index) => (
                                 <tr key={index}>
                                     <td>{formatDate(favoriteAdvertisement.playerAdvertisement.endDate)} ({calculateSkippedDays(favoriteAdvertisement.playerAdvertisement.endDate)} days)</td>
-                                    <td>{favoriteAdvertisement.playerAdvertisement.user.firstName} {favoriteAdvertisement.playerAdvertisement.user.lastName}</td>
+                                    <td>{favoriteAdvertisement.playerAdvertisement.player.firstName} {favoriteAdvertisement.playerAdvertisement.player.lastName}</td>
                                     <td>{favoriteAdvertisement.playerAdvertisement.playerPosition.positionName}</td>
                                     <td>{favoriteAdvertisement.playerAdvertisement.league} ({favoriteAdvertisement.playerAdvertisement.region})</td>
                                     <td>{favoriteAdvertisement.playerAdvertisement.salaryRange.min} - {favoriteAdvertisement.playerAdvertisement.salaryRange.max}</td>

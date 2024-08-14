@@ -173,21 +173,13 @@ const PlayerAdvertisements = () => {
         return `${day}-${month}-${year}`;
     };
 
-    const calculateDaysLeft = (endDate: string): number => {
-        const currentDate = new Date();
-        const end = new Date(endDate);
-        const timeDiff = end.getTime() - currentDate.getTime();
-        const daysLeft = timeDiff / (1000 * 3600 * 24);
-        return Math.ceil(daysLeft);
-    };
-
     const searchAdvertisements = (advertisements: PlayerAdvertisement[]) => {
         if (!searchTerm) {
             return advertisements;
         }
         const lowerCaseSearchTerm = searchTerm.toLowerCase();
         return advertisements.filter(advertisement =>
-            (advertisement.user.firstName + ' ' + advertisement.user.lastName).toLowerCase().includes(lowerCaseSearchTerm) ||
+            (advertisement.player.firstName + ' ' + advertisement.player.lastName).toLowerCase().includes(lowerCaseSearchTerm) ||
             advertisement.league.toLowerCase().includes(lowerCaseSearchTerm) ||
             advertisement.region.toLowerCase().includes(lowerCaseSearchTerm)
         );
@@ -295,8 +287,8 @@ const PlayerAdvertisements = () => {
                 <Table striped bordered hover variant="light">
                     <thead className="table-dark">
                         <tr>
-                            <th>Creation Date (days left)</th>
-                            <th>Name</th>
+                            <th>Creation Date</th>
+                            <th>Player</th>
                             <th>Position</th>
                             <th>Preferred League</th>
                             <th>Region</th>
@@ -308,8 +300,8 @@ const PlayerAdvertisements = () => {
                         {currentPlayerAdvertisementItems.length > 0 ? (
                             currentPlayerAdvertisementItems.map((advertisement, index) => (
                                 <tr key={index}>
-                                    <td className="ad-row">{formatDate(advertisement.creationDate)} ({calculateDaysLeft(advertisement.endDate)} days)</td>
-                                    <td className="ad-row">{advertisement.user.firstName} {advertisement.user.lastName}</td>
+                                    <td className="ad-row">{formatDate(advertisement.creationDate)}</td>
+                                    <td className="ad-row">{advertisement.player.firstName} {advertisement.player.lastName}</td>
                                     <td className="ad-row">{advertisement.playerPosition.positionName}</td>
                                     <td className="ad-row">{advertisement.league}</td>
                                     <td className="ad-row">{advertisement.region}</td>
@@ -318,7 +310,7 @@ const PlayerAdvertisements = () => {
                                         <Button variant="dark" className="button-spacing" onClick={() => moveToPlayerAdvertisementPage(advertisement.id)}>
                                             <i className="bi bi-info-square"></i>
                                         </Button>
-                                        {(advertisement.userId !== userId && !isAdminRole) && (
+                                        {(advertisement.playerId !== userId && !isAdminRole) && (
                                             favoritePlayerAdvertisementIds.includes(advertisement.id) ? (
                                                 <Button
                                                     variant="danger"

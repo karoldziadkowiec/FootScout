@@ -28,7 +28,7 @@ const NewPlayerAdvertisement = () => {
             min: 0,
             max: 0,
         },
-        userId: ''
+        playerId: ''
     });
 
     useEffect(() => {
@@ -81,7 +81,7 @@ const NewPlayerAdvertisement = () => {
         }
 
         try {
-            const createFormData = { ...playerAdvertisementDTO, userId: userId };
+            const createFormData = { ...playerAdvertisementDTO, playerId: userId };
             await PlayerAdvertisementService.createPlayerAdvertisement(createFormData);
             navigate('/my-player-advertisements', { state: { toastMessage: "Player advertisement created successfully!" } });
         }

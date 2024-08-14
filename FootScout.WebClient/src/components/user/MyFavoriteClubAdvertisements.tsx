@@ -108,7 +108,7 @@ const MyFavoriteClubAdvertisements = () => {
                 <Table striped bordered hover variant="light">
                     <thead className="table-success">
                         <tr>
-                            <th>Creation Date (days left)</th>
+                            <th>End Date (days left)</th>
                             <th>Club Name</th>
                             <th>League (Region)</th>
                             <th>Position</th>
@@ -120,7 +120,7 @@ const MyFavoriteClubAdvertisements = () => {
                         {userActiveFavoriteClubAdvertisements.length > 0 ? (
                             userActiveFavoriteClubAdvertisements.map((favoriteAdvertisement, index) => (
                                 <tr key={index}>
-                                    <td>{formatDate(favoriteAdvertisement.clubAdvertisement.creationDate)} ({calculateDaysLeft(favoriteAdvertisement.clubAdvertisement.endDate)} days)</td>
+                                    <td>{formatDate(favoriteAdvertisement.clubAdvertisement.endDate)} ({calculateDaysLeft(favoriteAdvertisement.clubAdvertisement.endDate)} days)</td>
                                     <td>{favoriteAdvertisement.clubAdvertisement.clubName}</td>
                                     <td>{favoriteAdvertisement.clubAdvertisement.league} ({favoriteAdvertisement.clubAdvertisement.region})</td>
                                     <td>{favoriteAdvertisement.clubAdvertisement.playerPosition.positionName}</td>
@@ -150,7 +150,7 @@ const MyFavoriteClubAdvertisements = () => {
                 <Table striped bordered hover variant="light">
                     <thead className="table-warning">
                         <tr>
-                            <th>Creation Date (days left)</th>
+                            <th>End Date (days passed)</th>
                             <th>Club Name</th>
                             <th>League (Region)</th>
                             <th>Position</th>
@@ -162,7 +162,7 @@ const MyFavoriteClubAdvertisements = () => {
                         {userInactiveFavoriteClubAdvertisements.length > 0 ? (
                             userInactiveFavoriteClubAdvertisements.map((favoriteAdvertisement, index) => (
                                 <tr key={index}>
-                                    <td>{formatDate(favoriteAdvertisement.clubAdvertisement.creationDate)} ({calculateSkippedDays(favoriteAdvertisement.clubAdvertisement.endDate)} days)</td>
+                                    <td>{formatDate(favoriteAdvertisement.clubAdvertisement.endDate)} ({calculateSkippedDays(favoriteAdvertisement.clubAdvertisement.endDate)} days)</td>
                                     <td>{favoriteAdvertisement.clubAdvertisement.clubName}</td>
                                     <td>{favoriteAdvertisement.clubAdvertisement.league} ({favoriteAdvertisement.clubAdvertisement.region})</td>
                                     <td>{favoriteAdvertisement.clubAdvertisement.playerPosition.positionName}</td>

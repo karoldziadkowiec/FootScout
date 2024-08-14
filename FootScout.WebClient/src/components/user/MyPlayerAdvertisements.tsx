@@ -50,14 +50,6 @@ const MyPlayerAdvertisements = () => {
         return `${day}-${month}-${year}`;
     };
 
-    const calculateDaysLeft = (endDate: string): number => {
-        const currentDate = new Date();
-        const end = new Date(endDate);
-        const timeDiff = end.getTime() - currentDate.getTime();
-        const daysLeft = timeDiff / (1000 * 3600 * 24);
-        return Math.ceil(daysLeft);
-    };
-
     const calculateSkippedDays = (endDate: string): number => {
         const currentDate = new Date();
         const end = new Date(endDate);
@@ -80,7 +72,7 @@ const MyPlayerAdvertisements = () => {
                 <Table striped bordered hover variant="light">
                     <thead className="table-success">
                         <tr>
-                            <th>Creation Date (days left)</th>
+                            <th>Creation Date</th>
                             <th>Position</th>
                             <th>Preferred League</th>
                             <th>Region</th>
@@ -92,7 +84,7 @@ const MyPlayerAdvertisements = () => {
                         {userActivePlayerAdvertisements.length > 0 ? (
                             userActivePlayerAdvertisements.map((advertisement, index) => (
                                 <tr key={index}>
-                                    <td>{formatDate(advertisement.creationDate)} ({calculateDaysLeft(advertisement.endDate)} days)</td>
+                                    <td>{formatDate(advertisement.creationDate)}</td>
                                     <td>{advertisement.playerPosition.positionName}</td>
                                     <td>{advertisement.league}</td>
                                     <td>{advertisement.region}</td>
@@ -119,7 +111,7 @@ const MyPlayerAdvertisements = () => {
                 <Table striped bordered hover variant="light">
                     <thead className="table-warning">
                         <tr>
-                            <th>Ended Date (days ago)</th>
+                            <th>End Date (days ago)</th>
                             <th>Position</th>
                             <th>Preferred League</th>
                             <th>Region</th>
