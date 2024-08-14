@@ -6,7 +6,7 @@ interface PlayerOfferCreateDTO {
     playerFootId: number;
     salary: number;
     additionalInformation: string;
-    userPlayerId: string;
+    playerId: string;
 }
 
 export default PlayerOfferCreateDTO;

@@ -17,8 +17,8 @@ interface ClubOffer {
     salary: number;
     additionalInformation: string;
     creationDate: string;
-    userClubId: string;
-    userClub: UserDTO;
+    clubMemberId: string;
+    clubMember: UserDTO;
 }
 
 export default ClubOffer;

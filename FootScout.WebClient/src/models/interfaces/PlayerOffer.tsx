@@ -19,8 +19,8 @@ interface PlayerOffer {
     salary: number;
     additionalInformation: string;
     creationDate: string;
-    userPlayerId: string;
-    userPlayer: UserDTO;
+    playerId: string;
+    player: UserDTO;
 }
 
 export default PlayerOffer;

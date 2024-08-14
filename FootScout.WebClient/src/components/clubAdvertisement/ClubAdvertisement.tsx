@@ -47,7 +47,7 @@ const ClubAdvertisement = () => {
         playerFootId: 0,
         salary: 0,
         additionalInformation: '',
-        userPlayerId: ''
+        playerId: ''
     });
     const [favoriteClubAdvertisementDTO, setFavoriteClubAdvertisementDTO] = useState<FavoriteClubAdvertisementCreateDTO>({
         clubAdvertisementId: 0,
@@ -301,7 +301,7 @@ const ClubAdvertisement = () => {
         }
 
         try {
-            const newFormData = { ...createFormData, clubAdvertisementId: clubAdvertisement.id, userPlayerId: userId };
+            const newFormData = { ...createFormData, clubAdvertisementId: clubAdvertisement.id, playerId: userId };
 
             await PlayerOfferService.createPlayerOffer(newFormData);
             setShowSubmitPlayerOfferModal(false);
@@ -625,7 +625,7 @@ const ClubAdvertisement = () => {
             {/* Create Submit Player Offer Modal */}
             <Modal show={showSubmitPlayerOfferModal} onHide={() => setShowSubmitPlayerOfferModal(false)}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Submit player offer</Modal.Title>
+                    <Modal.Title>Submit player request</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>

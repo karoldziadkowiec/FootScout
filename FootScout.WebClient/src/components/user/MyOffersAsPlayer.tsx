@@ -220,9 +220,9 @@ const MyOffersAsPlayer = () => {
                             <p><strong>Salary (zł.) / month:</strong> {selectedReceivedClubOffer.salary}</p>
                             <p><strong>Additional Information:</strong> {selectedReceivedClubOffer.additionalInformation}</p>
                             <p><strong>RECEIVED FROM</strong></p>
-                            <p><strong>Name:</strong> {selectedReceivedClubOffer.userClub.firstName} {selectedReceivedClubOffer.userClub.lastName}</p>
-                            <p><strong>E-mail:</strong> {selectedReceivedClubOffer.userClub.email}</p>
-                            <p><strong>Phone number:</strong> {selectedReceivedClubOffer.userClub.phoneNumber}</p>
+                            <p><strong>Name:</strong> {selectedReceivedClubOffer.clubMember.firstName} {selectedReceivedClubOffer.clubMember.lastName}</p>
+                            <p><strong>E-mail:</strong> {selectedReceivedClubOffer.clubMember.email}</p>
+                            <p><strong>Phone number:</strong> {selectedReceivedClubOffer.clubMember.phoneNumber}</p>
                         </div>
                     )}
                 </Modal.Body>

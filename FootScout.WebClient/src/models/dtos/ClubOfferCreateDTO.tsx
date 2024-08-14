@@ -6,7 +6,7 @@ interface ClubOfferCreateDTO {
     region: string;
     salary: number;
     additionalInformation: string;
-    userClubId: string;
+    clubMemberId: string;
 }
 
 export default ClubOfferCreateDTO;
