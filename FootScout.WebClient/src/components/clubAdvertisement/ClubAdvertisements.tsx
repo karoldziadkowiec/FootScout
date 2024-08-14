@@ -6,11 +6,11 @@ import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
 import PlayerPositionService from '../../services/api/PlayerPositionService';
 import ClubAdvertisementService from '../../services/api/ClubAdvertisementService';
-import ClubAdvertisementFavoriteService from '../../services/api/ClubAdvertisementFavoriteService';
+import FavoriteClubAdvertisementService from '../../services/api/FavoriteClubAdvertisementService';
 import PlayerPosition from '../../models/interfaces/PlayerPosition';
 import ClubAdvertisement from '../../models/interfaces/ClubAdvertisement';
-import ClubAdvertisementFavorite from '../../models/interfaces/ClubAdvertisementFavorite';
-import ClubAdvertisementFavoriteCreateDTO from '../../models/dtos/ClubAdvertisementFavoriteCreateDTO';
+import FavoriteClubAdvertisement from '../../models/interfaces/FavoriteClubAdvertisement';
+import FavoriteClubAdvertisementCreateDTO from '../../models/dtos/FavoriteClubAdvertisementCreateDTO';
 import '../../App.css';
 import '../../styles/clubAdvertisement/ClubAdvertisements.css';
 
@@ -21,11 +21,11 @@ const ClubAdvertisements = () => {
     const [isAdminRole, setIsAdminRole] = useState<boolean | null>(null);
     const [positions, setPositions] = useState<PlayerPosition[]>([]);
     const [clubAdvertisements, setClubAdvertisements] = useState<ClubAdvertisement[]>([]);
-    const [favoriteClubAdvertisements, setFavoriteClubAdvertisements] = useState<ClubAdvertisementFavorite[]>([]);
+    const [favoriteClubAdvertisements, setFavoriteClubAdvertisements] = useState<FavoriteClubAdvertisement[]>([]);
     const [favoriteClubAdvertisementIds, setFavoriteClubAdvertisementIds] = useState<number[]>([]);
     const [showDeleteFavoriteModal, setShowDeleteFavoriteModal] = useState<boolean>(false);
     const [deleteFavoriteId, setDeleteFavoriteId] = useState<number | null>(null);
-    const [favoriteClubAdvertisementDTO, setFavoriteClubAdvertisementDTO] = useState<ClubAdvertisementFavoriteCreateDTO>({
+    const [favoriteClubAdvertisementDTO, setFavoriteClubAdvertisementDTO] = useState<FavoriteClubAdvertisementCreateDTO>({
         clubAdvertisementId: 0,
         userId: ''
     });
@@ -120,7 +120,7 @@ const ClubAdvertisements = () => {
             return;
 
         try {
-            await ClubAdvertisementFavoriteService.deleteFromFavorites(deleteFavoriteId);
+            await FavoriteClubAdvertisementService.deleteFromFavorites(deleteFavoriteId);
             toast.success('Your followed advertisement has been deleted from favorites successfully.');
             setShowDeleteFavoriteModal(false);
             setDeleteFavoriteId(null);
@@ -147,7 +147,7 @@ const ClubAdvertisements = () => {
             const createFormData = { ...favoriteClubAdvertisementDTO, clubAdvertisementId: clubAdvertisement.id, userId: userId };
             setFavoriteClubAdvertisementDTO(createFormData);
 
-            await ClubAdvertisementFavoriteService.addToFavorites(createFormData);
+            await FavoriteClubAdvertisementService.addToFavorites(createFormData);
             toast.success('Club advertisement has been added to favorites successfully.');
 
             // Refresh the user data

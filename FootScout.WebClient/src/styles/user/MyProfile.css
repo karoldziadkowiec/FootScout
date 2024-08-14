@@ -32,6 +32,12 @@
     margin-left: 10px;
 }
 
+.email-label {
+    color: rgb(40, 108, 37);
+    font-weight: bold;
+    margin-left: 10px;
+}
+
 .white-label {
     color: white;
 }

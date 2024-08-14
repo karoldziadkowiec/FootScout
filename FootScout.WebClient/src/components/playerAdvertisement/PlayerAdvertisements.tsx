@@ -6,11 +6,11 @@ import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
 import PlayerPositionService from '../../services/api/PlayerPositionService';
 import PlayerAdvertisementService from '../../services/api/PlayerAdvertisementService';
-import PlayerAdvertisementFavoriteService from '../../services/api/PlayerAdvertisementFavoriteService';
+import FavoritePlayerAdvertisementService from '../../services/api/FavoritePlayerAdvertisementService';
 import PlayerPosition from '../../models/interfaces/PlayerPosition';
 import PlayerAdvertisement from '../../models/interfaces/PlayerAdvertisement';
-import PlayerAdvertisementFavorite from '../../models/interfaces/PlayerAdvertisementFavorite';
-import PlayerAdvertisementFavoriteCreateDTO from '../../models/dtos/PlayerAdvertisementFavoriteCreateDTO';
+import FavoritePlayerAdvertisement from '../../models/interfaces/FavoritePlayerAdvertisement';
+import FavoritePlayerAdvertisementCreateDTO from '../../models/dtos/FavoritePlayerAdvertisementCreateDTO';
 import '../../App.css';
 import '../../styles/playerAdvertisement/PlayerAdvertisements.css';
 
@@ -21,11 +21,11 @@ const PlayerAdvertisements = () => {
     const [isAdminRole, setIsAdminRole] = useState<boolean | null>(null);
     const [positions, setPositions] = useState<PlayerPosition[]>([]);
     const [playerAdvertisements, setPlayerAdvertisements] = useState<PlayerAdvertisement[]>([]);
-    const [favoritePlayerAdvertisements, setFavoritePlayerAdvertisements] = useState<PlayerAdvertisementFavorite[]>([]);
+    const [favoritePlayerAdvertisements, setFavoritePlayerAdvertisements] = useState<FavoritePlayerAdvertisement[]>([]);
     const [favoritePlayerAdvertisementIds, setFavoritePlayerAdvertisementIds] = useState<number[]>([]);
     const [showDeleteFavoriteModal, setShowDeleteFavoriteModal] = useState<boolean>(false);
     const [deleteFavoriteId, setDeleteFavoriteId] = useState<number | null>(null);
-    const [favoritePlayerAdvertisementDTO, setFavoritePlayerAdvertisementDTO] = useState<PlayerAdvertisementFavoriteCreateDTO>({
+    const [favoritePlayerAdvertisementDTO, setFavoritePlayerAdvertisementDTO] = useState<FavoritePlayerAdvertisementCreateDTO>({
         playerAdvertisementId: 0,
         userId: ''
     });
@@ -120,7 +120,7 @@ const PlayerAdvertisements = () => {
             return;
 
         try {
-            await PlayerAdvertisementFavoriteService.deleteFromFavorites(deleteFavoriteId);
+            await FavoritePlayerAdvertisementService.deleteFromFavorites(deleteFavoriteId);
             toast.success('Your followed advertisement has been deleted from favorites successfully.');
             setShowDeleteFavoriteModal(false);
             setDeleteFavoriteId(null);
@@ -147,7 +147,7 @@ const PlayerAdvertisements = () => {
             const createFormData = { ...favoritePlayerAdvertisementDTO, playerAdvertisementId: playerAdvertisement.id, userId: userId };
             setFavoritePlayerAdvertisementDTO(createFormData);
 
-            await PlayerAdvertisementFavoriteService.addToFavorites(createFormData);
+            await FavoritePlayerAdvertisementService.addToFavorites(createFormData);
             toast.success('Player advertisement has been added to favorites successfully.');
 
             // Refresh the user data

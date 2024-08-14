@@ -1,7 +1,7 @@
 import UserDTO from '../dtos/UserDTO';
 import PlayerAdvertisement from './PlayerAdvertisement';
 
-interface PlayerAdvertisementFavorite {
+interface FavoritePlayerAdvertisement {
     id: number;
     playerAdvertisementId: number;
     playerAdvertisement: PlayerAdvertisement;
@@ -9,4 +9,4 @@ interface PlayerAdvertisementFavorite {
     user: UserDTO;
 }
 
-export default PlayerAdvertisementFavorite;
+export default FavoritePlayerAdvertisement;

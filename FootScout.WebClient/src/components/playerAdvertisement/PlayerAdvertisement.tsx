@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
 import PlayerAdvertisementService from '../../services/api/PlayerAdvertisementService';
-import PlayerAdvertisementFavoriteService from '../../services/api/PlayerAdvertisementFavoriteService';
+import FavoritePlayerAdvertisementService from '../../services/api/FavoritePlayerAdvertisementService';
 import ClubOfferService from '../../services/api/ClubOfferService';
 import OfferStatusService from '../../services/api/OfferStatusService';
 import PlayerPositionService from '../../services/api/PlayerPositionService';
@@ -13,7 +13,7 @@ import PlayerFootService from '../../services/api/PlayerFootService';
 import UserDTO from '../../models/dtos/UserDTO';
 import ClubHistoryModel from '../../models/interfaces/ClubHistory';
 import PlayerAdvertisementModel from '../../models/interfaces/PlayerAdvertisement';
-import PlayerAdvertisementFavoriteCreateDTO from '../../models/dtos/PlayerAdvertisementFavoriteCreateDTO';
+import FavoritePlayerAdvertisementCreateDTO from '../../models/dtos/FavoritePlayerAdvertisementCreateDTO';
 import ClubOfferCreateDTO from '../../models/dtos/ClubOfferCreateDTO';
 import PlayerPosition from '../../models/interfaces/PlayerPosition';
 import PlayerFoot from '../../models/interfaces/PlayerFoot';
@@ -53,7 +53,7 @@ const PlayerAdvertisement = () => {
         additionalInformation: '',
         userClubId: ''
     });
-    const [favoritePlayerAdvertisementDTO, setFavoritePlayerAdvertisementDTO] = useState<PlayerAdvertisementFavoriteCreateDTO>({
+    const [favoritePlayerAdvertisementDTO, setFavoritePlayerAdvertisementDTO] = useState<FavoritePlayerAdvertisementCreateDTO>({
         playerAdvertisementId: 0,
         userId: ''
     });
@@ -91,7 +91,7 @@ const PlayerAdvertisement = () => {
                 setPlayerAdvertisementStatus(endDate >= currentDate);
 
                 if (userId) {
-                    const favoriteId = await PlayerAdvertisementFavoriteService.checkPlayerAdvertisementIsFavorite(playerAdvertisement.id, userId);
+                    const favoriteId = await FavoritePlayerAdvertisementService.checkPlayerAdvertisementIsFavorite(playerAdvertisement.id, userId);
                     setFavoriteId(favoriteId);
 
                     const offferStatusId = await ClubOfferService.getClubOfferStatusId(playerAdvertisement.id, userId);
@@ -148,16 +148,6 @@ const PlayerAdvertisement = () => {
     if (!playerAdvertisement) {
         return <div><p><strong><h2>No player advertisement found...</h2></strong></p></div>;
     }
-
-    const getPositionNameById = (id: number) => {
-        const position = positions.find(p => p.id === id);
-        return position ? position.positionName : 'Unknown';
-    };
-
-    const getFootNameById = (id: number) => {
-        const foot = feet.find(f => f.id === id);
-        return foot ? foot.footName : 'Unknown';
-    };
 
     const getOfferStatusNameById = (id: number) => {
         const offerStatus = offerStatuses.find(os => os.id === id);
@@ -293,7 +283,7 @@ const PlayerAdvertisement = () => {
             const createFormData = { ...favoritePlayerAdvertisementDTO, playerAdvertisementId: playerAdvertisement.id, userId: userId };
             setFavoritePlayerAdvertisementDTO(createFormData);
 
-            await PlayerAdvertisementFavoriteService.addToFavorites(createFormData);
+            await FavoritePlayerAdvertisementService.addToFavorites(createFormData);
             navigate('/my-favorite-player-advertisements', { state: { toastMessage: "Player advertisement has been added to favorites successfully." } });
         }
         catch (error) {
@@ -312,12 +302,12 @@ const PlayerAdvertisement = () => {
             return;
 
         try {
-            await PlayerAdvertisementFavoriteService.deleteFromFavorites(deleteFavoriteId);
+            await FavoritePlayerAdvertisementService.deleteFromFavorites(deleteFavoriteId);
             toast.success('Your followed advertisement has been deleted from favorites successfully.');
             setShowDeleteFavoriteModal(false);
             setDeleteFavoriteId(null);
             // Refresh the user data
-            const favoriteId = await PlayerAdvertisementFavoriteService.checkPlayerAdvertisementIsFavorite(playerAdvertisement.id, userId);
+            const favoriteId = await FavoritePlayerAdvertisementService.checkPlayerAdvertisementIsFavorite(playerAdvertisement.id, userId);
             setFavoriteId(favoriteId);
         }
         catch (error) {
@@ -350,9 +340,9 @@ const PlayerAdvertisement = () => {
     };
 
     const validateOfferForm = (formData: ClubOfferCreateDTO) => {
-        const { playerPositionId, league, region, salary, additionalInformation } = formData;
+        const { playerPositionId, league, region, salary } = formData;
 
-        if (!playerPositionId || !league || !region || !salary || !additionalInformation)
+        if (!playerPositionId || !league || !region || !salary)
             return 'All fields are required.';
 
         if (isNaN(Number(salary)))
@@ -482,13 +472,13 @@ const PlayerAdvertisement = () => {
                                     <Form.Label className="ad-data-label">{playerAdvertisement.height}</Form.Label>
                                 </p>
                                 <p><Form.Label>Foot: </Form.Label>
-                                    <Form.Label className="ad-data-label">{getFootNameById(playerAdvertisement.playerFootId)}</Form.Label>
+                                    <Form.Label className="ad-data-label">{playerAdvertisement.playerFoot.footName}</Form.Label>
                                 </p>
                             </Col>
                             <Col>
                                 <Form.Label className="ad-section">PREFERENCES</Form.Label>
                                 <p><Form.Label>Position: </Form.Label>
-                                    <Form.Label className="ad-data-label">{getPositionNameById(playerAdvertisement.playerPositionId)}</Form.Label>
+                                    <Form.Label className="ad-data-label">{playerAdvertisement.playerPosition.positionName}</Form.Label>
                                 </p>
                                 <p><Form.Label>League (Region): </Form.Label>
                                     <Form.Label className="ad-data-label">{playerAdvertisement.league} ({playerAdvertisement.region})</Form.Label>
@@ -517,7 +507,7 @@ const PlayerAdvertisement = () => {
                                                 <td>{formatDate(history.startDate)} - {formatDate(history.endDate)}</td>
                                                 <td>{history.clubName}</td>
                                                 <td>{history.league} ({history.region})</td>
-                                                <td>{getPositionNameById(history.playerPositionId)}</td>
+                                                <td>{history.playerPosition.positionName}</td>
                                                 <td>
                                                     <Button variant="dark" className="button-spacing" onClick={() => handleShowClubHistoryDetails(history)}>
                                                         <i className="bi bi-info-square"></i>
@@ -563,7 +553,7 @@ const PlayerAdvertisement = () => {
                             <p><strong>Region:</strong> {selectedClubHistory.region}</p>
                             <p><strong>Start Date:</strong> {formatDate(selectedClubHistory.startDate)}</p>
                             <p><strong>End Date:</strong> {formatDate(selectedClubHistory.endDate)}</p>
-                            <p><strong>Position:</strong> {getPositionNameById(selectedClubHistory.playerPositionId)}</p>
+                            <p><strong>Position:</strong> {selectedClubHistory.playerPosition.positionName}</p>
                             <p><strong>Matches:</strong> {selectedClubHistory.achievements.numberOfMatches}</p>
                             <p><strong>Goals:</strong> {selectedClubHistory.achievements.goals}</p>
                             <p><strong>Assists:</strong> {selectedClubHistory.achievements.assists}</p>

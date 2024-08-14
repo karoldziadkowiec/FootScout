@@ -1,10 +1,10 @@
 import axios from 'axios';
 import ApiURL from '../../config/ApiConfig';
 import AccountService from './AccountService';
-import ClubAdvertisementFavoriteCreateDTO from '../../models/dtos/ClubAdvertisementFavoriteCreateDTO';
+import FavoriteClubAdvertisementCreateDTO from '../../models/dtos/FavoriteClubAdvertisementCreateDTO';
 
-const ClubAdvertisementFavoriteService = {
-    async addToFavorites(dto: ClubAdvertisementFavoriteCreateDTO): Promise<void> {
+const FavoriteClubAdvertisementService = {
+    async addToFavorites(dto: FavoriteClubAdvertisementCreateDTO): Promise<void> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
             await axios.post(`${ApiURL}/club-advertisements/favorites`, dto, {
@@ -24,10 +24,10 @@ const ClubAdvertisementFavoriteService = {
         }
     },
 
-    async deleteFromFavorites(clubAdvertisementFavoriteId: number): Promise<void> {
+    async deleteFromFavorites(favoriteClubAdvertisementId: number): Promise<void> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
-            await axios.delete(`${ApiURL}/club-advertisements/favorites/${clubAdvertisementFavoriteId}`, {
+            await axios.delete(`${ApiURL}/club-advertisements/favorites/${favoriteClubAdvertisementId}`, {
                 headers: {
                     'Authorization': authorizationHeader
                 }
@@ -66,4 +66,4 @@ const ClubAdvertisementFavoriteService = {
     }
 };
 
-export default ClubAdvertisementFavoriteService;
+export default FavoriteClubAdvertisementService;

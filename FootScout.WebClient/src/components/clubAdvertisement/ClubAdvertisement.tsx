@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Table, Form, Button, Row, Col, Modal, FormSelect } from 'react-bootstrap';
+import { Form, Button, Row, Col, Modal, FormSelect } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
 import ClubAdvertisementService from '../../services/api/ClubAdvertisementService';
-import ClubAdvertisementFavoriteService from '../../services/api/ClubAdvertisementFavoriteService';
+import FavoriteClubAdvertisementService from '../../services/api/FavoriteClubAdvertisementService';
 import PlayerOfferService from '../../services/api/PlayerOfferService';
 import OfferStatusService from '../../services/api/OfferStatusService';
 import PlayerPositionService from '../../services/api/PlayerPositionService';
 import PlayerFootService from '../../services/api/PlayerFootService';
 import UserDTO from '../../models/dtos/UserDTO';
 import ClubAdvertisementModel from '../../models/interfaces/ClubAdvertisement';
-import ClubAdvertisementFavoriteCreateDTO from '../../models/dtos/ClubAdvertisementFavoriteCreateDTO';
+import FavoriteClubAdvertisementCreateDTO from '../../models/dtos/FavoriteClubAdvertisementCreateDTO';
 import PlayerOfferCreateDTO from '../../models/dtos/PlayerOfferCreateDTO';
 import PlayerPosition from '../../models/interfaces/PlayerPosition';
 import PlayerFoot from '../../models/interfaces/PlayerFoot';
@@ -49,7 +49,7 @@ const ClubAdvertisement = () => {
         additionalInformation: '',
         userPlayerId: ''
     });
-    const [favoriteClubAdvertisementDTO, setFavoriteClubAdvertisementDTO] = useState<ClubAdvertisementFavoriteCreateDTO>({
+    const [favoriteClubAdvertisementDTO, setFavoriteClubAdvertisementDTO] = useState<FavoriteClubAdvertisementCreateDTO>({
         clubAdvertisementId: 0,
         userId: ''
     });
@@ -84,7 +84,7 @@ const ClubAdvertisement = () => {
                 setClubAdvertisementStatus(endDate >= currentDate);
 
                 if (userId) {
-                    const favoriteId = await ClubAdvertisementFavoriteService.checkClubAdvertisementIsFavorite(clubAdvertisement.id, userId);
+                    const favoriteId = await FavoriteClubAdvertisementService.checkClubAdvertisementIsFavorite(clubAdvertisement.id, userId);
                     setFavoriteId(favoriteId);
 
                     const offferStatusId = await PlayerOfferService.getPlayerOfferStatusId(clubAdvertisement.id, userId);
@@ -141,16 +141,6 @@ const ClubAdvertisement = () => {
     if (!clubAdvertisement) {
         return <div><p><strong><h2>No club advertisement found...</h2></strong></p></div>;
     }
-
-    const getPositionNameById = (id: number) => {
-        const position = positions.find(p => p.id === id);
-        return position ? position.positionName : 'Unknown';
-    };
-
-    const getFootNameById = (id: number) => {
-        const foot = feet.find(f => f.id === id);
-        return foot ? foot.footName : 'Unknown';
-    };
 
     const getOfferStatusNameById = (id: number) => {
         const offerStatus = offerStatuses.find(os => os.id === id);
@@ -267,7 +257,7 @@ const ClubAdvertisement = () => {
             const createFormData = { ...favoriteClubAdvertisementDTO, clubAdvertisementId: clubAdvertisement.id, userId: userId };
             setFavoriteClubAdvertisementDTO(createFormData);
 
-            await ClubAdvertisementFavoriteService.addToFavorites(createFormData);
+            await FavoriteClubAdvertisementService.addToFavorites(createFormData);
             navigate('/my-favorite-club-advertisements', { state: { toastMessage: "Club advertisement has been added to favorites successfully." } });
         }
         catch (error) {
@@ -286,12 +276,12 @@ const ClubAdvertisement = () => {
             return;
 
         try {
-            await ClubAdvertisementFavoriteService.deleteFromFavorites(deleteFavoriteId);
+            await FavoriteClubAdvertisementService.deleteFromFavorites(deleteFavoriteId);
             toast.success('Your followed advertisement has been deleted from favorites successfully.');
             setShowDeleteFavoriteModal(false);
             setDeleteFavoriteId(null);
             // Refresh the user data
-            const favoriteId = await ClubAdvertisementFavoriteService.checkClubAdvertisementIsFavorite(clubAdvertisement.id, userId);
+            const favoriteId = await FavoriteClubAdvertisementService.checkClubAdvertisementIsFavorite(clubAdvertisement.id, userId);
             setFavoriteId(favoriteId);
         }
         catch (error) {
@@ -324,9 +314,9 @@ const ClubAdvertisement = () => {
     };
 
     const validateOfferForm = (formData: PlayerOfferCreateDTO) => {
-        const { playerPositionId, age, height, playerFootId, salary, additionalInformation } = formData;
+        const { playerPositionId, age, height, playerFootId, salary } = formData;
 
-        if (!playerPositionId || !age || !height || !playerFootId || !salary || !additionalInformation)
+        if (!playerPositionId || !age || !height || !playerFootId || !salary)
             return 'All fields are required.';
 
         if (isNaN(Number(age)) || isNaN(Number(height)) || isNaN(Number(salary)))

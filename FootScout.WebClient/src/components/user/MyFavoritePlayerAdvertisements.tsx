@@ -4,8 +4,8 @@ import { Table, Button, Modal } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
-import PlayerAdvertisementFavoriteService from '../../services/api/PlayerAdvertisementFavoriteService';
-import PlayerAdvertisementFavorite from '../../models/interfaces/PlayerAdvertisementFavorite';
+import FavoritePlayerAdvertisementService from '../../services/api/FavoritePlayerAdvertisementService';
+import FavoritePlayerAdvertisement from '../../models/interfaces/FavoritePlayerAdvertisement';
 import '../../App.css';
 import '../../styles/user/MyFavoritePlayerAdvertisements.css';
 
@@ -13,8 +13,8 @@ const MyFavoritePlayerAdvertisements = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [userId, setUserId] = useState<string | null>();
-    const [userActiveFavoritePlayerAdvertisements, setUserActiveFavoritePlayerAdvertisements] = useState<PlayerAdvertisementFavorite[]>([]);
-    const [userInactiveFavoritePlayerAdvertisements, setUserInactiveFavoritePlayerAdvertisements] = useState<PlayerAdvertisementFavorite[]>([]);
+    const [userActiveFavoritePlayerAdvertisements, setUserActiveFavoritePlayerAdvertisements] = useState<FavoritePlayerAdvertisement[]>([]);
+    const [userInactiveFavoritePlayerAdvertisements, setUserInactiveFavoritePlayerAdvertisements] = useState<FavoritePlayerAdvertisement[]>([]);
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
     const [deleteFavoriteId, setDeleteFavoriteId] = useState<number | null>(null);
 
@@ -57,7 +57,7 @@ const MyFavoritePlayerAdvertisements = () => {
             return;
 
         try {
-            await PlayerAdvertisementFavoriteService.deleteFromFavorites(deleteFavoriteId);
+            await FavoritePlayerAdvertisementService.deleteFromFavorites(deleteFavoriteId);
             toast.success('Your followed advertisement has been deleted from favorites successfully.');
             setShowDeleteModal(false);
             setDeleteFavoriteId(null);

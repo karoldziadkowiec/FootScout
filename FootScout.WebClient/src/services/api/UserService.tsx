@@ -3,12 +3,13 @@ import ApiURL from '../../config/ApiConfig';
 import AccountService from '../../services/api/AccountService';
 import UserDTO from '../../models/dtos/UserDTO';
 import UserUpdateDTO from '../../models/dtos/UserUpdateDTO';
+import UserResetPasswordDTO from '../../models/dtos/UserResetPasswordDTO';
 import ClubHistoryModel from '../../models/interfaces/ClubHistory';
 import PlayerAdvertisement from '../../models/interfaces/PlayerAdvertisement';
-import PlayerAdvertisementFavorite from '../../models/interfaces/PlayerAdvertisementFavorite';
+import FavoritePlayerAdvertisement from '../../models/interfaces/FavoritePlayerAdvertisement';
 import ClubOffer from '../../models/interfaces/ClubOffer';
 import ClubAdvertisement from '../../models/interfaces/ClubAdvertisement';
-import ClubAdvertisementFavorite from '../../models/interfaces/ClubAdvertisementFavorite';
+import FavoriteClubAdvertisement from '../../models/interfaces/FavoriteClubAdvertisement';
 import PlayerOffer from '../../models/interfaces/PlayerOffer';
 
 const UserService = {
@@ -54,10 +55,10 @@ const UserService = {
     }
   },
 
-  async updateUser(userId: string, userUpdateDto: UserUpdateDTO): Promise<void> {
+  async updateUser(userId: string, dto: UserUpdateDTO): Promise<void> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();
-      await axios.put(`${ApiURL}/users/${userId}`, userUpdateDto, {
+      await axios.put(`${ApiURL}/users/${userId}`, dto, {
         headers: {
           'Authorization': authorizationHeader
         }
@@ -66,6 +67,26 @@ const UserService = {
     catch (error) {
       if (axios.isAxiosError(error)) {
         console.error('Error updating user, details:', error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
+      throw error;
+    }
+  },
+
+  async resetUserPassword(userId: string, dto: UserResetPasswordDTO): Promise<void> {
+    try {
+      const authorizationHeader = await AccountService.getAuthorizationHeader();
+      await axios.put(`${ApiURL}/users/reset-password/${userId}`, dto, {
+        headers: {
+          'Authorization': authorizationHeader
+        }
+      });
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Error reseting user\'s password, details:', error.response?.data || error.message);
       }
       else {
         console.error('Unexpected error:', error);
@@ -178,10 +199,10 @@ const UserService = {
     }
   },
 
-  async getUserPlayerAdvertisementFavorites(userId: string): Promise<PlayerAdvertisementFavorite[]> {
+  async getUserPlayerAdvertisementFavorites(userId: string): Promise<FavoritePlayerAdvertisement[]> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();
-      const response = await axios.get<PlayerAdvertisementFavorite[]>(`${ApiURL}/users/${userId}/player-advertisements/favorites`, {
+      const response = await axios.get<FavoritePlayerAdvertisement[]>(`${ApiURL}/users/${userId}/player-advertisements/favorites`, {
         headers: {
           'Authorization': authorizationHeader
         }
@@ -199,10 +220,10 @@ const UserService = {
     }
   },
 
-  async getUserActivePlayerAdvertisementFavorites(userId: string): Promise<PlayerAdvertisementFavorite[]> {
+  async getUserActivePlayerAdvertisementFavorites(userId: string): Promise<FavoritePlayerAdvertisement[]> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();
-      const response = await axios.get<PlayerAdvertisementFavorite[]>(`${ApiURL}/users/${userId}/player-advertisements/favorites/active`, {
+      const response = await axios.get<FavoritePlayerAdvertisement[]>(`${ApiURL}/users/${userId}/player-advertisements/favorites/active`, {
         headers: {
           'Authorization': authorizationHeader
         }
@@ -220,10 +241,10 @@ const UserService = {
     }
   },
 
-  async getUserInactivePlayerAdvertisementFavorites(userId: string): Promise<PlayerAdvertisementFavorite[]> {
+  async getUserInactivePlayerAdvertisementFavorites(userId: string): Promise<FavoritePlayerAdvertisement[]> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();
-      const response = await axios.get<PlayerAdvertisementFavorite[]>(`${ApiURL}/users/${userId}/player-advertisements/favorites/inactive`, {
+      const response = await axios.get<FavoritePlayerAdvertisement[]>(`${ApiURL}/users/${userId}/player-advertisements/favorites/inactive`, {
         headers: {
           'Authorization': authorizationHeader
         }
@@ -346,10 +367,10 @@ const UserService = {
     }
   },
 
-  async getUserClubAdvertisementFavorites(userId: string): Promise<ClubAdvertisementFavorite[]> {
+  async getUserClubAdvertisementFavorites(userId: string): Promise<FavoriteClubAdvertisement[]> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();
-      const response = await axios.get<ClubAdvertisementFavorite[]>(`${ApiURL}/users/${userId}/club-advertisements/favorites`, {
+      const response = await axios.get<FavoriteClubAdvertisement[]>(`${ApiURL}/users/${userId}/club-advertisements/favorites`, {
         headers: {
           'Authorization': authorizationHeader
         }
@@ -367,10 +388,10 @@ const UserService = {
     }
   },
 
-  async getUserActiveClubAdvertisementFavorites(userId: string): Promise<ClubAdvertisementFavorite[]> {
+  async getUserActiveClubAdvertisementFavorites(userId: string): Promise<FavoriteClubAdvertisement[]> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();
-      const response = await axios.get<ClubAdvertisementFavorite[]>(`${ApiURL}/users/${userId}/club-advertisements/favorites/active`, {
+      const response = await axios.get<FavoriteClubAdvertisement[]>(`${ApiURL}/users/${userId}/club-advertisements/favorites/active`, {
         headers: {
           'Authorization': authorizationHeader
         }
@@ -388,10 +409,10 @@ const UserService = {
     }
   },
 
-  async getUserInactiveClubAdvertisementFavorites(userId: string): Promise<ClubAdvertisementFavorite[]> {
+  async getUserInactiveClubAdvertisementFavorites(userId: string): Promise<FavoriteClubAdvertisement[]> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();
-      const response = await axios.get<ClubAdvertisementFavorite[]>(`${ApiURL}/users/${userId}/club-advertisements/favorites/inactive`, {
+      const response = await axios.get<FavoriteClubAdvertisement[]>(`${ApiURL}/users/${userId}/club-advertisements/favorites/inactive`, {
         headers: {
           'Authorization': authorizationHeader
         }
