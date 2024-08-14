@@ -35,18 +35,29 @@ namespace FootScout.WebAPI.Repositories.Classes
             return userDTOs;
         }
 
-        public async Task UpdateUser(UserUpdateDTO userUpdateDTO)
+        public async Task UpdateUser(string userId, UserUpdateDTO dto)
         {
-            if (!userUpdateDTO.PasswordHash.Equals(userUpdateDTO.ConfirmPasswordHash))
-                throw new ArgumentException($"Confirmed password is different.");
-
-            var user = await _dbContext.Users.FindAsync(userUpdateDTO.Id);
+            var user = await _dbContext.Users.FindAsync(userId);
             if (user != null)
             {
-                _mapper.Map(userUpdateDTO, user);
+                _mapper.Map(dto, user);
+                _dbContext.Entry(user).State = EntityState.Modified;
+                await _dbContext.SaveChangesAsync();
+            }
+        }
 
-                if (!string.IsNullOrEmpty(userUpdateDTO.PasswordHash))
-                    user.PasswordHash = _passwordHasher.HashPassword(user, userUpdateDTO.PasswordHash);
+        public async Task ResetUserPassword(string userId, UserResetPasswordDTO dto)
+        {
+            if (!dto.PasswordHash.Equals(dto.ConfirmPasswordHash))
+                throw new ArgumentException($"Confirmed password is different.");
+
+            var user = await _dbContext.Users.FindAsync(userId);
+            if (user != null)
+            {
+                _mapper.Map(dto, user);
+
+                if (!string.IsNullOrEmpty(dto.PasswordHash))
+                    user.PasswordHash = _passwordHasher.HashPassword(user, dto.PasswordHash);
 
                 _dbContext.Entry(user).State = EntityState.Modified;
                 await _dbContext.SaveChangesAsync();
@@ -113,9 +124,9 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<PlayerAdvertisementFavorite>> GetUserFavoritePlayerAdvertisements(string userId)
+        public async Task<IEnumerable<FavoritePlayerAdvertisement>> GetUserFavoritePlayerAdvertisements(string userId)
         {
-            return await _dbContext.PlayerAdvertisementFavorites
+            return await _dbContext.FavoritePlayerAdvertisements
                 .Include(pa => pa.PlayerAdvertisement)
                 .Include(pa => pa.PlayerAdvertisement.PlayerPosition)
                 .Include(pa => pa.PlayerAdvertisement.PlayerFoot)
@@ -127,9 +138,9 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<PlayerAdvertisementFavorite>> GetUserActiveFavoritePlayerAdvertisements(string userId)
+        public async Task<IEnumerable<FavoritePlayerAdvertisement>> GetUserActiveFavoritePlayerAdvertisements(string userId)
         {
-            return await _dbContext.PlayerAdvertisementFavorites
+            return await _dbContext.FavoritePlayerAdvertisements
                 .Include(pa => pa.PlayerAdvertisement)
                 .Include(pa => pa.PlayerAdvertisement.PlayerPosition)
                 .Include(pa => pa.PlayerAdvertisement.PlayerFoot)
@@ -141,9 +152,9 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<PlayerAdvertisementFavorite>> GetUserInactiveFavoritePlayerAdvertisements(string userId)
+        public async Task<IEnumerable<FavoritePlayerAdvertisement>> GetUserInactiveFavoritePlayerAdvertisements(string userId)
         {
-            return await _dbContext.PlayerAdvertisementFavorites
+            return await _dbContext.FavoritePlayerAdvertisements
                 .Include(pa => pa.PlayerAdvertisement)
                 .Include(pa => pa.PlayerAdvertisement.PlayerPosition)
                 .Include(pa => pa.PlayerAdvertisement.PlayerFoot)
@@ -220,9 +231,9 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<ClubAdvertisementFavorite>> GetUserFavoriteClubAdvertisements(string userId)
+        public async Task<IEnumerable<FavoriteClubAdvertisement>> GetUserFavoriteClubAdvertisements(string userId)
         {
-            return await _dbContext.ClubAdvertisementFavorites
+            return await _dbContext.FavoriteClubAdvertisements
                 .Include(ca => ca.ClubAdvertisement)
                 .Include(ca => ca.ClubAdvertisement.PlayerPosition)
                 .Include(ca => ca.ClubAdvertisement.SalaryRange)
@@ -233,9 +244,9 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<ClubAdvertisementFavorite>> GetUserActiveFavoriteClubAdvertisements(string userId)
+        public async Task<IEnumerable<FavoriteClubAdvertisement>> GetUserActiveFavoriteClubAdvertisements(string userId)
         {
-            return await _dbContext.ClubAdvertisementFavorites
+            return await _dbContext.FavoriteClubAdvertisements
                 .Include(ca => ca.ClubAdvertisement)
                 .Include(ca => ca.ClubAdvertisement.PlayerPosition)
                 .Include(ca => ca.ClubAdvertisement.SalaryRange)
@@ -246,9 +257,9 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<ClubAdvertisementFavorite>> GetUserInactiveFavoriteClubAdvertisements(string userId)
+        public async Task<IEnumerable<FavoriteClubAdvertisement>> GetUserInactiveFavoriteClubAdvertisements(string userId)
         {
-            return await _dbContext.ClubAdvertisementFavorites
+            return await _dbContext.FavoriteClubAdvertisements
                 .Include(ca => ca.ClubAdvertisement)
                 .Include(ca => ca.ClubAdvertisement.PlayerPosition)
                 .Include(ca => ca.ClubAdvertisement.SalaryRange)

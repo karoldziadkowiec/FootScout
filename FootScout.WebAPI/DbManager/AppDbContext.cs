@@ -8,13 +8,13 @@ namespace FootScout.WebAPI.DbManager
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
         public DbSet<Achievements> Achievements { get; set; }
-        public DbSet<OfferStatus> OfferStatuses { get; set; }
         public DbSet<ClubAdvertisement> ClubAdvertisements { get; set; }
-        public DbSet<ClubAdvertisementFavorite> ClubAdvertisementFavorites { get; set; }
         public DbSet<ClubHistory> ClubHistories { get; set; }
         public DbSet<ClubOffer> ClubOffers { get; set; }
+        public DbSet<FavoriteClubAdvertisement> FavoriteClubAdvertisements { get; set; }
+        public DbSet<FavoritePlayerAdvertisement> FavoritePlayerAdvertisements { get; set; }
+        public DbSet<OfferStatus> OfferStatuses { get; set; }
         public DbSet<PlayerAdvertisement> PlayerAdvertisements { get; set; }
-        public DbSet<PlayerAdvertisementFavorite> PlayerAdvertisementFavorites { get; set; }
         public DbSet<PlayerFoot> PlayerFeet { get; set; }
         public DbSet<PlayerOffer> PlayerOffers { get; set; }
         public DbSet<PlayerPosition> PlayerPositions { get; set; }
@@ -43,13 +43,13 @@ namespace FootScout.WebAPI.DbManager
                 .HasForeignKey(ca => ca.SalaryRangeId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<ClubAdvertisementFavorite>()
+            modelBuilder.Entity<FavoriteClubAdvertisement>()
                 .HasOne(caf => caf.ClubAdvertisement)
                 .WithMany()
                 .HasForeignKey(caf => caf.ClubAdvertisementId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<ClubAdvertisementFavorite>()
+            modelBuilder.Entity<FavoriteClubAdvertisement>()
                 .HasOne(caf => caf.User)
                 .WithMany()
                 .HasForeignKey(caf => caf.UserId)
@@ -97,6 +97,18 @@ namespace FootScout.WebAPI.DbManager
                 .HasForeignKey(ch => ch.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<FavoritePlayerAdvertisement>()
+               .HasOne(paf => paf.PlayerAdvertisement)
+               .WithMany()
+               .HasForeignKey(paf => paf.PlayerAdvertisementId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<FavoritePlayerAdvertisement>()
+                .HasOne(paf => paf.User)
+                .WithMany()
+                .HasForeignKey(paf => paf.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<PlayerAdvertisement>()
                 .HasOne(pa => pa.User)
                 .WithMany()
@@ -119,18 +131,6 @@ namespace FootScout.WebAPI.DbManager
                 .HasOne(pa => pa.SalaryRange)
                 .WithMany()
                 .HasForeignKey(pa => pa.SalaryRangeId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<PlayerAdvertisementFavorite>()
-                .HasOne(paf => paf.PlayerAdvertisement)
-                .WithMany()
-                .HasForeignKey(paf => paf.PlayerAdvertisementId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<PlayerAdvertisementFavorite>()
-                .HasOne(paf => paf.User)
-                .WithMany()
-                .HasForeignKey(paf => paf.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<PlayerOffer>()

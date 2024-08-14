@@ -83,10 +83,10 @@ namespace FootScout.WebAPI.Repositories.Classes
                     _dbContext.SalaryRanges.Remove(salaryRange);
             }
 
-            var favorites = await _dbContext.ClubAdvertisementFavorites
+            var favorites = await _dbContext.FavoriteClubAdvertisements
                 .Where(ca => ca.ClubAdvertisementId == clubAdvertisementId)
                 .ToListAsync();
-            _dbContext.ClubAdvertisementFavorites.RemoveRange(favorites);
+            _dbContext.FavoriteClubAdvertisements.RemoveRange(favorites);
 
             var playerOffers = await _dbContext.PlayerOffers
                 .Where(po => po.ClubAdvertisementId == clubAdvertisementId)

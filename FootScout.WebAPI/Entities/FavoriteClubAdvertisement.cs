@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FootScout.WebAPI.Entities
 {
-    public class ClubAdvertisementFavorite
+    public class FavoriteClubAdvertisement
     {
         [Key]
         public int Id { get; set; }

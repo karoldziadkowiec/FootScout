@@ -16,6 +16,8 @@ namespace FootScout.WebAPI.DbManager
             CreateMap<UserDTO, User>();
             CreateMap<User, UserUpdateDTO>();
             CreateMap<UserUpdateDTO, User>();
+            CreateMap<User, UserResetPasswordDTO>();
+            CreateMap<UserResetPasswordDTO, User>();
             CreateMap<ClubHistoryCreateDTO, ClubHistory>()
                 .ForMember(dest => dest.Achievements, opt => opt.MapFrom(src => src.Achievements));
             CreateMap<AchievementsDTO, Achievements>();
@@ -25,14 +27,14 @@ namespace FootScout.WebAPI.DbManager
             CreateMap<SalaryRangeDTO, SalaryRange>();
             CreateMap<PlayerAdvertisement, PlayerAdvertisementCreateDTO>();
             CreateMap<PlayerAdvertisementCreateDTO, PlayerAdvertisement>();
-            CreateMap<PlayerAdvertisementFavorite, PlayerAdvertisementFavoriteCreateDTO>();
-            CreateMap<PlayerAdvertisementFavoriteCreateDTO, PlayerAdvertisementFavorite>();
+            CreateMap<FavoritePlayerAdvertisement, FavoritePlayerAdvertisementCreateDTO>();
+            CreateMap<FavoritePlayerAdvertisementCreateDTO, FavoritePlayerAdvertisement>();
             CreateMap<ClubOffer, ClubOfferCreateDTO>();
             CreateMap<ClubOfferCreateDTO, ClubOffer>();
             CreateMap<ClubAdvertisement, ClubAdvertisementCreateDTO>();
             CreateMap<ClubAdvertisementCreateDTO, ClubAdvertisement>();
-            CreateMap<ClubAdvertisementFavorite, ClubAdvertisementFavoriteCreateDTO>();
-            CreateMap<ClubAdvertisementFavoriteCreateDTO, ClubAdvertisementFavorite>();
+            CreateMap<FavoriteClubAdvertisement, FavoriteClubAdvertisementCreateDTO>();
+            CreateMap<FavoriteClubAdvertisementCreateDTO, FavoriteClubAdvertisement>();
             CreateMap<PlayerOffer, PlayerOfferCreateDTO>();
             CreateMap<PlayerOfferCreateDTO, PlayerOffer>();
         }

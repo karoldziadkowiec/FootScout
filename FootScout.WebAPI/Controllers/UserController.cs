@@ -43,14 +43,29 @@ namespace FootScout.WebAPI.Controllers
 
         // PUT: api/users/:userId
         [HttpPut("{userId}")]
-        public async Task<IActionResult> UpdateUser(string userId, [FromBody]UserUpdateDTO userUpdateDto)
+        public async Task<IActionResult> UpdateUser(string userId, [FromBody]UserUpdateDTO dto)
         {
-            if (userId != userUpdateDto.Id)
-                return BadRequest();
-
             try
             {
-                await _userRepository.UpdateUser(userUpdateDto);
+                await _userRepository.UpdateUser(userId, dto);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (await _userRepository.GetUser(userId) == null)
+                    return NotFound($"User {userId} not found");
+                else
+                    throw;
+            }
+            return NoContent();
+        }
+
+        // PUT: api/users/reset-password/:userId
+        [HttpPut("reset-password/{userId}")]
+        public async Task<IActionResult> ResetUserPassword(string userId, [FromBody] UserResetPasswordDTO dto)
+        {
+            try
+            {
+                await _userRepository.ResetUserPassword(userId, dto);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -114,7 +129,7 @@ namespace FootScout.WebAPI.Controllers
 
         // GET: api/users/:userId/player-advertisements/favorites
         [HttpGet("{userId}/player-advertisements/favorites")]
-        public async Task<ActionResult<IEnumerable<PlayerAdvertisementFavorite>>> GetUserFavoritePlayerAdvertisements(string userId)
+        public async Task<ActionResult<IEnumerable<FavoritePlayerAdvertisement>>> GetUserFavoritePlayerAdvertisements(string userId)
         {
             var userFavoritePlayerAdvertisements = await _userRepository.GetUserFavoritePlayerAdvertisements(userId);
             return Ok(userFavoritePlayerAdvertisements);
@@ -122,7 +137,7 @@ namespace FootScout.WebAPI.Controllers
 
         // GET: api/users/:userId/player-advertisements/favorites/active
         [HttpGet("{userId}/player-advertisements/favorites/active")]
-        public async Task<ActionResult<IEnumerable<PlayerAdvertisementFavorite>>> GetUserActiveFavoritePlayerAdvertisements(string userId)
+        public async Task<ActionResult<IEnumerable<FavoritePlayerAdvertisement>>> GetUserActiveFavoritePlayerAdvertisements(string userId)
         {
             var userActiveFavoritePlayerAdvertisements = await _userRepository.GetUserActiveFavoritePlayerAdvertisements(userId);
             return Ok(userActiveFavoritePlayerAdvertisements);
@@ -130,7 +145,7 @@ namespace FootScout.WebAPI.Controllers
 
         // GET: api/users/:userId/player-advertisements/favorites/inactive
         [HttpGet("{userId}/player-advertisements/favorites/inactive")]
-        public async Task<ActionResult<IEnumerable<PlayerAdvertisementFavorite>>> GetUserInactiveFavoritePlayerAdvertisements(string userId)
+        public async Task<ActionResult<IEnumerable<FavoritePlayerAdvertisement>>> GetUserInactiveFavoritePlayerAdvertisements(string userId)
         {
             var userInactiveFavoritePlayerAdvertisements = await _userRepository.GetUserInactiveFavoritePlayerAdvertisements(userId);
             return Ok(userInactiveFavoritePlayerAdvertisements);
@@ -178,7 +193,7 @@ namespace FootScout.WebAPI.Controllers
 
         // GET: api/users/:userId/club-advertisements/favorites
         [HttpGet("{userId}/club-advertisements/favorites")]
-        public async Task<ActionResult<IEnumerable<ClubAdvertisementFavorite>>> GetUserFavoriteClubAdvertisements(string userId)
+        public async Task<ActionResult<IEnumerable<FavoriteClubAdvertisement>>> GetUserFavoriteClubAdvertisements(string userId)
         {
             var userFavoriteClubAdvertisements = await _userRepository.GetUserFavoriteClubAdvertisements(userId);
             return Ok(userFavoriteClubAdvertisements);
@@ -186,7 +201,7 @@ namespace FootScout.WebAPI.Controllers
 
         // GET: api/users/:userId/club-advertisements/favorites/active
         [HttpGet("{userId}/club-advertisements/favorites/active")]
-        public async Task<ActionResult<IEnumerable<ClubAdvertisementFavorite>>> GetUserActiveFavoriteClubAdvertisements(string userId)
+        public async Task<ActionResult<IEnumerable<FavoriteClubAdvertisement>>> GetUserActiveFavoriteClubAdvertisements(string userId)
         {
             var userActiveFavoriteClubAdvertisements = await _userRepository.GetUserActiveFavoriteClubAdvertisements(userId);
             return Ok(userActiveFavoriteClubAdvertisements);
@@ -194,7 +209,7 @@ namespace FootScout.WebAPI.Controllers
 
         // GET: api/users/:userId/club-advertisements/favorites/inactive
         [HttpGet("{userId}/club-advertisements/favorites/inactive")]
-        public async Task<ActionResult<IEnumerable<ClubAdvertisementFavorite>>> GetUserInactiveFavoriteClubAdvertisements(string userId)
+        public async Task<ActionResult<IEnumerable<FavoriteClubAdvertisement>>> GetUserInactiveFavoriteClubAdvertisements(string userId)
         {
             var userInactiveFavoriteClubAdvertisements = await _userRepository.GetUserInactiveFavoriteClubAdvertisements(userId);
             return Ok(userInactiveFavoriteClubAdvertisements);

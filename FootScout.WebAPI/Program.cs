@@ -82,10 +82,10 @@ namespace FootScout.WebAPI
             builder.Services.AddScoped<IAchievementsRepository, AchievementsRepository>();
             builder.Services.AddScoped<ISalaryRangeRepository, SalaryRangeRepository>();
             builder.Services.AddScoped<IPlayerAdvertisementRepository, PlayerAdvertisementRepository>();
-            builder.Services.AddScoped<IPlayerAdvertisementFavoriteRepository, PlayerAdvertisementFavoriteRepository>();
+            builder.Services.AddScoped<IFavoritePlayerAdvertisementRepository, FavoritePlayerAdvertisementRepository>();
             builder.Services.AddScoped<IClubOfferRepository, ClubOfferRepository>();
             builder.Services.AddScoped<IClubAdvertisementRepository, ClubAdvertisementRepository>();
-            builder.Services.AddScoped<IClubAdvertisementFavoriteRepository, ClubAdvertisementFavoriteRepository>();
+            builder.Services.AddScoped<IFavoriteClubAdvertisementRepository, FavoriteClubAdvertisementRepository>();
             builder.Services.AddScoped<IPlayerOfferRepository, PlayerOfferRepository>();
 
             // AutoMapper service
