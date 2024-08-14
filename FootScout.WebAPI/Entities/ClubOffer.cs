@@ -31,8 +31,8 @@ namespace FootScout.WebAPI.Entities
         [Required]
         public DateTime CreationDate { get; set; }
         [Required]
-        public string UserClubId { get; set; }
-        [ForeignKey("UserClubId")]
-        public virtual User UserClub { get; set; }
+        public string ClubMemberId { get; set; }
+        [ForeignKey("ClubMemberId")]
+        public virtual User ClubMember { get; set; }
     }
 }

@@ -176,7 +176,7 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(pa => pa.PlayerAdvertisement.User)
                 .Include(co => co.OfferStatus)
                 .Include(co => co.PlayerPosition)
-                .Include(co => co.UserClub)
+                .Include(co => co.ClubMember)
                 .Where(pa => pa.PlayerAdvertisement.UserId == userId)
                 .OrderByDescending(pa => pa.PlayerAdvertisement.EndDate)
                 .ToListAsync();
@@ -192,8 +192,8 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(pa => pa.PlayerAdvertisement.User)
                 .Include(co => co.OfferStatus)
                 .Include(co => co.PlayerPosition)
-                .Include(co => co.UserClub)
-                .Where(pa => pa.UserClubId == userId)
+                .Include(co => co.ClubMember)
+                .Where(pa => pa.ClubMemberId == userId)
                 .OrderByDescending(pa => pa.PlayerAdvertisement.CreationDate)
                 .ToListAsync();
         }
@@ -280,7 +280,7 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(po => po.OfferStatus)
                 .Include(po => po.PlayerPosition)
                 .Include(po => po.PlayerFoot)
-                .Include(po => po.UserPlayer)
+                .Include(po => po.Player)
                 .Where(pa => pa.ClubAdvertisement.UserId == userId)
                 .OrderByDescending(pa => pa.ClubAdvertisement.EndDate)
                 .ToListAsync();
@@ -296,8 +296,8 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(po => po.OfferStatus)
                 .Include(po => po.PlayerPosition)
                 .Include(po => po.PlayerFoot)
-                .Include(po => po.UserPlayer)
-                .Where(pa => pa.UserPlayerId == userId)
+                .Include(po => po.Player)
+                .Where(pa => pa.PlayerId == userId)
                 .OrderByDescending(pa => pa.ClubAdvertisement.CreationDate)
                 .ToListAsync();
         }

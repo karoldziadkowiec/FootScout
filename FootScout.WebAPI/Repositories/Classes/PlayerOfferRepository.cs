@@ -24,7 +24,7 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(po => po.OfferStatus)
                 .Include(po => po.PlayerPosition)
                 .Include(po => po.PlayerFoot)
-                .Include(po => po.UserPlayer)
+                .Include(po => po.Player)
                 .FirstOrDefaultAsync(po => po.Id == playerOfferId);
         }
 
@@ -38,7 +38,7 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(po => po.OfferStatus)
                 .Include(po => po.PlayerPosition)
                 .Include(po => po.PlayerFoot)
-                .Include(po => po.UserPlayer)
+                .Include(po => po.Player)
                 .OrderByDescending(po => po.CreationDate)
                 .ToListAsync();
         }
@@ -53,7 +53,7 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(po => po.OfferStatus)
                 .Include(po => po.PlayerPosition)
                 .Include(po => po.PlayerFoot)
-                .Include(po => po.UserPlayer)
+                .Include(po => po.Player)
                 .Where(po => po.ClubAdvertisement.EndDate >= DateTime.Now)
                 .OrderByDescending(po => po.CreationDate)
                 .ToListAsync();
@@ -69,7 +69,7 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(po => po.OfferStatus)
                 .Include(po => po.PlayerPosition)
                 .Include(po => po.PlayerFoot)
-                .Include(po => po.UserPlayer)
+                .Include(po => po.Player)
                 .Where(po => po.ClubAdvertisement.EndDate < DateTime.Now)
                 .OrderByDescending(po => po.CreationDate)
                 .ToListAsync();
@@ -119,7 +119,7 @@ namespace FootScout.WebAPI.Repositories.Classes
         public async Task<int> GetPlayerOfferStatusId(int clubAdvertisementId, string userId)
         {
             var offerStatusId = await _dbContext.PlayerOffers
-                .Where(co => co.ClubAdvertisementId == clubAdvertisementId && co.UserPlayerId == userId)
+                .Where(co => co.ClubAdvertisementId == clubAdvertisementId && co.PlayerId == userId)
                 .Select(co => co.OfferStatusId)
                 .FirstOrDefaultAsync();
 

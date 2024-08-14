@@ -392,14 +392,14 @@ namespace FootScout.WebAPI.Migrations
                     Salary = table.Column<double>(type: "float", nullable: false),
                     AdditionalInformation = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserPlayerId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    PlayerId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PlayerOffers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PlayerOffers_AspNetUsers_UserPlayerId",
-                        column: x => x.UserPlayerId,
+                        name: "FK_PlayerOffers_AspNetUsers_PlayerId",
+                        column: x => x.PlayerId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -444,14 +444,14 @@ namespace FootScout.WebAPI.Migrations
                     Salary = table.Column<double>(type: "float", nullable: false),
                     AdditionalInformation = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserClubId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    ClubMemberId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ClubOffers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ClubOffers_AspNetUsers_UserClubId",
-                        column: x => x.UserClubId,
+                        name: "FK_ClubOffers_AspNetUsers_ClubMemberId",
+                        column: x => x.ClubMemberId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -572,6 +572,11 @@ namespace FootScout.WebAPI.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ClubOffers_ClubMemberId",
+                table: "ClubOffers",
+                column: "ClubMemberId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ClubOffers_OfferStatusId",
                 table: "ClubOffers",
                 column: "OfferStatusId");
@@ -585,11 +590,6 @@ namespace FootScout.WebAPI.Migrations
                 name: "IX_ClubOffers_PlayerPositionId",
                 table: "ClubOffers",
                 column: "PlayerPositionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClubOffers_UserClubId",
-                table: "ClubOffers",
-                column: "UserClubId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FavoriteClubAdvertisements_ClubAdvertisementId",
@@ -647,14 +647,14 @@ namespace FootScout.WebAPI.Migrations
                 column: "PlayerFootId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PlayerOffers_PlayerId",
+                table: "PlayerOffers",
+                column: "PlayerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PlayerOffers_PlayerPositionId",
                 table: "PlayerOffers",
                 column: "PlayerPositionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PlayerOffers_UserPlayerId",
-                table: "PlayerOffers",
-                column: "UserPlayerId");
         }
 
         /// <inheritdoc />

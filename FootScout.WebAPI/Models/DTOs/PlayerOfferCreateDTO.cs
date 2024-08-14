@@ -9,6 +9,6 @@
         public int PlayerFootId { get; set; }
         public double Salary { get; set; }
         public string AdditionalInformation { get; set; }
-        public string UserPlayerId { get; set; }
+        public string PlayerId { get; set; }
     }
 }

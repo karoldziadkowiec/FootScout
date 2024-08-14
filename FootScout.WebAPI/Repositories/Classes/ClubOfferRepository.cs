@@ -24,7 +24,7 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(pa => pa.PlayerAdvertisement.User)
                 .Include(co => co.OfferStatus)
                 .Include(co => co.PlayerPosition)
-                .Include(co => co.UserClub)
+                .Include(co => co.ClubMember)
                 .FirstOrDefaultAsync(co => co.Id == clubOfferId);
         }
 
@@ -38,7 +38,7 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(pa => pa.PlayerAdvertisement.User)
                 .Include(co => co.OfferStatus)
                 .Include(co => co.PlayerPosition)
-                .Include(co => co.UserClub)
+                .Include(co => co.ClubMember)
                 .OrderByDescending(co => co.CreationDate)
                 .ToListAsync();
         }
@@ -53,7 +53,7 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(pa => pa.PlayerAdvertisement.User)
                 .Include(co => co.OfferStatus)
                 .Include(co => co.PlayerPosition)
-                .Include(co => co.UserClub)
+                .Include(co => co.ClubMember)
                 .Where(co => co.PlayerAdvertisement.EndDate >= DateTime.Now)
                 .OrderByDescending(co => co.CreationDate)
                 .ToListAsync();
@@ -69,7 +69,7 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(pa => pa.PlayerAdvertisement.User)
                 .Include(co => co.OfferStatus)
                 .Include(co => co.PlayerPosition)
-                .Include(co => co.UserClub)
+                .Include(co => co.ClubMember)
                 .Where(co => co.PlayerAdvertisement.EndDate < DateTime.Now)
                 .OrderByDescending(co => co.CreationDate)
                 .ToListAsync();
@@ -119,7 +119,7 @@ namespace FootScout.WebAPI.Repositories.Classes
         public async Task<int> GetClubOfferStatusId(int playerAdvertisementId, string userId)
         {
             var offerStatusId = await _dbContext.ClubOffers
-                .Where(co => co.PlayerAdvertisementId == playerAdvertisementId && co.UserClubId == userId)
+                .Where(co => co.PlayerAdvertisementId == playerAdvertisementId && co.ClubMemberId == userId)
                 .Select(co => co.OfferStatusId)
                 .FirstOrDefaultAsync();
 
