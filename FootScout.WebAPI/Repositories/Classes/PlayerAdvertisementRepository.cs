@@ -20,7 +20,7 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(pa => pa.PlayerPosition)
                 .Include(pa => pa.PlayerFoot)
                 .Include(pa => pa.SalaryRange)
-                .Include(pa => pa.User)
+                .Include(pa => pa.Player)
                 .FirstOrDefaultAsync(pa => pa.Id == playerAdvertisementId);
         }
 
@@ -30,7 +30,7 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(pa => pa.PlayerPosition)
                 .Include(pa => pa.PlayerFoot)
                 .Include(pa => pa.SalaryRange)
-                .Include(pa => pa.User)
+                .Include(pa => pa.Player)
                 .OrderByDescending(pa => pa.EndDate)
                 .ToListAsync();
         }
@@ -41,7 +41,7 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(pa => pa.PlayerPosition)
                 .Include(pa => pa.PlayerFoot)
                 .Include(pa => pa.SalaryRange)
-                .Include(pa => pa.User)
+                .Include(pa => pa.Player)
                 .Where(pa => pa.EndDate >= DateTime.Now)
                 .OrderByDescending(pa => pa.EndDate)
                 .ToListAsync();
@@ -53,7 +53,7 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(pa => pa.PlayerPosition)
                 .Include(pa => pa.PlayerFoot)
                 .Include(pa => pa.SalaryRange)
-                .Include(pa => pa.User)
+                .Include(pa => pa.Player)
                 .Where(pa => pa.EndDate < DateTime.Now)
                 .OrderByDescending(pa => pa.EndDate)
                 .ToListAsync();

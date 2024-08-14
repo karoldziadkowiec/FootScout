@@ -81,8 +81,8 @@ namespace FootScout.WebAPI.Repositories.Classes
             return await _dbContext.ClubHistories
                 .Include(ch => ch.Achievements)
                 .Include(ch => ch.PlayerPosition)
-                .Include(ch => ch.User)
-                .Where(ch => ch.UserId == userId)
+                .Include(ch => ch.Player)
+                .Where(ch => ch.PlayerId == userId)
                 .OrderByDescending(ch => ch.StartDate)
                 .ThenByDescending(ch => ch.EndDate)
                 .ToListAsync();
@@ -94,8 +94,8 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(pa => pa.PlayerPosition)
                 .Include(pa => pa.PlayerFoot)
                 .Include(pa => pa.SalaryRange)
-                .Include(pa => pa.User)
-                .Where(pa => pa.UserId == userId)
+                .Include(pa => pa.Player)
+                .Where(pa => pa.PlayerId == userId)
                 .OrderByDescending(pa => pa.EndDate)
                 .ToListAsync();
         }
@@ -106,8 +106,8 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(pa => pa.PlayerPosition)
                 .Include(pa => pa.PlayerFoot)
                 .Include(pa => pa.SalaryRange)
-                .Include(pa => pa.User)
-                .Where(pa => pa.UserId == userId && pa.EndDate >= DateTime.Now)
+                .Include(pa => pa.Player)
+                .Where(pa => pa.PlayerId == userId && pa.EndDate >= DateTime.Now)
                 .OrderBy(pa => pa.EndDate)
                 .ToListAsync();
         }
@@ -118,8 +118,8 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(pa => pa.PlayerPosition)
                 .Include(pa => pa.PlayerFoot)
                 .Include(pa => pa.SalaryRange)
-                .Include(pa => pa.User)
-                .Where(pa => pa.UserId == userId && pa.EndDate < DateTime.Now)
+                .Include(pa => pa.Player)
+                .Where(pa => pa.PlayerId == userId && pa.EndDate < DateTime.Now)
                 .OrderByDescending(pa => pa.EndDate)
                 .ToListAsync();
         }
@@ -131,7 +131,7 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(pa => pa.PlayerAdvertisement.PlayerPosition)
                 .Include(pa => pa.PlayerAdvertisement.PlayerFoot)
                 .Include(pa => pa.PlayerAdvertisement.SalaryRange)
-                .Include(pa => pa.PlayerAdvertisement.User)
+                .Include(pa => pa.PlayerAdvertisement.Player)
                 .Include(pa => pa.User)
                 .Where(pa => pa.UserId == userId)
                 .OrderByDescending(pa => pa.PlayerAdvertisement.EndDate)
@@ -145,7 +145,7 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(pa => pa.PlayerAdvertisement.PlayerPosition)
                 .Include(pa => pa.PlayerAdvertisement.PlayerFoot)
                 .Include(pa => pa.PlayerAdvertisement.SalaryRange)
-                .Include(pa => pa.PlayerAdvertisement.User)
+                .Include(pa => pa.PlayerAdvertisement.Player)
                 .Include(pa => pa.User)
                 .Where(pa => pa.UserId == userId && pa.PlayerAdvertisement.EndDate >= DateTime.Now)
                 .OrderBy(pa => pa.PlayerAdvertisement.EndDate)
@@ -159,7 +159,7 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(pa => pa.PlayerAdvertisement.PlayerPosition)
                 .Include(pa => pa.PlayerAdvertisement.PlayerFoot)
                 .Include(pa => pa.PlayerAdvertisement.SalaryRange)
-                .Include(pa => pa.PlayerAdvertisement.User)
+                .Include(pa => pa.PlayerAdvertisement.Player)
                 .Include(pa => pa.User)
                 .Where(pa => pa.UserId == userId && pa.PlayerAdvertisement.EndDate < DateTime.Now)
                 .OrderByDescending(pa => pa.PlayerAdvertisement.EndDate)
@@ -173,11 +173,11 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(pa => pa.PlayerAdvertisement.PlayerPosition)
                 .Include(pa => pa.PlayerAdvertisement.PlayerFoot)
                 .Include(pa => pa.PlayerAdvertisement.SalaryRange)
-                .Include(pa => pa.PlayerAdvertisement.User)
+                .Include(pa => pa.PlayerAdvertisement.Player)
                 .Include(co => co.OfferStatus)
                 .Include(co => co.PlayerPosition)
                 .Include(co => co.ClubMember)
-                .Where(pa => pa.PlayerAdvertisement.UserId == userId)
+                .Where(pa => pa.PlayerAdvertisement.PlayerId == userId)
                 .OrderByDescending(pa => pa.PlayerAdvertisement.EndDate)
                 .ToListAsync();
         }
@@ -189,7 +189,7 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(pa => pa.PlayerAdvertisement.PlayerPosition)
                 .Include(pa => pa.PlayerAdvertisement.PlayerFoot)
                 .Include(pa => pa.PlayerAdvertisement.SalaryRange)
-                .Include(pa => pa.PlayerAdvertisement.User)
+                .Include(pa => pa.PlayerAdvertisement.Player)
                 .Include(co => co.OfferStatus)
                 .Include(co => co.PlayerPosition)
                 .Include(co => co.ClubMember)
@@ -203,8 +203,8 @@ namespace FootScout.WebAPI.Repositories.Classes
             return await _dbContext.ClubAdvertisements
                 .Include(ca => ca.PlayerPosition)
                 .Include(ca => ca.SalaryRange)
-                .Include(ca => ca.User)
-                .Where(ca => ca.UserId == userId)
+                .Include(ca => ca.ClubMember)
+                .Where(ca => ca.ClubMemberId == userId)
                 .OrderByDescending(ca => ca.EndDate)
                 .ToListAsync();
         }
@@ -214,8 +214,8 @@ namespace FootScout.WebAPI.Repositories.Classes
             return await _dbContext.ClubAdvertisements
                 .Include(ca => ca.PlayerPosition)
                 .Include(ca => ca.SalaryRange)
-                .Include(ca => ca.User)
-                .Where(ca => ca.UserId == userId && ca.EndDate >= DateTime.Now)
+                .Include(ca => ca.ClubMember)
+                .Where(ca => ca.ClubMemberId == userId && ca.EndDate >= DateTime.Now)
                 .OrderBy(ca => ca.EndDate)
                 .ToListAsync();
         }
@@ -225,8 +225,8 @@ namespace FootScout.WebAPI.Repositories.Classes
             return await _dbContext.ClubAdvertisements
                 .Include(ca => ca.PlayerPosition)
                 .Include(ca => ca.SalaryRange)
-                .Include(ca => ca.User)
-                .Where(ca => ca.UserId == userId && ca.EndDate < DateTime.Now)
+                .Include(ca => ca.ClubMember)
+                .Where(ca => ca.ClubMemberId == userId && ca.EndDate < DateTime.Now)
                 .OrderByDescending(ca => ca.EndDate)
                 .ToListAsync();
         }
@@ -237,7 +237,7 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(ca => ca.ClubAdvertisement)
                 .Include(ca => ca.ClubAdvertisement.PlayerPosition)
                 .Include(ca => ca.ClubAdvertisement.SalaryRange)
-                .Include(ca => ca.ClubAdvertisement.User)
+                .Include(ca => ca.ClubAdvertisement.ClubMember)
                 .Include(ca => ca.User)
                 .Where(ca => ca.UserId == userId)
                 .OrderByDescending(ca => ca.ClubAdvertisement.EndDate)
@@ -250,7 +250,7 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(ca => ca.ClubAdvertisement)
                 .Include(ca => ca.ClubAdvertisement.PlayerPosition)
                 .Include(ca => ca.ClubAdvertisement.SalaryRange)
-                .Include(ca => ca.ClubAdvertisement.User)
+                .Include(ca => ca.ClubAdvertisement.ClubMember)
                 .Include(ca => ca.User)
                 .Where(ca => ca.UserId == userId && ca.ClubAdvertisement.EndDate >= DateTime.Now)
                 .OrderBy(ca => ca.ClubAdvertisement.EndDate)
@@ -263,7 +263,7 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(ca => ca.ClubAdvertisement)
                 .Include(ca => ca.ClubAdvertisement.PlayerPosition)
                 .Include(ca => ca.ClubAdvertisement.SalaryRange)
-                .Include(ca => ca.ClubAdvertisement.User)
+                .Include(ca => ca.ClubAdvertisement.ClubMember)
                 .Include(ca => ca.User)
                 .Where(ca => ca.UserId == userId && ca.ClubAdvertisement.EndDate < DateTime.Now)
                 .OrderByDescending(ca => ca.ClubAdvertisement.EndDate)
@@ -276,12 +276,12 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(po => po.ClubAdvertisement)
                 .Include(ca => ca.ClubAdvertisement.PlayerPosition)
                 .Include(ca => ca.ClubAdvertisement.SalaryRange)
-                .Include(ca => ca.ClubAdvertisement.User)
+                .Include(ca => ca.ClubAdvertisement.ClubMember)
                 .Include(po => po.OfferStatus)
                 .Include(po => po.PlayerPosition)
                 .Include(po => po.PlayerFoot)
                 .Include(po => po.Player)
-                .Where(pa => pa.ClubAdvertisement.UserId == userId)
+                .Where(pa => pa.ClubAdvertisement.ClubMemberId == userId)
                 .OrderByDescending(pa => pa.ClubAdvertisement.EndDate)
                 .ToListAsync();
         }
@@ -292,7 +292,7 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .Include(po => po.ClubAdvertisement)
                 .Include(ca => ca.ClubAdvertisement.PlayerPosition)
                 .Include(ca => ca.ClubAdvertisement.SalaryRange)
-                .Include(ca => ca.ClubAdvertisement.User)
+                .Include(ca => ca.ClubAdvertisement.ClubMember)
                 .Include(po => po.OfferStatus)
                 .Include(po => po.PlayerPosition)
                 .Include(po => po.PlayerFoot)

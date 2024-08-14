@@ -18,7 +18,7 @@ namespace FootScout.WebAPI.Repositories.Classes
         {
             return await _dbContext.ClubHistories
                 .Include(ch => ch.Achievements)
-                .Include(ch => ch.User)
+                .Include(ch => ch.Player)
                 .FirstOrDefaultAsync(ch => ch.Id == clubHistoryId);
         }
 
@@ -26,7 +26,7 @@ namespace FootScout.WebAPI.Repositories.Classes
         {
             return await _dbContext.ClubHistories
                 .Include(ch => ch.Achievements)
-                .Include(ch => ch.User)
+                .Include(ch => ch.Player)
                 .ToListAsync();
         }
 

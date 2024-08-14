@@ -56,6 +56,10 @@ namespace FootScout.WebAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("ClubMemberId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("ClubName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -80,17 +84,13 @@ namespace FootScout.WebAPI.Migrations
                     b.Property<int>("SalaryRangeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("ClubMemberId");
 
                     b.HasIndex("PlayerPositionId");
 
                     b.HasIndex("SalaryRangeId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("ClubAdvertisements");
                 });
@@ -117,6 +117,10 @@ namespace FootScout.WebAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PlayerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("PlayerPositionId")
                         .HasColumnType("int");
 
@@ -127,18 +131,14 @@ namespace FootScout.WebAPI.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AchievementsId")
                         .IsUnique();
 
-                    b.HasIndex("PlayerPositionId");
+                    b.HasIndex("PlayerId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("PlayerPositionId");
 
                     b.ToTable("ClubHistories");
                 });
@@ -291,6 +291,10 @@ namespace FootScout.WebAPI.Migrations
                     b.Property<int>("PlayerFootId")
                         .HasColumnType("int");
 
+                    b.Property<string>("PlayerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("PlayerPositionId")
                         .HasColumnType("int");
 
@@ -301,19 +305,15 @@ namespace FootScout.WebAPI.Migrations
                     b.Property<int>("SalaryRangeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("PlayerFootId");
 
+                    b.HasIndex("PlayerId");
+
                     b.HasIndex("PlayerPositionId");
 
                     b.HasIndex("SalaryRangeId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("PlayerAdvertisements");
                 });
@@ -644,6 +644,12 @@ namespace FootScout.WebAPI.Migrations
 
             modelBuilder.Entity("FootScout.WebAPI.Entities.ClubAdvertisement", b =>
                 {
+                    b.HasOne("FootScout.WebAPI.Entities.User", "ClubMember")
+                        .WithMany()
+                        .HasForeignKey("ClubMemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("FootScout.WebAPI.Entities.PlayerPosition", "PlayerPosition")
                         .WithMany()
                         .HasForeignKey("PlayerPositionId")
@@ -656,17 +662,11 @@ namespace FootScout.WebAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FootScout.WebAPI.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("ClubMember");
 
                     b.Navigation("PlayerPosition");
 
                     b.Navigation("SalaryRange");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FootScout.WebAPI.Entities.ClubHistory", b =>
@@ -677,23 +677,23 @@ namespace FootScout.WebAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("FootScout.WebAPI.Entities.User", "Player")
+                        .WithMany()
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("FootScout.WebAPI.Entities.PlayerPosition", "PlayerPosition")
                         .WithMany()
                         .HasForeignKey("PlayerPositionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FootScout.WebAPI.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Achievements");
 
-                    b.Navigation("PlayerPosition");
+                    b.Navigation("Player");
 
-                    b.Navigation("User");
+                    b.Navigation("PlayerPosition");
                 });
 
             modelBuilder.Entity("FootScout.WebAPI.Entities.ClubOffer", b =>
@@ -777,6 +777,12 @@ namespace FootScout.WebAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("FootScout.WebAPI.Entities.User", "Player")
+                        .WithMany()
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("FootScout.WebAPI.Entities.PlayerPosition", "PlayerPosition")
                         .WithMany()
                         .HasForeignKey("PlayerPositionId")
@@ -789,19 +795,13 @@ namespace FootScout.WebAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FootScout.WebAPI.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Player");
 
                     b.Navigation("PlayerFoot");
 
                     b.Navigation("PlayerPosition");
 
                     b.Navigation("SalaryRange");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FootScout.WebAPI.Entities.PlayerOffer", b =>

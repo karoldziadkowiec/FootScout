@@ -26,8 +26,8 @@ namespace FootScout.WebAPI.Entities
         [ForeignKey("AchievementsId")]
         public virtual Achievements Achievements { get; set; }
         [Required]
-        public string UserId { get; set; }
-        [ForeignKey("UserId")]
-        public virtual User User { get; set; }
+        public string PlayerId { get; set; }
+        [ForeignKey("PlayerId")]
+        public virtual User Player { get; set; }
     }
 }

@@ -26,8 +26,8 @@ namespace FootScout.WebAPI.Entities
         [Required]
         public DateTime EndDate { get; set; }
         [Required]
-        public string UserId { get; set; }
-        [ForeignKey("UserId")]
-        public virtual User User { get; set; }
+        public string ClubMemberId { get; set; }
+        [ForeignKey("ClubMemberId")]
+        public virtual User ClubMember { get; set; }
     }
 }

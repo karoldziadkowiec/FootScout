@@ -11,6 +11,6 @@ namespace FootScout.WebAPI.Models.DTOs
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public Achievements Achievements { get; set; }
-        public string UserId { get; set; }
+        public string PlayerId { get; set; }
     }
 }
