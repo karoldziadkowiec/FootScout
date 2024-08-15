@@ -129,6 +129,26 @@ const PlayerOfferService = {
         }
     },
 
+    async deletePlayerOffer(playerOfferId: number): Promise<void> {
+        try {
+            const authorizationHeader = await AccountService.getAuthorizationHeader();
+            await axios.delete(`${ApiURL}/player-offers/${playerOfferId}`, {
+                headers: {
+                    'Authorization': authorizationHeader
+                }
+            });
+        }
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.error('Error deleting player offer, details:', error.response?.data || error.message);
+            }
+            else {
+                console.error('Unexpected error:', error);
+            }
+            throw error;
+        }
+    },
+
     async acceptPlayerOffer(clubOfferId: number, clubOffer: PlayerOffer): Promise<void> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();

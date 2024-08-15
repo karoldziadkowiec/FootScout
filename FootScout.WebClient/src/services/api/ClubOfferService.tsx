@@ -129,6 +129,26 @@ const ClubOfferService = {
         }
     },
 
+    async deleteClubOffer(clubOfferId: number): Promise<void> {
+        try {
+            const authorizationHeader = await AccountService.getAuthorizationHeader();
+            await axios.delete(`${ApiURL}/club-offers/${clubOfferId}`, {
+                headers: {
+                    'Authorization': authorizationHeader
+                }
+            });
+        }
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.error('Error deleting club offer, details:', error.response?.data || error.message);
+            }
+            else {
+                console.error('Unexpected error:', error);
+            }
+            throw error;
+        }
+    },
+
     async acceptClubOffer(clubOfferId: number, clubOffer: ClubOffer): Promise<void> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();

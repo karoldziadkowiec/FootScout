@@ -11,6 +11,7 @@ import PlayerOffer from '../../models/interfaces/PlayerOffer';
 import ClubHistoryModel from '../../models/interfaces/ClubHistory';
 import '../../App.css';
 import '../../styles/user/MyOffersAsClub.css';
+import ClubOfferService from '../../services/api/ClubOfferService';
 
 const MyOffersAsClub = () => {
     const navigate = useNavigate();
@@ -24,11 +25,13 @@ const MyOffersAsClub = () => {
     const [showClubHistoryDetailsModal, setShowClubHistoryDetailsModal] = useState<boolean>(false);
     const [showAcceptReceivedPlayerOfferModal, setShowAcceptReceivedPlayerOfferModal] = useState<boolean>(false);
     const [showRejectReceivedPlayerOfferModal, setShowRejectReceivedPlayerOfferModal] = useState<boolean>(false);
+    const [showDeleteSentClubOfferModal, setShowDeleteSentClubOfferModal] = useState<boolean>(false);
     const [selectedSentClubOffer, setSelectedSentClubOffer] = useState<ClubOffer | null>(null);
     const [selectedReceivedPlayerOffer, setSelectedReceivedPlayerOffer] = useState<PlayerOffer | null>(null);
     const [selectedClubHistory, setSelectedClubHistory] = useState<ClubHistoryModel | null>(null);
     const [receivedPlayerOfferToAccept, setReceivedPlayerOfferToAccept] = useState<PlayerOffer | null>(null);
     const [receivedPlayerOfferToReject, setReceivedPlayerOfferToReject] = useState<PlayerOffer | null>(null);
+    const [deleteSentClubOfferId, setDeleteSentClubOfferId] = useState<number | null>(null);
 
     useEffect(() => {
         if (location.state && location.state.toastMessage)
@@ -134,6 +137,37 @@ const MyOffersAsClub = () => {
     const handleShowClubHistoryDetails = (clubHistory: ClubHistoryModel) => {
         setSelectedClubHistory(clubHistory);
         setShowClubHistoryDetailsModal(true);
+    };
+
+    const handleShowDeleteSentClubOfferModal = (clubOfferId: number) => {
+        setDeleteSentClubOfferId(clubOfferId);
+        setShowDeleteSentClubOfferModal(true);
+    };
+
+    const handleDeleteSentClubOffer = async () => {
+        if (!deleteSentClubOfferId)
+            return;
+
+        try {
+            await ClubOfferService.deleteClubOffer(deleteSentClubOfferId);
+            toast.success('Your sent club offer has been deleted successfully.');
+            setShowDeleteSentClubOfferModal(false);
+            setShowSentClubOfferDetailsModal(false);
+            setDeleteSentClubOfferId(null);
+
+            // Refresh the user data
+            if (userId) {
+                const _sentClubOffers = await UserService.getSentClubOffers(userId);
+                setSentClubOffers(_sentClubOffers);
+
+                const _receivedPlayerOffers = await UserService.getReceivedPlayerOffers(userId);
+                setReceivedPlayerOffers(_receivedPlayerOffers);
+            }
+        }
+        catch (error) {
+            console.error('Failed to delete sent club offer:', error);
+            toast.error('Failed to delete sent club offer.');
+        }
     };
 
     const formatDate = (dateString: string): string => {
@@ -272,11 +306,11 @@ const MyOffersAsClub = () => {
                 <Modal.Body>
                     {selectedReceivedPlayerOffer && (
                         <div className="modal-content-centered">
-                            <p><Form.Label className="clubOffer-name-label">{(selectedReceivedPlayerOffer.player.firstName).toUpperCase()} {(selectedReceivedPlayerOffer.player.lastName).toUpperCase()}</Form.Label></p>
-                            <p><Form.Label className="clubOffer-position-label">{selectedReceivedPlayerOffer.clubAdvertisement.playerPosition.positionName}</Form.Label></p>
+                            <p><Form.Label className="offer-name-label">{(selectedReceivedPlayerOffer.player.firstName).toUpperCase()} {(selectedReceivedPlayerOffer.player.lastName).toUpperCase()}</Form.Label></p>
+                            <p><Form.Label className="offer-position-label">{selectedReceivedPlayerOffer.clubAdvertisement.playerPosition.positionName}</Form.Label></p>
                             <Row>
                                 <Col>
-                                    <Form.Label className="clubOffer-section">OFFER INFO</Form.Label>
+                                    <Form.Label className="offer-section">OFFER INFO</Form.Label>
                                     <p><strong>Sent Date:</strong> {formatDate(selectedReceivedPlayerOffer.creationDate)}</p>
                                     <p><strong>End Date (days left/passed):</strong> {formatDate(selectedReceivedPlayerOffer.clubAdvertisement.endDate)} ({calculateDaysLeft(selectedReceivedPlayerOffer.clubAdvertisement.endDate)})</p>
                                     <p><strong>Offer status:</strong> {selectedReceivedPlayerOffer.offerStatus.statusName}</p>
@@ -284,26 +318,26 @@ const MyOffersAsClub = () => {
                             </Row>
                             <Row>
                                 <Col>
-                                    <Form.Label className="clubOffer-section">CONTACT INFO</Form.Label>
+                                    <Form.Label className="offer-section">CONTACT INFO</Form.Label>
                                     <p><strong>E-mail:</strong> {selectedReceivedPlayerOffer.player.email}</p>
                                     <p><strong>Phone number:</strong> {selectedReceivedPlayerOffer.player.phoneNumber}</p>
                                     <p><strong>Location:</strong> {selectedReceivedPlayerOffer.player.location}</p>
                                 </Col>
                                 <Col>
-                                    <Form.Label className="clubOffer-section">PLAYER PROFILE</Form.Label>
+                                    <Form.Label className="offer-section">PLAYER PROFILE</Form.Label>
                                     <p><strong>Age:</strong> {selectedReceivedPlayerOffer.age}</p>
                                     <p><strong>Height:</strong> {selectedReceivedPlayerOffer.height}</p>
                                     <p><strong>Foot:</strong> {selectedReceivedPlayerOffer.playerFoot.footName}</p>
                                 </Col>
                                 <Col>
-                                    <Form.Label className="clubOffer-section">PREFERENCES</Form.Label>
+                                    <Form.Label className="offer-section">PREFERENCES</Form.Label>
                                     <p><strong>Position:</strong> {selectedReceivedPlayerOffer.playerPosition.positionName}</p>
                                     <p><strong>Salary (zł.) / month:</strong> {selectedReceivedPlayerOffer.salary}</p>
                                     <p><strong>Additional Information:</strong> {selectedReceivedPlayerOffer.additionalInformation}</p>
                                 </Col>
                             </Row>
                             <Row>
-                                <Form.Label className="clubOffer-section">CLUB HISTORY</Form.Label>
+                                <Form.Label className="offer-section">CLUB HISTORY</Form.Label>
                                 <div className="ad-table-responsive">
                                     <Table striped bordered hover variant="light">
                                         <thead className="table-dark">
@@ -355,17 +389,20 @@ const MyOffersAsClub = () => {
                 <Modal.Body>
                     {selectedSentClubOffer && (
                         <div className="modal-content-centered">
-                            <p><Form.Label className="clubOffer-name-label">{(selectedSentClubOffer.clubName).toUpperCase()}</Form.Label></p>
-                            <p><Form.Label className="clubOffer-position-label">{selectedSentClubOffer.playerPosition.positionName}</Form.Label></p>
-                            <Form.Label className="clubOffer-section">OFFER INFO</Form.Label>
+                            <Button variant="danger" onClick={() => handleShowDeleteSentClubOfferModal(selectedSentClubOffer.id)}>
+                                <i className="bi bi-trash"></i> Delete
+                            </Button>
+                            <p><Form.Label className="offer-name-label">{(selectedSentClubOffer.clubName).toUpperCase()}</Form.Label></p>
+                            <p><Form.Label className="offer-position-label">{selectedSentClubOffer.playerPosition.positionName}</Form.Label></p>
+                            <Form.Label className="offer-section">OFFER INFO</Form.Label>
                             <p><strong>Sent Date</strong> {formatDate(selectedSentClubOffer.creationDate)}</p>
                             <p><strong>End Date (days left/passed)</strong> {formatDate(selectedSentClubOffer.playerAdvertisement.endDate)} ({calculateDaysLeft(selectedSentClubOffer.playerAdvertisement.endDate)})</p>
                             <p><strong>Offer status:</strong> {selectedSentClubOffer.offerStatus.statusName}</p>
-                            <Form.Label className="clubOffer-section">SENT TO</Form.Label>
+                            <Form.Label className="offer-section">SENT TO</Form.Label>
                             <p><strong>Name:</strong> {selectedSentClubOffer.playerAdvertisement.player.firstName} {selectedSentClubOffer.playerAdvertisement.player.lastName}</p>
                             <p><strong>E-mail:</strong> {selectedSentClubOffer.playerAdvertisement.player.email}</p>
                             <p><strong>Phone number:</strong> {selectedSentClubOffer.playerAdvertisement.player.phoneNumber}</p>
-                            <Form.Label className="clubOffer-section">DETAILS</Form.Label>
+                            <Form.Label className="offer-section">DETAILS</Form.Label>
                             <p><strong>Club Name:</strong> {selectedSentClubOffer.clubName}</p>
                             <p><strong>League:</strong> {selectedSentClubOffer.league}</p>
                             <p><strong>Region:</strong> {selectedSentClubOffer.region}</p>
@@ -377,6 +414,18 @@ const MyOffersAsClub = () => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowSentClubOfferDetailsModal(false)}>Close</Button>
+                </Modal.Footer>
+            </Modal>
+
+            {/* Delete Sent Club Offer */}
+            <Modal show={showDeleteSentClubOfferModal} onHide={() => setShowDeleteSentClubOfferModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirm action</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure you want to delete this offer?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowDeleteSentClubOfferModal(false)}>Cancel</Button>
+                    <Button variant="danger" onClick={handleDeleteSentClubOffer}>Delete</Button>
                 </Modal.Footer>
             </Modal>
 

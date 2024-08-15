@@ -34,21 +34,21 @@
     }
 }
 
-.clubOffer-name-label {
+.offer-name-label {
     color: rgb(148, 141, 42);
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-size: 32px;
     font-weight: bold;
 }
 
-.clubOffer-position-label {
+.offer-position-label {
     color: rgb(99, 99, 92);
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-size: 28px;
     font-weight: bold;
 }
 
-.clubOffer-section {
+.offer-section {
     color: rgb(162, 146, 38);
     font-family:'Times New Roman', Times, serif;
     font-size: 20px;
