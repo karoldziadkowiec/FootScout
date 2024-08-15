@@ -94,6 +94,18 @@ namespace FootScout.WebAPI.Repositories.Classes
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task DeleteClubOffer(int clubOfferId)
+        {
+            var clubOffer = await _dbContext.ClubOffers.FindAsync(clubOfferId);
+            if (clubOffer == null)
+            {
+                throw new Exception("Club offer not found");
+            }
+
+            _dbContext.ClubOffers.Remove(clubOffer);
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task AcceptClubOffer(ClubOffer clubOffer)
         {
             var acceptedStatus = await _dbContext.OfferStatuses

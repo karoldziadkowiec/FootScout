@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FootScout.WebAPI.Entities;
 using FootScout.WebAPI.Models.DTOs;
+using FootScout.WebAPI.Repositories.Classes;
 using FootScout.WebAPI.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -80,6 +81,24 @@ namespace FootScout.WebAPI.Controllers
                 return BadRequest(ModelState);
 
             await _clubOfferRepository.UpdateClubOffer(clubOffer);
+            return NoContent();
+        }
+
+        // DELETE: api/club-offers/:clubOfferId
+        [HttpDelete("{clubOfferId}")]
+        public async Task<IActionResult> DeleteClubOffer(int clubOfferId)
+        {
+            try
+            {
+                if (await _clubOfferRepository.GetClubOffer(clubOfferId) == null)
+                    return NotFound($"Club offer : {clubOfferId} not found");
+
+                await _clubOfferRepository.DeleteClubOffer(clubOfferId);
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
             return NoContent();
         }
 

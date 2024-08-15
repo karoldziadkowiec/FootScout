@@ -83,6 +83,24 @@ namespace FootScout.WebAPI.Controllers
             return NoContent();
         }
 
+        // DELETE: api/player-offers/:playerOfferId
+        [HttpDelete("{playerOfferId}")]
+        public async Task<IActionResult> DeletePlayerOffer(int playerOfferId)
+        {
+            try
+            {
+                if (await _playerOfferRepository.GetPlayerOffer(playerOfferId) == null)
+                    return NotFound($"Player offer : {playerOfferId} not found");
+
+                await _playerOfferRepository.DeletePlayerOffer(playerOfferId);
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
+
         // PUT: api/player-offers/accept/:playerOfferId
         [HttpPut("accept/{playerOfferId}")]
         public async Task<ActionResult> AcceptPlayerOffer(int playerOfferId, [FromBody] PlayerOffer playerOffer)

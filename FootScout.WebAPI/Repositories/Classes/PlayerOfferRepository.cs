@@ -94,6 +94,18 @@ namespace FootScout.WebAPI.Repositories.Classes
             await _dbContext.SaveChangesAsync();
         }
 
+        public async Task DeletePlayerOffer(int playerOfferId)
+        {
+            var playerOffer = await _dbContext.PlayerOffers.FindAsync(playerOfferId);
+            if (playerOffer == null)
+            {
+                throw new Exception("Player offer not found");
+            }
+
+            _dbContext.PlayerOffers.Remove(playerOffer);
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task AcceptPlayerOffer(PlayerOffer playerOffer)
         {
             var acceptedStatus = await _dbContext.OfferStatuses
