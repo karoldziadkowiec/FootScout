@@ -12,8 +12,10 @@ namespace FootScout.WebAPI.Entities
         [ForeignKey("PlayerPositionId")]
         public virtual PlayerPosition PlayerPosition { get; set; }
         [Required]
+        [MaxLength(30)]
         public string League { get; set; }
         [Required]
+        [MaxLength(30)]
         public string Region { get; set; }
         [Required]
         public int Age { get; set; }
@@ -28,8 +30,10 @@ namespace FootScout.WebAPI.Entities
         [ForeignKey("SalaryRangeId")]
         public virtual SalaryRange SalaryRange { get; set; }
         [Required]
+        [DataType(DataType.DateTime)]
         public DateTime CreationDate { get; set; }
         [Required]
+        [DataType(DataType.DateTime)]
         public DateTime EndDate { get; set; }
         [Required]
         public string PlayerId { get; set; }

@@ -32,7 +32,8 @@ namespace FootScout.WebAPI.Migrations
 
                     b.Property<string>("AdditionalAchievements")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<int>("Assists")
                         .HasColumnType("int");
@@ -62,7 +63,8 @@ namespace FootScout.WebAPI.Migrations
 
                     b.Property<string>("ClubName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
@@ -72,14 +74,16 @@ namespace FootScout.WebAPI.Migrations
 
                     b.Property<string>("League")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<int>("PlayerPositionId")
                         .HasColumnType("int");
 
                     b.Property<string>("Region")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<int>("SalaryRangeId")
                         .HasColumnType("int");
@@ -108,14 +112,16 @@ namespace FootScout.WebAPI.Migrations
 
                     b.Property<string>("ClubName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("League")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("PlayerId")
                         .IsRequired()
@@ -126,7 +132,8 @@ namespace FootScout.WebAPI.Migrations
 
                     b.Property<string>("Region")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -153,7 +160,8 @@ namespace FootScout.WebAPI.Migrations
 
                     b.Property<string>("AdditionalInformation")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("ClubMemberId")
                         .IsRequired()
@@ -161,14 +169,16 @@ namespace FootScout.WebAPI.Migrations
 
                     b.Property<string>("ClubName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("League")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<int>("OfferStatusId")
                         .HasColumnType("int");
@@ -181,7 +191,8 @@ namespace FootScout.WebAPI.Migrations
 
                     b.Property<string>("Region")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<double>("Salary")
                         .HasColumnType("float");
@@ -257,7 +268,8 @@ namespace FootScout.WebAPI.Migrations
 
                     b.Property<string>("StatusName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
@@ -286,7 +298,8 @@ namespace FootScout.WebAPI.Migrations
 
                     b.Property<string>("League")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<int>("PlayerFootId")
                         .HasColumnType("int");
@@ -300,7 +313,8 @@ namespace FootScout.WebAPI.Migrations
 
                     b.Property<string>("Region")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<int>("SalaryRangeId")
                         .HasColumnType("int");
@@ -328,7 +342,8 @@ namespace FootScout.WebAPI.Migrations
 
                     b.Property<string>("FootName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
@@ -345,7 +360,8 @@ namespace FootScout.WebAPI.Migrations
 
                     b.Property<string>("AdditionalInformation")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<int>("Age")
                         .HasColumnType("int");
@@ -400,7 +416,8 @@ namespace FootScout.WebAPI.Migrations
 
                     b.Property<string>("PositionName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.HasKey("Id");
 
@@ -460,7 +477,8 @@ namespace FootScout.WebAPI.Migrations
 
                     b.Property<string>("Location")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");

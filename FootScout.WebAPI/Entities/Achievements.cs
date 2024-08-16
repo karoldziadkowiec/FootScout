@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FootScout.WebAPI.Entities
 {
@@ -13,6 +12,7 @@ namespace FootScout.WebAPI.Entities
         public int Goals { get; set; }
         [Required]
         public int Assists { get; set; }
+        [MaxLength(200)]
         public string AdditionalAchievements { get; set; }
     }
 }

@@ -29,8 +29,10 @@ namespace FootScout.WebAPI.Entities
         public virtual PlayerFoot PlayerFoot { get; set; }
         [Required]
         public double Salary { get; set; }
+        [MaxLength(200)]
         public string AdditionalInformation { get; set; }
         [Required]
+        [DataType(DataType.DateTime)]
         public DateTime CreationDate { get; set; }
         [Required]
         public string PlayerId { get; set; }

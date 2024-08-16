@@ -20,7 +20,7 @@ namespace FootScout.WebAPI.Migrations
                     NumberOfMatches = table.Column<int>(type: "int", nullable: false),
                     Goals = table.Column<int>(type: "int", nullable: false),
                     Assists = table.Column<int>(type: "int", nullable: false),
-                    AdditionalAchievements = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    AdditionalAchievements = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -49,7 +49,7 @@ namespace FootScout.WebAPI.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -76,7 +76,7 @@ namespace FootScout.WebAPI.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    StatusName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    StatusName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -89,7 +89,7 @@ namespace FootScout.WebAPI.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FootName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    FootName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -102,7 +102,7 @@ namespace FootScout.WebAPI.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PositionName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    PositionName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -236,9 +236,9 @@ namespace FootScout.WebAPI.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PlayerPositionId = table.Column<int>(type: "int", nullable: false),
-                    ClubName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    League = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Region = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ClubName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    League = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Region = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AchievementsId = table.Column<int>(type: "int", nullable: false),
@@ -274,9 +274,9 @@ namespace FootScout.WebAPI.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PlayerPositionId = table.Column<int>(type: "int", nullable: false),
-                    ClubName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    League = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Region = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ClubName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    League = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Region = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     SalaryRangeId = table.Column<int>(type: "int", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -312,8 +312,8 @@ namespace FootScout.WebAPI.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PlayerPositionId = table.Column<int>(type: "int", nullable: false),
-                    League = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Region = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    League = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Region = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Age = table.Column<int>(type: "int", nullable: false),
                     Height = table.Column<int>(type: "int", nullable: false),
                     PlayerFootId = table.Column<int>(type: "int", nullable: false),
@@ -390,7 +390,7 @@ namespace FootScout.WebAPI.Migrations
                     Height = table.Column<int>(type: "int", nullable: false),
                     PlayerFootId = table.Column<int>(type: "int", nullable: false),
                     Salary = table.Column<double>(type: "float", nullable: false),
-                    AdditionalInformation = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AdditionalInformation = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PlayerId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -438,11 +438,11 @@ namespace FootScout.WebAPI.Migrations
                     PlayerAdvertisementId = table.Column<int>(type: "int", nullable: false),
                     OfferStatusId = table.Column<int>(type: "int", nullable: false),
                     PlayerPositionId = table.Column<int>(type: "int", nullable: false),
-                    ClubName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    League = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Region = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ClubName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    League = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Region = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     Salary = table.Column<double>(type: "float", nullable: false),
-                    AdditionalInformation = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AdditionalInformation = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ClubMemberId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },

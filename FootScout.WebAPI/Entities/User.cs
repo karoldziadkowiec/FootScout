@@ -15,8 +15,10 @@ namespace FootScout.WebAPI.Entities
         [Phone]
         public string PhoneNumber { get; set; }
         [Required]
+        [MaxLength(40)]
         public string Location { get; set; }
         [Required]
+        [DataType(DataType.DateTime)]
         public DateTime CreationDate { get; set; }
     }
 }
