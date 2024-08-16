@@ -5,6 +5,7 @@ using FootScout.WebAPI.Models.DTOs;
 using FootScout.WebAPI.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.Intrinsics.X86;
 
 namespace FootScout.WebAPI.Repositories.Classes
 {
@@ -68,8 +69,91 @@ namespace FootScout.WebAPI.Repositories.Classes
         {
             var user = await _dbContext.Users.FindAsync(userId);
             if (user == null)
-            {
                 throw new Exception("User not found");
+
+            var clubHistories = await _dbContext.ClubHistories
+                .Where(ch => ch.PlayerId == userId)
+                .ToListAsync();
+
+            foreach (var clubHistory in clubHistories)
+            {
+                if (clubHistory.AchievementsId != null)
+                {
+                    var achievements = await _dbContext.Achievements.FindAsync(clubHistory.AchievementsId);
+                    if (achievements != null)
+                        _dbContext.Achievements.Remove(achievements);
+                }
+            }
+            _dbContext.ClubHistories.RemoveRange(clubHistories);
+
+            var playerFavorites = await _dbContext.FavoritePlayerAdvertisements
+                    .Where(fpa => fpa.UserId == userId)
+                    .ToListAsync();
+            _dbContext.FavoritePlayerAdvertisements.RemoveRange(playerFavorites);
+
+            var clubFavorites = await _dbContext.FavoriteClubAdvertisements
+                    .Where(fca => fca.UserId == userId)
+                    .ToListAsync();
+            _dbContext.FavoriteClubAdvertisements.RemoveRange(clubFavorites);
+
+            var unknownUser = await _dbContext.Users
+               .Where(u => u.Email == "unknown@unknown.com")
+               .SingleOrDefaultAsync();
+
+            if (unknownUser == null)
+                throw new InvalidOperationException("Unknown user not found");
+
+            var unknownUserId = unknownUser.Id;
+
+            var offeredStatus = await _dbContext.OfferStatuses
+                .FirstOrDefaultAsync(a => a.StatusName == "Offered");
+            var rejectedStatus = await _dbContext.OfferStatuses
+                .FirstOrDefaultAsync(a => a.StatusName == "Rejected");
+
+            var playerAdvertisements = await _dbContext.PlayerAdvertisements
+               .Where(pa => pa.PlayerId == userId)
+               .ToListAsync();
+
+            foreach (var advertisement in playerAdvertisements)
+            {
+                advertisement.EndDate = DateTime.Now;
+                advertisement.PlayerId = unknownUserId;
+            }
+
+            var clubOffers = await _dbContext.ClubOffers
+               .Where(co => co.ClubMemberId == userId)
+               .ToListAsync();
+
+            foreach (var offer in clubOffers)
+            {
+                if(offer.OfferStatusId == offeredStatus.Id)
+                {
+                    offer.OfferStatusId = rejectedStatus.Id;
+                }
+                offer.ClubMemberId = unknownUserId;
+            }
+
+            var clubAdvertisements = await _dbContext.ClubAdvertisements
+               .Where(ca => ca.ClubMemberId == userId)
+               .ToListAsync();
+
+            foreach (var advertisement in clubAdvertisements)
+            {
+                advertisement.EndDate = DateTime.Now;
+                advertisement.ClubMemberId = unknownUserId;
+            }
+
+            var playerOffers = await _dbContext.PlayerOffers
+               .Where(po => po.PlayerId == userId)
+               .ToListAsync();
+
+            foreach (var offer in playerOffers)
+            {
+                if (offer.OfferStatusId == offeredStatus.Id)
+                {
+                    offer.OfferStatusId = rejectedStatus.Id;
+                }
+                offer.PlayerId = unknownUserId;
             }
 
             _dbContext.Users.Remove(user);

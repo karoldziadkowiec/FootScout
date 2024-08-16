@@ -16,6 +16,7 @@ namespace FootScout.WebAPI.DbManager
                 await SeedPlayerPositions(services, dbContext);
                 await SeedPlayerFeet(services, dbContext);
                 await SeedOfferStatuses(services, dbContext);
+                await SeedUnknownUser(services);
             }
         }
 
@@ -110,6 +111,33 @@ namespace FootScout.WebAPI.DbManager
                 }
             }
             await dbContext.SaveChangesAsync();
+        }
+
+        private static async Task SeedUnknownUser(IServiceProvider services)
+        {
+            string unknownUserEmail = "unknown@unknown.com";
+            string unknownUserPassword = "Unknown1!";
+
+            var context = services.GetRequiredService<AppDbContext>();
+            var userManager = services.GetRequiredService<UserManager<User>>();
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+            var unknownUser = await userManager.FindByEmailAsync(unknownUserEmail);
+            if (unknownUser == null)
+            {
+                unknownUser = new User
+                {
+                    Email = unknownUserEmail,
+                    UserName = unknownUserEmail,
+                    FirstName = "Unknown",
+                    LastName = "Unknown",
+                    PhoneNumber = "000000000",
+                    Location = "Unknown",
+                    CreationDate = DateTime.Now,
+                };
+                await userManager.CreateAsync(unknownUser, unknownUserPassword);
+                await userManager.AddToRoleAsync(unknownUser, Role.User);
+            }
         }
     }
 }
