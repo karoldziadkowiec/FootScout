@@ -363,7 +363,20 @@ const ClubAdvertisement = () => {
                                 </Col>
                             ) : (
                                 <Col>
-                                    <p><Form.Label className="status-label">Offer status: {getOfferStatusNameById(offerStatusId)}</Form.Label></p>
+                                    <p>
+                                        <Form.Label className="status-label">
+                                            {getOfferStatusNameById(offerStatusId) === "Offered" && (
+                                                <i className="bi bi-question-diamond-fill" style={{ color: '#b571ff' }}></i>
+                                            )}
+                                            {getOfferStatusNameById(offerStatusId) === "Accepted" && (
+                                                <i className="bi bi-check-circle-fill" style={{ color: '#74ee54' }}></i>
+                                            )}
+                                            {getOfferStatusNameById(offerStatusId) === "Rejected" && (
+                                                <i className="bi bi-x-circle-fill" style={{ color: '#e33b3b' }}></i>
+                                            )}
+                                            {getOfferStatusNameById(offerStatusId)} Offer
+                                        </Form.Label>
+                                    </p>
                                 </Col>
                             )}
 
@@ -441,10 +454,10 @@ const ClubAdvertisement = () => {
                             </p>
                             {clubAdvertisementStatus ? (
                                 <p><Form.Label>End Date (days left): </Form.Label>
-                                <Form.Label className="ad-creationDate-label">
-                                    {TimeService.formatDateToEUR(clubAdvertisement.endDate)} ({TimeService.calculateDaysLeft(clubAdvertisement.endDate)} days)
-                                </Form.Label>
-                            </p>
+                                    <Form.Label className="ad-creationDate-label">
+                                        {TimeService.formatDateToEUR(clubAdvertisement.endDate)} ({TimeService.calculateDaysLeft(clubAdvertisement.endDate)} days)
+                                    </Form.Label>
+                                </p>
                             ) : (
                                 <p><Form.Label>End Date (days ago): </Form.Label>
                                     <Form.Label className="ad-creationDate-label">

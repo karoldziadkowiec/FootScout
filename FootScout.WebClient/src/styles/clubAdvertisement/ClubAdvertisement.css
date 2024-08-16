@@ -22,7 +22,7 @@
 }
 
 .status-label {
-    width: 200px;
+    width: 230px;
     font-size: 20px;
     color: rgb(240, 255, 108);
 }
@@ -35,7 +35,7 @@
 }
 
 .ad-container {
-    background-color: rgb(209, 218, 222);
+    background-color: rgb(237, 237, 227);
     width: 90%;
     border-radius: 30px;
     padding-top: 10px;
@@ -44,7 +44,7 @@
 }
 
 .ad-name-label {
-    color: rgb(158, 150, 32);
+    color: rgb(170, 161, 38);
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-size: 36px;
     font-weight: bold;

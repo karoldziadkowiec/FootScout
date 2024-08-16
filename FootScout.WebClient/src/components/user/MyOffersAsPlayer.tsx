@@ -126,7 +126,7 @@ const MyOffersAsPlayer = () => {
     const handleShowSentPlayerOfferDetails = async (playerOffer: PlayerOffer) => {
         const playerClubHistories = await UserService.getUserClubHistory(playerOffer.playerId);
         setPlayerClubHistories(playerClubHistories);
-        
+
         setSelectedSentPlayerOffer(playerOffer);
         setShowSentPlayerOfferDetailsModal(true);
     };
@@ -175,6 +175,7 @@ const MyOffersAsPlayer = () => {
         <div className="MyOffersAsPlayer">
             <ToastContainer />
             <h1>My Offers as a Player</h1>
+            <p></p>
             {/* Received offers from clubs*/}
             <h3>Received offers from clubs</h3>
             <div className="table-responsive">
@@ -194,7 +195,18 @@ const MyOffersAsPlayer = () => {
                             receivedClubOffers.map((clubOffer, index) => (
                                 <tr key={index}>
                                     <td className="offer-row">{TimeService.formatDateToEUR(clubOffer.creationDate)}</td>
-                                    <td className="offer-row">{clubOffer.offerStatus.statusName}</td>
+                                    <td className="offer-row">
+                                        {clubOffer.offerStatus.statusName === "Offered" && (
+                                            <i className="bi bi-question-diamond-fill" style={{ color: '#b571ff' }}></i>
+                                        )}
+                                        {clubOffer.offerStatus.statusName === "Accepted" && (
+                                            <i className="bi bi-check-circle-fill" style={{ color: 'green' }}></i>
+                                        )}
+                                        {clubOffer.offerStatus.statusName === "Rejected" && (
+                                            <i className="bi bi-x-circle-fill" style={{ color: 'red' }}></i>
+                                        )}
+                                        {clubOffer.offerStatus.statusName}
+                                    </td>
                                     <td className="offer-row">{clubOffer.clubName}</td>
                                     <td className="offer-row">{clubOffer.league} ({clubOffer.region})</td>
                                     <td className="offer-row">{clubOffer.playerPosition.positionName}</td>
@@ -247,7 +259,18 @@ const MyOffersAsPlayer = () => {
                             sentPlayerOffers.map((playerOffer, index) => (
                                 <tr key={index}>
                                     <td className="offer-row">{TimeService.formatDateToEUR(playerOffer.creationDate)}</td>
-                                    <td className="offer-row">{playerOffer.offerStatus.statusName}</td>
+                                    <td className="offer-row">
+                                        {playerOffer.offerStatus.statusName === "Offered" && (
+                                            <i className="bi bi-question-diamond-fill" style={{ color: '#b571ff' }}></i>
+                                        )}
+                                        {playerOffer.offerStatus.statusName === "Accepted" && (
+                                            <i className="bi bi-check-circle-fill" style={{ color: 'green' }}></i>
+                                        )}
+                                        {playerOffer.offerStatus.statusName === "Rejected" && (
+                                            <i className="bi bi-x-circle-fill" style={{ color: 'red' }}></i>
+                                        )}
+                                        {playerOffer.offerStatus.statusName}
+                                    </td>
                                     <td className="offer-row">{playerOffer.clubAdvertisement.clubName}</td>
                                     <td className="offer-row">{playerOffer.clubAdvertisement.league} ({playerOffer.clubAdvertisement.region})</td>
                                     <td className="offer-row">{playerOffer.clubAdvertisement.playerPosition.positionName}</td>
@@ -284,7 +307,19 @@ const MyOffersAsPlayer = () => {
                             <Form.Label className="offer-section">OFFER INFO</Form.Label>
                             <p><strong>Received Date</strong> {TimeService.formatDateToEUR(selectedReceivedClubOffer.creationDate)}</p>
                             <p><strong>End Date (days left/passed)</strong> {TimeService.formatDateToEUR(selectedReceivedClubOffer.playerAdvertisement.endDate)} ({TimeService.calculateDaysLeftPassed(selectedReceivedClubOffer.playerAdvertisement.endDate)})</p>
-                            <p><strong>Offer status:</strong> {selectedReceivedClubOffer.offerStatus.statusName}</p>
+                            <p>
+                                <strong>Offer status: </strong>
+                                {selectedReceivedClubOffer.offerStatus.statusName === "Offered" && (
+                                    <i className="bi bi-question-diamond-fill" style={{ color: '#b571ff' }}></i>
+                                )}
+                                {selectedReceivedClubOffer.offerStatus.statusName === "Accepted" && (
+                                    <i className="bi bi-check-circle-fill" style={{ color: 'green' }}></i>
+                                )}
+                                {selectedReceivedClubOffer.offerStatus.statusName === "Rejected" && (
+                                    <i className="bi bi-x-circle-fill" style={{ color: 'red' }}></i>
+                                )}
+                                {selectedReceivedClubOffer.offerStatus.statusName}
+                            </p>
                             <Form.Label className="offer-section">DETAILS</Form.Label>
                             <p><strong>Club Name:</strong> {selectedReceivedClubOffer.clubName}</p>
                             <p><strong>League:</strong> {selectedReceivedClubOffer.league}</p>
@@ -322,7 +357,19 @@ const MyOffersAsPlayer = () => {
                                     <Form.Label className="offer-section">OFFER INFO</Form.Label>
                                     <p><strong>Sent Date:</strong> {TimeService.formatDateToEUR(selectedSentPlayerOffer.creationDate)}</p>
                                     <p><strong>End Date (days left/passed):</strong> {TimeService.formatDateToEUR(selectedSentPlayerOffer.clubAdvertisement.endDate)} ({TimeService.calculateDaysLeftPassed(selectedSentPlayerOffer.clubAdvertisement.endDate)})</p>
-                                    <p><strong>Offer status:</strong> {selectedSentPlayerOffer.offerStatus.statusName}</p>
+                                    <p>
+                                        <strong>Offer status: </strong>
+                                        {selectedSentPlayerOffer.offerStatus.statusName === "Offered" && (
+                                            <i className="bi bi-question-diamond-fill" style={{ color: '#b571ff' }}></i>
+                                        )}
+                                        {selectedSentPlayerOffer.offerStatus.statusName === "Accepted" && (
+                                            <i className="bi bi-check-circle-fill" style={{ color: 'green' }}></i>
+                                        )}
+                                        {selectedSentPlayerOffer.offerStatus.statusName === "Rejected" && (
+                                            <i className="bi bi-x-circle-fill" style={{ color: 'red' }}></i>
+                                        )}
+                                        {selectedSentPlayerOffer.offerStatus.statusName}
+                                    </p>
                                 </Col>
                             </Row>
                             <Row>

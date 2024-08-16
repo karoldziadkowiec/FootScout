@@ -230,10 +230,6 @@ return (
             </Modal.Header>
             <Modal.Body>
                 <Form>
-                    <Form.Group controlId="formEmail">
-                        <Form.Label>E-mail:</Form.Label>
-                        <Form.Label className="email-label"> {user?.email}</Form.Label>
-                    </Form.Group>
                     <Form.Group controlId="formFirstName">
                         <Form.Label>First Name</Form.Label>
                         <Form.Control
@@ -293,10 +289,6 @@ return (
             </Modal.Header>
             <Modal.Body>
                 <Form>
-                    <Form.Group controlId="formEmail">
-                        <Form.Label>E-mail:</Form.Label>
-                        <Form.Label className="email-label"> {user?.email}</Form.Label>
-                    </Form.Group>
                     <Form.Group controlId="formPasswordHash">
                         <Form.Label>New Password</Form.Label>
                         <Form.Control

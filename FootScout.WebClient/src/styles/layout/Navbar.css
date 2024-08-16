@@ -1,3 +1,7 @@
 .green-links .nav-link {
-    color: rgb(92, 226, 117);
-  }
+  color: rgb(92, 226, 117);
+}
+
+.dropdown-item.active {
+  background: rgb(73, 204, 97) !important;
+}

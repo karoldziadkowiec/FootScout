@@ -340,25 +340,27 @@ const ClubAdvertisements = () => {
             </div>
 
             {/* Pagination */}
-            <Pagination className="pagination-green">
-                <Pagination.Prev
-                    onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                />
-                {[...Array(totalPages)].map((_, index) => (
-                    <Pagination.Item
-                        key={index + 1}
-                        active={index + 1 === currentPage}
-                        onClick={() => handlePageChange(index + 1)}
-                    >
-                        {index + 1}
-                    </Pagination.Item>
-                ))}
-                <Pagination.Next
-                    onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                />
-            </Pagination>
+            <div className="pagination-container">
+                <Pagination className="pagination-green">
+                    <Pagination.Prev
+                        onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                    />
+                    {[...Array(totalPages)].map((_, index) => (
+                        <Pagination.Item
+                            key={index + 1}
+                            active={index + 1 === currentPage}
+                            onClick={() => handlePageChange(index + 1)}
+                        >
+                            {index + 1}
+                        </Pagination.Item>
+                    ))}
+                    <Pagination.Next
+                        onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                    />
+                </Pagination>
+            </div>
 
             {/* Delete Favorite Club Advertisement Modal */}
             <Modal show={showDeleteFavoriteModal} onHide={() => setShowDeleteFavoriteModal(false)}>

@@ -194,10 +194,12 @@ const ClubHistory = () => {
         <div className="ClubHistory">
             <ToastContainer />
             <h1>Club History</h1>
+            <p></p>
             <Button variant="success" className="form-button" onClick={() => setShowCreateModal(true)}>
                 <i className="bi bi-file-earmark-plus"></i>
                 Create Club History
             </Button>
+            <p></p>
             <div className="table-responsive">
                 <Table striped bordered hover variant="warning">
                     <thead className="table-dark">

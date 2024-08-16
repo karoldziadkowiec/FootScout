@@ -79,6 +79,7 @@ const MyFavoritePlayerAdvertisements = () => {
         <div className="MyFavoritePlayerAdvertisements">
             <ToastContainer />
             <h1>My Favorite Player Advertisements</h1>
+            <p></p>
             {/* Active favorite advertisements*/}
             <h3>Active advertisements</h3>
             <div className="table-responsive">

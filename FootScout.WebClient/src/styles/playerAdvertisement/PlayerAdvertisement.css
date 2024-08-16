@@ -35,7 +35,7 @@
 }
 
 .ad-container {
-    background-color: rgb(216, 225, 216);
+    background-color: rgb(237, 237, 227);
     width: 90%;
     border-radius: 30px;
     padding-top: 10px;
@@ -44,7 +44,7 @@
 }
 
 .ad-name-label {
-    color: rgb(148, 141, 42);
+    color: rgb(170, 161, 38);
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     font-size: 36px;
     font-weight: bold;

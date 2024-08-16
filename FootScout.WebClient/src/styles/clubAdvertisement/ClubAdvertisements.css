@@ -34,6 +34,12 @@
     }
 }
 
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
 .pagination-green .page-item .page-link {
     background-color: #54c16d;
     border-color: #54c16d;

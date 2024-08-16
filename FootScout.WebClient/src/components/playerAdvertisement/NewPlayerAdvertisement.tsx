@@ -115,6 +115,7 @@ const NewPlayerAdvertisement = () => {
         <div className="NewPlayerAdvertisement">
             <ToastContainer />
             <h1>New Player Advertisement</h1>
+            <p></p>
             <div className="forms-container">
                 <Container>
                     <Row className="justify-content-md-center">

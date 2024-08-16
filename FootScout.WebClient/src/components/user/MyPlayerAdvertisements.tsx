@@ -51,6 +51,7 @@ const MyPlayerAdvertisements = () => {
                 <i className="bi bi-file-earmark-plus-fill"></i>
                 New Advertisement
             </Button>
+            <p></p>
             {/* Active advertisements*/}
             <h3>Active advertisements</h3>
             <div className="table-responsive">

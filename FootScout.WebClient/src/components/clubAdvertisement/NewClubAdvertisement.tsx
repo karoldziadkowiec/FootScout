@@ -98,6 +98,7 @@ const NewClubAdvertisement = () => {
         <div className="NewClubAdvertisement">
             <ToastContainer />
             <h1>New Club Advertisement</h1>
+            <p></p>
             <div className="forms-container">
                 <Container>
                     <Row className="justify-content-md-center">
