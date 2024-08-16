@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Row, Col, Modal } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
-import { format } from 'date-fns';
 import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
+import TimeService from '../../services/time/TimeService';
 import UserDTO from '../../models/dtos/UserDTO';
 import UserUpdateDTO from '../../models/dtos/UserUpdateDTO';
 import UserResetPasswordDTO from '../../models/dtos/UserResetPasswordDTO';
@@ -171,11 +171,6 @@ const handleDeleteProfile = async () => {
     }
 };
 
-const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return format(date, 'dd-MM-yyyy HH:mm:ss');
-};
-
 if (loading)
     return <p>Loading...</p>;
 
@@ -223,7 +218,7 @@ return (
                     <p><Form.Label className="white-label">Location: </Form.Label>
                         <Form.Label className="green-label"> {user.location}</Form.Label></p>
                     <p><Form.Label className="white-label">Creation Date: </Form.Label>
-                        <Form.Label className="green-label"> {formatDate(user.creationDate)}</Form.Label></p>
+                        <Form.Label className="green-label"> {TimeService.formatDateToEURWithHour(user.creationDate)}</Form.Label></p>
                 </div>
             )}
         </div>

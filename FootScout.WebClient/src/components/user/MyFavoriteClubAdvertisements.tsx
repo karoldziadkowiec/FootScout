@@ -4,6 +4,7 @@ import { Table, Button, Modal } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
+import TimeService from '../../services/time/TimeService';
 import FavoriteClubAdvertisementService from '../../services/api/FavoriteClubAdvertisementService';
 import FavoriteClubAdvertisement from '../../models/interfaces/FavoriteClubAdvertisement';
 import '../../App.css';
@@ -74,30 +75,6 @@ const MyFavoriteClubAdvertisements = () => {
         }
     };
 
-    const formatDate = (dateString: string): string => {
-        const date = new Date(dateString);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-        return `${day}-${month}-${year}`;
-    };
-
-    const calculateDaysLeft = (endDate: string): number => {
-        const currentDate = new Date();
-        const end = new Date(endDate);
-        const timeDiff = end.getTime() - currentDate.getTime();
-        const daysLeft = timeDiff / (1000 * 3600 * 24);
-        return Math.ceil(daysLeft);
-    };
-
-    const calculateSkippedDays = (endDate: string): number => {
-        const currentDate = new Date();
-        const end = new Date(endDate);
-        const timeDiff = currentDate.getTime() - end.getTime();
-        const days = timeDiff / (1000 * 3600 * 24);
-        return Math.floor(days);
-    };
-
     return (
         <div className="MyFavoriteClubAdvertisements">
             <ToastContainer />
@@ -120,7 +97,7 @@ const MyFavoriteClubAdvertisements = () => {
                         {userActiveFavoriteClubAdvertisements.length > 0 ? (
                             userActiveFavoriteClubAdvertisements.map((favoriteAdvertisement, index) => (
                                 <tr key={index}>
-                                    <td>{formatDate(favoriteAdvertisement.clubAdvertisement.endDate)} ({calculateDaysLeft(favoriteAdvertisement.clubAdvertisement.endDate)} days)</td>
+                                    <td>{TimeService.formatDateToEUR(favoriteAdvertisement.clubAdvertisement.endDate)} ({TimeService.calculateDaysLeft(favoriteAdvertisement.clubAdvertisement.endDate)} days)</td>
                                     <td>{favoriteAdvertisement.clubAdvertisement.clubName}</td>
                                     <td>{favoriteAdvertisement.clubAdvertisement.league} ({favoriteAdvertisement.clubAdvertisement.region})</td>
                                     <td>{favoriteAdvertisement.clubAdvertisement.playerPosition.positionName}</td>
@@ -162,7 +139,7 @@ const MyFavoriteClubAdvertisements = () => {
                         {userInactiveFavoriteClubAdvertisements.length > 0 ? (
                             userInactiveFavoriteClubAdvertisements.map((favoriteAdvertisement, index) => (
                                 <tr key={index}>
-                                    <td>{formatDate(favoriteAdvertisement.clubAdvertisement.endDate)} ({calculateSkippedDays(favoriteAdvertisement.clubAdvertisement.endDate)} days)</td>
+                                    <td>{TimeService.formatDateToEUR(favoriteAdvertisement.clubAdvertisement.endDate)} ({TimeService.calculateSkippedDays(favoriteAdvertisement.clubAdvertisement.endDate)} days)</td>
                                     <td>{favoriteAdvertisement.clubAdvertisement.clubName}</td>
                                     <td>{favoriteAdvertisement.clubAdvertisement.league} ({favoriteAdvertisement.clubAdvertisement.region})</td>
                                     <td>{favoriteAdvertisement.clubAdvertisement.playerPosition.positionName}</td>

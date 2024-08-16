@@ -3,6 +3,7 @@ import { Table, Form, Button, Row, Col, Modal, FormSelect } from 'react-bootstra
 import { ToastContainer, toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
+import TimeService from '../../services/time/TimeService';
 import ClubHistoryService from '../../services/api/ClubHistoryService';
 import PlayerPositionService from '../../services/api/PlayerPositionService';
 import ClubHistoryModel from '../../models/interfaces/ClubHistory';
@@ -189,22 +190,6 @@ const ClubHistory = () => {
         }
     };
 
-    const formatDate = (dateString: string): string => {
-        const date = new Date(dateString);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-        return `${day}-${month}-${year}`;
-    };
-
-    const formatDateToForm = (dateString: string): string => {
-        const date = new Date(dateString);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-        return `${year}-${month}-${day}`;
-    };
-
     return (
         <div className="ClubHistory">
             <ToastContainer />
@@ -229,7 +214,7 @@ const ClubHistory = () => {
                         {userClubHistories.length > 0 ? (
                             userClubHistories.map((history, index) => (
                                 <tr key={index}>
-                                    <td>{formatDate(history.startDate)} - {formatDate(history.endDate)}</td>
+                                    <td>{TimeService.formatDateToEUR(history.startDate)} - {TimeService.formatDateToEUR(history.endDate)}</td>
                                     <td>{history.clubName}</td>
                                     <td>{history.league}</td>
                                     <td>{history.region}</td>
@@ -447,8 +432,8 @@ const ClubHistory = () => {
                                     <Form.Label className="clubHistory-section">CLUB INFO</Form.Label>
                                     <p><strong>League:</strong> {selectedClubHistory.league}</p>
                                     <p><strong>Region:</strong> {selectedClubHistory.region}</p>
-                                    <p><strong>Start Date:</strong> {formatDate(selectedClubHistory.startDate)}</p>
-                                    <p><strong>End Date:</strong> {formatDate(selectedClubHistory.endDate)}</p>
+                                    <p><strong>Start Date:</strong> {TimeService.formatDateToEUR(selectedClubHistory.startDate)}</p>
+                                    <p><strong>End Date:</strong> {TimeService.formatDateToEUR(selectedClubHistory.endDate)}</p>
                                 </Col>
                                 <Col>
                                     <Form.Label className="clubHistory-section">ACHIEVEMENTS</Form.Label>
@@ -541,7 +526,7 @@ const ClubHistory = () => {
                                 <Col sm="9">
                                     <Form.Control
                                         type="date"
-                                        value={formatDateToForm(editFormData.startDate)}
+                                        value={TimeService.formatDateToForm(editFormData.startDate)}
                                         onChange={(e) => setEditFormData({ ...editFormData, startDate: e.target.value })}
                                         required
                                     />
@@ -553,7 +538,7 @@ const ClubHistory = () => {
                                 <Col sm="9">
                                     <Form.Control
                                         type="date"
-                                        value={formatDateToForm(editFormData.endDate)}
+                                        value={TimeService.formatDateToForm(editFormData.endDate)}
                                         onChange={(e) => setEditFormData({ ...editFormData, endDate: e.target.value })}
                                         required
                                     />

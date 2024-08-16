@@ -4,6 +4,7 @@ import { Table, Button, Modal, Form, Row, Col } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
+import TimeService from '../../services/time/TimeService';
 import ClubOfferService from '../../services/api/ClubOfferService';
 import PlayerOfferService from '../../services/api/PlayerOfferService';
 import OfferStatusName from '../../models/enums/OfferStatusName';
@@ -170,30 +171,6 @@ const MyOffersAsPlayer = () => {
         setShowClubHistoryDetailsModal(true);
     };
 
-    const formatDate = (dateString: string): string => {
-        const date = new Date(dateString);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-        return `${day}-${month}-${year}`;
-    };
-
-    const calculateDaysLeft = (endDate: string): string => {
-        const currentDate = new Date();
-        const end = new Date(endDate);
-
-        if (currentDate <= end) {
-            const timeDiff = end.getTime() - currentDate.getTime();
-            const daysLeft = timeDiff / (1000 * 3600 * 24);
-            return `${Math.ceil(daysLeft)} days left`;
-        }
-        else {
-            const timeDiff = currentDate.getTime() - end.getTime();
-            const days = timeDiff / (1000 * 3600 * 24);
-            return `${Math.floor(days)} days passed`;
-        }
-    };
-
     return (
         <div className="MyOffersAsPlayer">
             <ToastContainer />
@@ -216,7 +193,7 @@ const MyOffersAsPlayer = () => {
                         {receivedClubOffers.length > 0 ? (
                             receivedClubOffers.map((clubOffer, index) => (
                                 <tr key={index}>
-                                    <td className="offer-row">{formatDate(clubOffer.creationDate)}</td>
+                                    <td className="offer-row">{TimeService.formatDateToEUR(clubOffer.creationDate)}</td>
                                     <td className="offer-row">{clubOffer.offerStatus.statusName}</td>
                                     <td className="offer-row">{clubOffer.clubName}</td>
                                     <td className="offer-row">{clubOffer.league} ({clubOffer.region})</td>
@@ -269,7 +246,7 @@ const MyOffersAsPlayer = () => {
                         {sentPlayerOffers.length > 0 ? (
                             sentPlayerOffers.map((playerOffer, index) => (
                                 <tr key={index}>
-                                    <td className="offer-row">{formatDate(playerOffer.creationDate)}</td>
+                                    <td className="offer-row">{TimeService.formatDateToEUR(playerOffer.creationDate)}</td>
                                     <td className="offer-row">{playerOffer.offerStatus.statusName}</td>
                                     <td className="offer-row">{playerOffer.clubAdvertisement.clubName}</td>
                                     <td className="offer-row">{playerOffer.clubAdvertisement.league} ({playerOffer.clubAdvertisement.region})</td>
@@ -305,8 +282,8 @@ const MyOffersAsPlayer = () => {
                             <p><Form.Label className="offer-name-label">{(selectedReceivedClubOffer.clubName).toUpperCase()}</Form.Label></p>
                             <p><Form.Label className="offer-position-label">{selectedReceivedClubOffer.playerPosition.positionName}</Form.Label></p>
                             <Form.Label className="offer-section">OFFER INFO</Form.Label>
-                            <p><strong>Received Date</strong> {formatDate(selectedReceivedClubOffer.creationDate)}</p>
-                            <p><strong>End Date (days left/passed)</strong> {formatDate(selectedReceivedClubOffer.playerAdvertisement.endDate)} ({calculateDaysLeft(selectedReceivedClubOffer.playerAdvertisement.endDate)})</p>
+                            <p><strong>Received Date</strong> {TimeService.formatDateToEUR(selectedReceivedClubOffer.creationDate)}</p>
+                            <p><strong>End Date (days left/passed)</strong> {TimeService.formatDateToEUR(selectedReceivedClubOffer.playerAdvertisement.endDate)} ({TimeService.calculateDaysLeftPassed(selectedReceivedClubOffer.playerAdvertisement.endDate)})</p>
                             <p><strong>Offer status:</strong> {selectedReceivedClubOffer.offerStatus.statusName}</p>
                             <Form.Label className="offer-section">DETAILS</Form.Label>
                             <p><strong>Club Name:</strong> {selectedReceivedClubOffer.clubName}</p>
@@ -343,8 +320,8 @@ const MyOffersAsPlayer = () => {
                             <Row>
                                 <Col>
                                     <Form.Label className="offer-section">OFFER INFO</Form.Label>
-                                    <p><strong>Sent Date:</strong> {formatDate(selectedSentPlayerOffer.creationDate)}</p>
-                                    <p><strong>End Date (days left/passed):</strong> {formatDate(selectedSentPlayerOffer.clubAdvertisement.endDate)} ({calculateDaysLeft(selectedSentPlayerOffer.clubAdvertisement.endDate)})</p>
+                                    <p><strong>Sent Date:</strong> {TimeService.formatDateToEUR(selectedSentPlayerOffer.creationDate)}</p>
+                                    <p><strong>End Date (days left/passed):</strong> {TimeService.formatDateToEUR(selectedSentPlayerOffer.clubAdvertisement.endDate)} ({TimeService.calculateDaysLeftPassed(selectedSentPlayerOffer.clubAdvertisement.endDate)})</p>
                                     <p><strong>Offer status:</strong> {selectedSentPlayerOffer.offerStatus.statusName}</p>
                                 </Col>
                             </Row>
@@ -385,7 +362,7 @@ const MyOffersAsPlayer = () => {
                                             {playerClubHistories.length > 0 ? (
                                                 playerClubHistories.map((history, index) => (
                                                     <tr key={index}>
-                                                        <td>{formatDate(history.startDate)} - {formatDate(history.endDate)}</td>
+                                                        <td>{TimeService.formatDateToEUR(history.startDate)} - {TimeService.formatDateToEUR(history.endDate)}</td>
                                                         <td>{history.clubName}</td>
                                                         <td>{history.league} ({history.region})</td>
                                                         <td>{history.playerPosition.positionName}</td>
@@ -464,8 +441,8 @@ const MyOffersAsPlayer = () => {
                                     <Form.Label className="clubHistory-section">CLUB INFO</Form.Label>
                                     <p><strong>League:</strong> {selectedClubHistory.league}</p>
                                     <p><strong>Region:</strong> {selectedClubHistory.region}</p>
-                                    <p><strong>Start Date:</strong> {formatDate(selectedClubHistory.startDate)}</p>
-                                    <p><strong>End Date:</strong> {formatDate(selectedClubHistory.endDate)}</p>
+                                    <p><strong>Start Date:</strong> {TimeService.formatDateToEUR(selectedClubHistory.startDate)}</p>
+                                    <p><strong>End Date:</strong> {TimeService.formatDateToEUR(selectedClubHistory.endDate)}</p>
                                 </Col>
                                 <Col>
                                     <Form.Label className="clubHistory-section">ACHIEVEMENTS</Form.Label>

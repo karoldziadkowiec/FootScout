@@ -7,6 +7,7 @@ import UserService from '../../services/api/UserService';
 import ClubAdvertisement from '../../models/interfaces/ClubAdvertisement';
 import '../../App.css';
 import '../../styles/user/MyClubAdvertisements.css';
+import TimeService from '../../services/time/TimeService';
 
 const MyClubAdvertisements = () => {
     const navigate = useNavigate();
@@ -42,30 +43,6 @@ const MyClubAdvertisements = () => {
         navigate(`/club-advertisement/${clubAdvertisementId}`, { state: { clubAdvertisementId } });
     };
 
-    const formatDate = (dateString: string): string => {
-        const date = new Date(dateString);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-        return `${day}-${month}-${year}`;
-    };
-
-    const calculateDaysLeft = (endDate: string): number => {
-        const currentDate = new Date();
-        const end = new Date(endDate);
-        const timeDiff = end.getTime() - currentDate.getTime();
-        const daysLeft = timeDiff / (1000 * 3600 * 24);
-        return Math.ceil(daysLeft);
-    };
-
-    const calculateSkippedDays = (endDate: string): number => {
-        const currentDate = new Date();
-        const end = new Date(endDate);
-        const timeDiff = currentDate.getTime() - end.getTime();
-        const days = timeDiff / (1000 * 3600 * 24);
-        return Math.floor(days);
-    };
-
     return (
         <div className="MyClubAdvertisements">
             <ToastContainer />
@@ -92,7 +69,7 @@ const MyClubAdvertisements = () => {
                         {userActiveClubAdvertisements.length > 0 ? (
                             userActiveClubAdvertisements.map((advertisement, index) => (
                                 <tr key={index}>
-                                    <td>{formatDate(advertisement.creationDate)}</td>
+                                    <td>{TimeService.formatDateToEUR(advertisement.creationDate)}</td>
                                     <td>{advertisement.playerPosition.positionName}</td>
                                     <td>{advertisement.clubName}</td>
                                     <td>{advertisement.league} ({advertisement.region})</td>
@@ -131,7 +108,7 @@ const MyClubAdvertisements = () => {
                         {userInactiveClubAdvertisements.length > 0 ? (
                             userInactiveClubAdvertisements.map((advertisement, index) => (
                                 <tr key={index}>
-                                    <td>{formatDate(advertisement.creationDate)} ({calculateSkippedDays(advertisement.endDate)} days)</td>
+                                    <td>{TimeService.formatDateToEUR(advertisement.creationDate)} ({TimeService.calculateSkippedDays(advertisement.endDate)} days)</td>
                                     <td>{advertisement.playerPosition.positionName}</td>
                                     <td>{advertisement.clubName}</td>
                                     <td>{advertisement.league} ({advertisement.region})</td>

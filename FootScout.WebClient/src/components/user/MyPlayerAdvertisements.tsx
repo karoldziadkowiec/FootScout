@@ -4,6 +4,7 @@ import { Table, Button } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
+import TimeService from '../../services/time/TimeService';
 import PlayerAdvertisement from '../../models/interfaces/PlayerAdvertisement';
 import '../../App.css';
 import '../../styles/user/MyPlayerAdvertisements.css';
@@ -42,22 +43,6 @@ const MyPlayerAdvertisements = () => {
         navigate(`/player-advertisement/${playerAdvertisementId}`, { state: { playerAdvertisementId } });
     };
 
-    const formatDate = (dateString: string): string => {
-        const date = new Date(dateString);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-        return `${day}-${month}-${year}`;
-    };
-
-    const calculateSkippedDays = (endDate: string): number => {
-        const currentDate = new Date();
-        const end = new Date(endDate);
-        const timeDiff = currentDate.getTime() - end.getTime();
-        const days = timeDiff / (1000 * 3600 * 24);
-        return Math.floor(days);
-    };
-
     return (
         <div className="MyPlayerAdvertisements">
             <ToastContainer />
@@ -84,7 +69,7 @@ const MyPlayerAdvertisements = () => {
                         {userActivePlayerAdvertisements.length > 0 ? (
                             userActivePlayerAdvertisements.map((advertisement, index) => (
                                 <tr key={index}>
-                                    <td>{formatDate(advertisement.creationDate)}</td>
+                                    <td>{TimeService.formatDateToEUR(advertisement.creationDate)}</td>
                                     <td>{advertisement.playerPosition.positionName}</td>
                                     <td>{advertisement.league}</td>
                                     <td>{advertisement.region}</td>
@@ -123,7 +108,7 @@ const MyPlayerAdvertisements = () => {
                         {userInactivePlayerAdvertisements.length > 0 ? (
                             userInactivePlayerAdvertisements.map((advertisement, index) => (
                                 <tr key={index}>
-                                    <td>{formatDate(advertisement.endDate)} ({calculateSkippedDays(advertisement.endDate)} days)</td>
+                                    <td>{TimeService.formatDateToEUR(advertisement.endDate)} ({TimeService.calculateSkippedDays(advertisement.endDate)} days)</td>
                                     <td>{advertisement.playerPosition.positionName}</td>
                                     <td>{advertisement.league}</td>
                                     <td>{advertisement.region}</td>

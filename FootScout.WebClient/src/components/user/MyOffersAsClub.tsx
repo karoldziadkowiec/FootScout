@@ -4,6 +4,7 @@ import { Table, Button, Modal, Form, Col, Row } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
+import TimeService from '../../services/time/TimeService';
 import PlayerOfferService from '../../services/api/PlayerOfferService';
 import OfferStatusName from '../../models/enums/OfferStatusName';
 import ClubOffer from '../../models/interfaces/ClubOffer';
@@ -178,22 +179,6 @@ const MyOffersAsClub = () => {
         return `${day}-${month}-${year}`;
     };
 
-    const calculateDaysLeft = (endDate: string): string => {
-        const currentDate = new Date();
-        const end = new Date(endDate);
-
-        if (currentDate <= end) {
-            const timeDiff = end.getTime() - currentDate.getTime();
-            const daysLeft = timeDiff / (1000 * 3600 * 24);
-            return `${Math.ceil(daysLeft)} days left`;
-        }
-        else {
-            const timeDiff = currentDate.getTime() - end.getTime();
-            const days = timeDiff / (1000 * 3600 * 24);
-            return `${Math.floor(days)} days passed`;
-        }
-    };
-
     return (
         <div className="MyOffersAsClub">
             <ToastContainer />
@@ -312,7 +297,7 @@ const MyOffersAsClub = () => {
                                 <Col>
                                     <Form.Label className="offer-section">OFFER INFO</Form.Label>
                                     <p><strong>Sent Date:</strong> {formatDate(selectedReceivedPlayerOffer.creationDate)}</p>
-                                    <p><strong>End Date (days left/passed):</strong> {formatDate(selectedReceivedPlayerOffer.clubAdvertisement.endDate)} ({calculateDaysLeft(selectedReceivedPlayerOffer.clubAdvertisement.endDate)})</p>
+                                    <p><strong>End Date (days left/passed):</strong> {formatDate(selectedReceivedPlayerOffer.clubAdvertisement.endDate)} ({TimeService.calculateDaysLeftPassed(selectedReceivedPlayerOffer.clubAdvertisement.endDate)})</p>
                                     <p><strong>Offer status:</strong> {selectedReceivedPlayerOffer.offerStatus.statusName}</p>
                                 </Col>
                             </Row>
@@ -396,7 +381,7 @@ const MyOffersAsClub = () => {
                             <p><Form.Label className="offer-position-label">{selectedSentClubOffer.playerPosition.positionName}</Form.Label></p>
                             <Form.Label className="offer-section">OFFER INFO</Form.Label>
                             <p><strong>Sent Date</strong> {formatDate(selectedSentClubOffer.creationDate)}</p>
-                            <p><strong>End Date (days left/passed)</strong> {formatDate(selectedSentClubOffer.playerAdvertisement.endDate)} ({calculateDaysLeft(selectedSentClubOffer.playerAdvertisement.endDate)})</p>
+                            <p><strong>End Date (days left/passed)</strong> {formatDate(selectedSentClubOffer.playerAdvertisement.endDate)} ({TimeService.calculateDaysLeftPassed(selectedSentClubOffer.playerAdvertisement.endDate)})</p>
                             <p><strong>Offer status:</strong> {selectedSentClubOffer.offerStatus.statusName}</p>
                             <Form.Label className="offer-section">SENT TO</Form.Label>
                             <p><strong>Name:</strong> {selectedSentClubOffer.playerAdvertisement.player.firstName} {selectedSentClubOffer.playerAdvertisement.player.lastName}</p>

@@ -4,6 +4,7 @@ import { Table, Button, Modal, Pagination, Form } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
+import TimeService from '../../services/time/TimeService';
 import PlayerPositionService from '../../services/api/PlayerPositionService';
 import PlayerAdvertisementService from '../../services/api/PlayerAdvertisementService';
 import FavoritePlayerAdvertisementService from '../../services/api/FavoritePlayerAdvertisementService';
@@ -165,14 +166,6 @@ const PlayerAdvertisements = () => {
         }
     };
 
-    const formatDate = (dateString: string): string => {
-        const date = new Date(dateString);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-        return `${day}-${month}-${year}`;
-    };
-
     const searchAdvertisements = (advertisements: PlayerAdvertisement[]) => {
         if (!searchTerm) {
             return advertisements;
@@ -300,7 +293,7 @@ const PlayerAdvertisements = () => {
                         {currentPlayerAdvertisementItems.length > 0 ? (
                             currentPlayerAdvertisementItems.map((advertisement, index) => (
                                 <tr key={index}>
-                                    <td className="ad-row">{formatDate(advertisement.creationDate)}</td>
+                                    <td className="ad-row">{TimeService.formatDateToEUR(advertisement.creationDate)}</td>
                                     <td className="ad-row">{advertisement.player.firstName} {advertisement.player.lastName}</td>
                                     <td className="ad-row">{advertisement.playerPosition.positionName}</td>
                                     <td className="ad-row">{advertisement.league}</td>
