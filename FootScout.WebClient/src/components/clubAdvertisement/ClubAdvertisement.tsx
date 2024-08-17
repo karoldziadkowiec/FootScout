@@ -352,6 +352,13 @@ const ClubAdvertisement = () => {
                                     <i className="bi bi-trash"></i> Delete
                                 </Button>
                             </Col>
+                            {(isAdminRole) && (
+                                <Col>
+                                    <Button variant="info" className="ad-form-button">
+                                        <i className="bi bi-chat-fill"></i> Chat
+                                    </Button>
+                                </Col>
+                            )}
                         </Row>
                     ) : (
                         <Row>
@@ -393,6 +400,12 @@ const ClubAdvertisement = () => {
                                     </Button>
                                 </Col>
                             )}
+
+                            <Col>
+                                <Button variant="info">
+                                    <i className="bi bi-chat-fill"></i>
+                                </Button>
+                            </Col>
                         </Row>
                     )
                 ) : (
