@@ -5,7 +5,6 @@ using FootScout.WebAPI.Models.DTOs;
 using FootScout.WebAPI.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.Intrinsics.X86;
 
 namespace FootScout.WebAPI.Repositories.Classes
 {

@@ -1,5 +1,6 @@
 using FootScout.WebAPI.DbManager;
 using FootScout.WebAPI.Entities;
+using FootScout.WebAPI.HubManager;
 using FootScout.WebAPI.Models.Constants;
 using FootScout.WebAPI.Repositories.Classes;
 using FootScout.WebAPI.Repositories.Interfaces;
@@ -72,6 +73,8 @@ namespace FootScout.WebAPI
             builder.Services.AddScoped<IAccountService, AccountService>();
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<ICookieService, CookieService>();
+            builder.Services.AddScoped<IChatService, ChatService>();
+            builder.Services.AddScoped<IMessageService, MessageService>();
 
             // Repositories
             builder.Services.AddScoped<IPlayerPositionRepository, PlayerPositionRepository>();
@@ -96,6 +99,9 @@ namespace FootScout.WebAPI
 
             // Accessing HttpContext property (cookies)
             builder.Services.AddHttpContextAccessor();
+
+            // Real time chat (SignalR)
+            builder.Services.AddSignalR();
 
             // Controller handler
             builder.Services.AddControllers();
@@ -164,6 +170,7 @@ namespace FootScout.WebAPI
             app.UseAuthorization();
 
             app.MapControllers();
+            app.MapHub<ChatHub>("/chathub");
 
             // Seeders
             using (var scope = app.Services.CreateScope())

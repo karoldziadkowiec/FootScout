@@ -8,11 +8,13 @@ namespace FootScout.WebAPI.DbManager
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
         public DbSet<Achievements> Achievements { get; set; }
+        public DbSet<Chat> Chats { get; set; }
         public DbSet<ClubAdvertisement> ClubAdvertisements { get; set; }
         public DbSet<ClubHistory> ClubHistories { get; set; }
         public DbSet<ClubOffer> ClubOffers { get; set; }
         public DbSet<FavoriteClubAdvertisement> FavoriteClubAdvertisements { get; set; }
         public DbSet<FavoritePlayerAdvertisement> FavoritePlayerAdvertisements { get; set; }
+        public DbSet<Message> Messages { get; set; }
         public DbSet<OfferStatus> OfferStatuses { get; set; }
         public DbSet<PlayerAdvertisement> PlayerAdvertisements { get; set; }
         public DbSet<PlayerFoot> PlayerFeet { get; set; }
@@ -24,6 +26,18 @@ namespace FootScout.WebAPI.DbManager
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Chat>()
+                .HasOne(c => c.User1)
+                .WithMany()
+                .HasForeignKey(c => c.User1Id)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Chat>()
+                .HasOne(c => c.User2)
+                .WithMany()
+                .HasForeignKey(c => c.User2Id)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<ClubAdvertisement>()
                 .HasOne(ca => ca.ClubMember)
@@ -108,6 +122,24 @@ namespace FootScout.WebAPI.DbManager
                 .WithMany()
                 .HasForeignKey(paf => paf.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Message>()
+                .HasOne(m => m.Chat)
+                .WithMany()
+                .HasForeignKey(m => m.ChatId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Message>()
+                .HasOne(m => m.Sender)
+                .WithMany()
+                .HasForeignKey(m => m.SenderId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Message>()
+                .HasOne(m => m.Receiver)
+                .WithMany()
+                .HasForeignKey(m => m.ReceiverId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<PlayerAdvertisement>()
                 .HasOne(pa => pa.Player)
