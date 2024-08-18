@@ -32,7 +32,7 @@ const NavbarComponent = () => {
             </NavDropdown>
           </Nav>
           <Nav className="ms-auto green-links">
-            <Nav.Link as={NavLink} to="/my-profile">Chat</Nav.Link>
+            <Nav.Link as={NavLink} to="/chats">Chat</Nav.Link>
             <NavDropdown title="My Offers" id="basic-nav-dropdown">
               <NavDropdown.Item as={NavLink} to="/my-offers-as-player">as Player</NavDropdown.Item>
               <NavDropdown.Item as={NavLink} to="/my-offers-as-club">as Club</NavDropdown.Item>

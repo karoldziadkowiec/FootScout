@@ -24,7 +24,7 @@ import OfferStatus from '../../models/interfaces/OfferStatus';
 import '../../App.css';
 import '../../styles/playerAdvertisement/PlayerAdvertisement.css';
 
-const PlayerAdvertisement = () => {
+const Chat = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [userId, setUserId] = useState<string | null>(null);
@@ -38,7 +38,6 @@ const PlayerAdvertisement = () => {
     const [feet, setFeet] = useState<PlayerFoot[]>([]);
     const [offerStatuses, setOfferStatuses] = useState<OfferStatus[]>([]);
     const [isAdminRole, setIsAdminRole] = useState<boolean | null>(null);
-    const [chatId, setChatId] = useState<number>(0);
     const [showClubHistoryDetailsModal, setShowClubHistoryDetailsModal] = useState<boolean>(false);
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
@@ -363,19 +362,17 @@ const PlayerAdvertisement = () => {
             return;
 
         try {
-            const _chatId = await ChatService.getChatIdBetweenUsers(userId, playerAdvertisement.playerId)
-            setChatId(_chatId);
-            
+            let chatId = await ChatService.getChatIdBetweenUsers(userId, playerAdvertisement.playerId)
+
             if(chatId === 0)
             {
                 const chatCreateDTO: ChatCreateDTO = {
                     user1Id: userId,
                     user2Id: playerAdvertisement.playerId
                 };
+                
                 await ChatService.createChat(chatCreateDTO);
-
-                const _chatId2 = await ChatService.getChatIdBetweenUsers(userId, playerAdvertisement.playerId);
-                setChatId(_chatId2);
+                chatId = await ChatService.getChatIdBetweenUsers(userId, playerAdvertisement.playerId);
             }
 
             navigate(`/chat/${chatId}`, { state: { chatId } });
@@ -411,7 +408,7 @@ const PlayerAdvertisement = () => {
                             </Col>
                             {(isAdminRole) && (
                                 <Col>
-                                    <Button variant="info" className="ad-form-button" onClick={handleOpenChat}>
+                                    <Button variant="info" className="ad-form-button">
                                         <i className="bi bi-chat-fill"></i> Chat
                                     </Button>
                                 </Col>
@@ -459,7 +456,7 @@ const PlayerAdvertisement = () => {
                             )}
 
                             <Col>
-                                <Button variant="info" onClick={handleOpenChat}>
+                                <Button variant="info" onClick={() => handleOpenChat}>
                                     <i className="bi bi-chat-fill"></i>
                                 </Button>
                             </Col>
@@ -898,4 +895,4 @@ const PlayerAdvertisement = () => {
     );
 }
 
-export default PlayerAdvertisement;
+export default Chat;
