@@ -11,10 +11,12 @@ import PlayerOfferService from '../../services/api/PlayerOfferService';
 import OfferStatusService from '../../services/api/OfferStatusService';
 import PlayerPositionService from '../../services/api/PlayerPositionService';
 import PlayerFootService from '../../services/api/PlayerFootService';
+import ChatService from '../../services/api/ChatService';
 import UserDTO from '../../models/dtos/UserDTO';
 import ClubAdvertisementModel from '../../models/interfaces/ClubAdvertisement';
 import FavoriteClubAdvertisementCreateDTO from '../../models/dtos/FavoriteClubAdvertisementCreateDTO';
 import PlayerOfferCreateDTO from '../../models/dtos/PlayerOfferCreateDTO';
+import ChatCreateDTO from '../../models/dtos/ChatCreateDTO';
 import PlayerPosition from '../../models/interfaces/PlayerPosition';
 import PlayerFoot from '../../models/interfaces/PlayerFoot';
 import OfferStatus from '../../models/interfaces/OfferStatus';
@@ -329,6 +331,31 @@ const ClubAdvertisement = () => {
         return null;
     };
 
+    const handleOpenChat = async () => {
+        if (!clubAdvertisement || !userId) 
+            return;
+
+        try {
+            let chatId = await ChatService.getChatIdBetweenUsers(userId, clubAdvertisement.clubMemberId);
+
+            if (chatId === 0) {
+                const chatCreateDTO: ChatCreateDTO = {
+                    user1Id: userId,
+                    user2Id: clubAdvertisement.clubMemberId
+                };
+
+                await ChatService.createChat(chatCreateDTO);
+                chatId = await ChatService.getChatIdBetweenUsers(userId, clubAdvertisement.clubMemberId);
+            }
+            navigate(`/chat/${chatId}`, { state: { chatId } });
+        } 
+        catch (error) {
+            console.error('Failed to open chat:', error);
+            toast.error('Failed to open chat.');
+        }
+    };
+
+
     return (
         <div className="ClubAdvertisement">
             <ToastContainer />
@@ -354,7 +381,7 @@ const ClubAdvertisement = () => {
                             </Col>
                             {(isAdminRole) && (
                                 <Col>
-                                    <Button variant="info" className="ad-form-button">
+                                    <Button variant="info" className="ad-form-button" onClick={handleOpenChat}>
                                         <i className="bi bi-chat-fill"></i> Chat
                                     </Button>
                                 </Col>
@@ -402,7 +429,7 @@ const ClubAdvertisement = () => {
                             )}
 
                             <Col>
-                                <Button variant="info">
+                                <Button variant="info" onClick={handleOpenChat}>
                                     <i className="bi bi-chat-fill"></i>
                                 </Button>
                             </Col>

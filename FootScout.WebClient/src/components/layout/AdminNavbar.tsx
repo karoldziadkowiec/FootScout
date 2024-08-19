@@ -21,6 +21,7 @@ const AdminNavbarComponent = () => {
             <Nav.Link as={NavLink} to="/admin-users">Users</Nav.Link>
           </Nav>
           <Nav className="ms-auto blue-links">
+            <Nav.Link as={NavLink} to="/chats">Chat</Nav.Link>
             <NavDropdown title="My Profile" id="basic-nav-dropdown">
               <NavDropdown.Item as={NavLink} to="/my-profile">Profile</NavDropdown.Item>
               <NavDropdown.Item onClick={AccountService.logout} as={NavLink} to="/">Log out</NavDropdown.Item>

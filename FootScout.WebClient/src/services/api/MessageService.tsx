@@ -25,6 +25,27 @@ const MessageService = {
         }
     },
 
+    async getLastMessageDateForChat(chatId: number): Promise<string> {
+        try {
+            const authorizationHeader = await AccountService.getAuthorizationHeader();
+            const response = await axios.get<string>(`${ApiURL}/messages/chat/${chatId}/last-message-date`, {
+                headers: {
+                    'Authorization': authorizationHeader
+                }
+            });
+            return response.data;
+        }
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.error('Error fetching last message date, details:', error.response?.data || error.message);
+            }
+            else {
+                console.error('Unexpected error:', error);
+            }
+            throw error;
+        }
+    },
+
     async deleteMessage(messageId: number): Promise<void> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();

@@ -29,7 +29,7 @@ const ChatService = {
     async getChatIdBetweenUsers(user1Id: string, user2Id: string): Promise<number> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
-            const response = await axios.get<number>(`${ApiURL}/chats//between/${user1Id}/${user2Id}`, {
+            const response = await axios.get<number>(`${ApiURL}/chats/between/${user1Id}/${user2Id}`, {
                 headers: {
                     'Authorization': authorizationHeader
                 }

@@ -42,8 +42,8 @@ const Routing = () => {
         <Route path="/my-club-advertisements" element={<ProtectedRoute element={<DynamicNavbar><MyClubAdvertisements /></DynamicNavbar>} allowedRoles={[Role.User]} />} />
         <Route path="/my-favorite-player-advertisements" element={<ProtectedRoute element={<DynamicNavbar><MyFavoritePlayerAdvertisements /></DynamicNavbar>} allowedRoles={[Role.User]} />} />
         <Route path="/my-favorite-club-advertisements" element={<ProtectedRoute element={<DynamicNavbar><MyFavoriteClubAdvertisements /></DynamicNavbar>} allowedRoles={[Role.User]} />} />
-        <Route path="/chats" element={<ProtectedRoute element={<DynamicNavbar><Chats /></DynamicNavbar>} allowedRoles={[Role.User]} />} />
-        <Route path="/chat/:id" element={<ProtectedRoute element={<DynamicNavbar><Chat /></DynamicNavbar>} allowedRoles={[Role.User]} />} />
+        <Route path="/chats" element={<ProtectedRoute element={<DynamicNavbar><Chats /></DynamicNavbar>} allowedRoles={[Role.Admin, Role.User]} />} />
+        <Route path="/chat/:id" element={<ProtectedRoute element={<DynamicNavbar><Chat /></DynamicNavbar>} allowedRoles={[Role.Admin, Role.User]} />} />
         <Route path="/my-offers-as-player" element={<ProtectedRoute element={<DynamicNavbar><MyOffersAsPlayer /></DynamicNavbar>} allowedRoles={[Role.User]} />} />
         <Route path="/my-offers-as-club" element={<ProtectedRoute element={<DynamicNavbar><MyOffersAsClub /></DynamicNavbar>} allowedRoles={[Role.User]} />} />
         <Route path="/new-player-advertisement" element={<ProtectedRoute element={<DynamicNavbar><NewPlayerAdvertisement /></DynamicNavbar>} allowedRoles={[Role.User]} />} />

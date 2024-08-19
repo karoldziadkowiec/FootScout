@@ -1,7 +1,7 @@
 .Chats {
     text-align: center;
     background-color: rgb(240, 247, 240);
-    padding: 20px 10% 20px 10%;
+    padding: 20px 22% 20px 22%;
 }
 
 .modal-content-centered {
@@ -19,7 +19,7 @@
     -webkit-overflow-scrolling: touch;
 }
 
-.offer-row {
+.chat-room-row {
     line-height: 4;
 }
 

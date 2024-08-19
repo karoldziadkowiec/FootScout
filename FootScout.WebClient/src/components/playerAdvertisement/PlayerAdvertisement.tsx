@@ -38,7 +38,6 @@ const PlayerAdvertisement = () => {
     const [feet, setFeet] = useState<PlayerFoot[]>([]);
     const [offerStatuses, setOfferStatuses] = useState<OfferStatus[]>([]);
     const [isAdminRole, setIsAdminRole] = useState<boolean | null>(null);
-    const [chatId, setChatId] = useState<number>(0);
     const [showClubHistoryDetailsModal, setShowClubHistoryDetailsModal] = useState<boolean>(false);
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
@@ -359,27 +358,23 @@ const PlayerAdvertisement = () => {
     };
 
     const handleOpenChat = async () => {
-        if (!playerAdvertisement || !userId)
+        if (!playerAdvertisement || !userId) 
             return;
 
         try {
-            const _chatId = await ChatService.getChatIdBetweenUsers(userId, playerAdvertisement.playerId)
-            setChatId(_chatId);
-            
-            if(chatId === 0)
-            {
+            let chatId = await ChatService.getChatIdBetweenUsers(userId, playerAdvertisement.playerId);
+
+            if (chatId === 0) {
                 const chatCreateDTO: ChatCreateDTO = {
                     user1Id: userId,
                     user2Id: playerAdvertisement.playerId
                 };
+
                 await ChatService.createChat(chatCreateDTO);
-
-                const _chatId2 = await ChatService.getChatIdBetweenUsers(userId, playerAdvertisement.playerId);
-                setChatId(_chatId2);
+                chatId = await ChatService.getChatIdBetweenUsers(userId, playerAdvertisement.playerId);
             }
-
             navigate(`/chat/${chatId}`, { state: { chatId } });
-        }
+        } 
         catch (error) {
             console.error('Failed to open chat:', error);
             toast.error('Failed to open chat.');

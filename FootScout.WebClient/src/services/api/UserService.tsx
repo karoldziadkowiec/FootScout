@@ -11,6 +11,7 @@ import ClubOffer from '../../models/interfaces/ClubOffer';
 import ClubAdvertisement from '../../models/interfaces/ClubAdvertisement';
 import FavoriteClubAdvertisement from '../../models/interfaces/FavoriteClubAdvertisement';
 import PlayerOffer from '../../models/interfaces/PlayerOffer';
+import ChatModel from '../../models/interfaces/Chat';
 
 const UserService = {
   async getUser(userId: string): Promise<UserDTO> {
@@ -464,6 +465,27 @@ const UserService = {
     catch (error) {
       if (axios.isAxiosError(error)) {
         console.error("Error fetching user's sent player offers, details:", error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
+      throw error;
+    }
+  },
+
+  async getUserChats(userId: string): Promise<ChatModel[]> {
+    try {
+      const authorizationHeader = await AccountService.getAuthorizationHeader();
+      const response = await axios.get<ChatModel[]>(`${ApiURL}/users/${userId}/chats`, {
+        headers: {
+          'Authorization': authorizationHeader
+        }
+      });
+      return response.data;
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error("Error fetching user's chats, details:", error.response?.data || error.message);
       }
       else {
         console.error('Unexpected error:', error);

@@ -1,5 +1,7 @@
 .Chat {
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     background-color: rgb(240, 247, 240);
     padding: 20px 10% 20px 10%;
 }
@@ -32,4 +34,21 @@
     .table-responsive table {
         min-width: 100%;
     }
+}
+
+.chat-container {
+    background-color: rgb(210, 218, 227);
+    width: 80%;
+    padding: 2% 2% 1% ;
+    border-radius: 40px;
+}
+
+.chat-container h2 {
+    color: rgb(118, 112, 21);
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: bold;
+}
+
+.message-timestamp {
+    font-size: 14px;
 }

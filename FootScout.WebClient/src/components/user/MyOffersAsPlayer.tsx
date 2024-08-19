@@ -7,10 +7,12 @@ import UserService from '../../services/api/UserService';
 import TimeService from '../../services/time/TimeService';
 import ClubOfferService from '../../services/api/ClubOfferService';
 import PlayerOfferService from '../../services/api/PlayerOfferService';
+import ChatService from '../../services/api/ChatService';
 import OfferStatusName from '../../models/enums/OfferStatusName';
 import ClubOffer from '../../models/interfaces/ClubOffer';
 import PlayerOffer from '../../models/interfaces/PlayerOffer';
 import ClubHistoryModel from '../../models/interfaces/ClubHistory';
+import ChatCreateDTO from '../../models/dtos/ChatCreateDTO';
 import '../../App.css';
 import '../../styles/user/MyOffersAsPlayer.css';
 
@@ -171,6 +173,30 @@ const MyOffersAsPlayer = () => {
         setShowClubHistoryDetailsModal(true);
     };
 
+    const handleOpenChat = async (receiverId: string) => {
+        if (!receiverId || !userId) 
+            return;
+
+        try {
+            let chatId = await ChatService.getChatIdBetweenUsers(userId, receiverId);
+
+            if (chatId === 0) {
+                const chatCreateDTO: ChatCreateDTO = {
+                    user1Id: userId,
+                    user2Id: receiverId
+                };
+
+                await ChatService.createChat(chatCreateDTO);
+                chatId = await ChatService.getChatIdBetweenUsers(userId, receiverId);
+            }
+            navigate(`/chat/${chatId}`, { state: { chatId } });
+        } 
+        catch (error) {
+            console.error('Failed to open chat:', error);
+            toast.error('Failed to open chat.');
+        }
+    };
+
     return (
         <div className="MyOffersAsPlayer">
             <ToastContainer />
@@ -228,6 +254,9 @@ const MyOffersAsPlayer = () => {
                                         <Button variant="dark" className="button-spacing" onClick={() => moveToPlayerAdvertisementPage(clubOffer.playerAdvertisement.id)}>
                                             <i className="bi bi-info-square"></i> Ad
                                         </Button>
+                                        <Button variant="info" onClick={() => handleOpenChat(clubOffer.clubMemberId)}>
+                                            <i className="bi bi-chat-fill"></i>
+                                        </Button>
                                     </td>
                                 </tr>
                             ))
@@ -281,6 +310,9 @@ const MyOffersAsPlayer = () => {
                                         <span className="button-spacing">|</span>
                                         <Button variant="dark" className="button-spacing" onClick={() => moveToClubAdvertisementPage(playerOffer.clubAdvertisement.id)}>
                                             <i className="bi bi-info-square"></i> Ad
+                                        </Button>
+                                        <Button variant="info" onClick={() => handleOpenChat(playerOffer.clubAdvertisement.clubMemberId)}>
+                                            <i className="bi bi-chat-fill"></i>
                                         </Button>
                                     </td>
                                 </tr>
