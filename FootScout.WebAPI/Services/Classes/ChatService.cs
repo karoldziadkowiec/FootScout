@@ -25,8 +25,6 @@ namespace FootScout.WebAPI.Services.Classes
         public async Task<int> GetChatIdBetweenUsers(string user1Id, string user2Id)
         {
             var chatId = await _dbContext.Chats
-                .Include(c => c.User1)
-                .Include(c => c.User2)
                 .Where(c => (c.User1Id == user1Id && c.User2Id == user2Id) || (c.User1Id == user2Id && c.User2Id == user1Id))
                 .Select(c => c.Id)
                 .FirstOrDefaultAsync();

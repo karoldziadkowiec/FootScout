@@ -24,6 +24,14 @@ namespace FootScout.WebAPI.Controllers
             return Ok(messages);
         }
 
+        // GET: api/messages/chat/:chatId/last-message-date
+        [HttpGet("chat/{chatId}/last-message-date")]
+        public async Task<IActionResult> GetLastMessageDateForChat(int chatId)
+        {
+            var lastMessageDate = await _messageService.GetLastMessageDateForChat(chatId);
+            return Ok(lastMessageDate);
+        }
+
         // DELETE: api/messages/:messageId
         [HttpDelete("{messageId}")]
         public async Task<IActionResult> DeleteMessage(int messageId)

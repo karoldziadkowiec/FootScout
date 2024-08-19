@@ -384,5 +384,31 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .OrderByDescending(pa => pa.ClubAdvertisement.CreationDate)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<Chat>> GetUserChats(string userId)
+        {
+            var chats = await _dbContext.Chats
+                .Include(c => c.User1)
+                .Include(c => c.User2)
+                .Where(c => c.User1Id == userId || c.User2Id == userId)
+                .ToListAsync();
+
+            var chatWithLastMessageTimestamps = new List<(Chat Chat, DateTime? LastMessageTimestamp)>();
+            foreach (var chat in chats)
+            {
+                var lastMessageTimestamp = await _dbContext.Messages
+                    .Where(m => m.ChatId == chat.Id)
+                    .OrderByDescending(m => m.Timestamp)
+                    .Select(m => (DateTime?)m.Timestamp)
+                    .FirstOrDefaultAsync();
+                chatWithLastMessageTimestamps.Add((chat, lastMessageTimestamp));
+            }
+
+            return chatWithLastMessageTimestamps
+                .OrderByDescending(c => c.LastMessageTimestamp)
+                .Select(c => c.Chat)
+                .ToList();
+        }
+
     }
 }

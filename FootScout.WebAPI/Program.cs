@@ -148,7 +148,9 @@ namespace FootScout.WebAPI
                     {
                         b.WithOrigins("http://localhost:3000")
                             .AllowAnyHeader()
-                            .AllowAnyMethod();
+                            .AllowAnyMethod()
+                            .SetIsOriginAllowed(origin => true)
+                            .AllowCredentials();
                     });
             });
 

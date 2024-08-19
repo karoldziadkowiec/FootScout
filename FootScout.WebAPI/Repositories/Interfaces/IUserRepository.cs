@@ -27,5 +27,6 @@ namespace FootScout.WebAPI.Repositories.Interfaces
         Task<IEnumerable<FavoriteClubAdvertisement>> GetUserInactiveFavoriteClubAdvertisements(string userId);
         Task<IEnumerable<PlayerOffer>> GetReceivedPlayerOffers(string userId);
         Task<IEnumerable<PlayerOffer>> GetSentPlayerOffers(string userId);
+        Task<IEnumerable<Chat>> GetUserChats(string userId);
     }
 }

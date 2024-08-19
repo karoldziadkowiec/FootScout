@@ -26,6 +26,15 @@ namespace FootScout.WebAPI.Services.Classes
                 .ToListAsync();
         }
 
+        public async Task<DateTime> GetLastMessageDateForChat(int chatId)
+        {
+            return await _dbContext.Messages
+                .Where(m => m.ChatId == chatId)
+                .OrderByDescending(m => m.Timestamp)
+                .Select(m => m.Timestamp)
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<Message> SendMessage(MessageSendDTO dto)
         {
             var message = new Message

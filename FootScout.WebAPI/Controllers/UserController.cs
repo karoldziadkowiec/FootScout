@@ -230,5 +230,13 @@ namespace FootScout.WebAPI.Controllers
             var sentPlayerOffers = await _userRepository.GetSentPlayerOffers(userId);
             return Ok(sentPlayerOffers);
         }
+
+        // GET: api/users/:userId/chats
+        [HttpGet("{userId}/chats")]
+        public async Task<ActionResult<IEnumerable<Chat>>> GetUserChats(string userId)
+        {
+            var userChats = await _userRepository.GetUserChats(userId);
+            return Ok(userChats);
+        }
     }
 }
