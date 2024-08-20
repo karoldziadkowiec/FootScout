@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FootScout.WebAPI.Controllers
 {
     [Route("api/messages")]
-    [Authorize(Policy = "UserRights")]
+    [Authorize(Policy = "AdminOrUserRights")]
     [ApiController]
     public class MessageController : ControllerBase
     {

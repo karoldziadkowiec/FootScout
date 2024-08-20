@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FootScout.WebAPI.Controllers
 {
     [Route("api/chats")]
-    [Authorize(Policy = "UserRights")]
+    [Authorize(Policy = "AdminOrUserRights")]
     [ApiController]
     public class ChatController : ControllerBase
     {

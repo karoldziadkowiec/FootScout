@@ -43,7 +43,7 @@ namespace FootScout.WebAPI.Services.Classes
                 SenderId = dto.SenderId,
                 ReceiverId = dto.ReceiverId,
                 Content = dto.Content,
-                Timestamp = DateTime.UtcNow
+                Timestamp = DateTime.Now
             };
 
             _dbContext.Messages.Add(message);

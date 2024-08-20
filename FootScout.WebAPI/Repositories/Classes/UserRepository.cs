@@ -85,6 +85,23 @@ namespace FootScout.WebAPI.Repositories.Classes
             }
             _dbContext.ClubHistories.RemoveRange(clubHistories);
 
+            var chats = await _dbContext.Chats
+                .Where(c => c.User1Id == userId || c.User2Id == userId)
+                .ToListAsync();
+
+            foreach (var chat in chats)
+            {
+                if (chat.User1Id != null && chat.User2Id != null)
+                {
+                    var messages = await _dbContext.Messages
+                        .Where(m => m.ChatId == chat.Id)
+                        .ToListAsync();
+
+                    if (messages.Any())
+                        _dbContext.Messages.RemoveRange(messages);
+                }
+            }
+
             var playerFavorites = await _dbContext.FavoritePlayerAdvertisements
                     .Where(fpa => fpa.UserId == userId)
                     .ToListAsync();
