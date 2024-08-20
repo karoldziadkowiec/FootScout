@@ -4,6 +4,7 @@ import { Table, Button, Modal } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
+import TimeService from '../../services/time/TimeService';
 import ChatService from '../../services/api/ChatService';
 import MessageService from '../../services/api/MessageService';
 import ChatModel from '../../models/interfaces/Chat';
@@ -115,7 +116,7 @@ const Chats = () => {
                                         )}
                                     </td>
                                     <td className="chat-room-row">
-                                        {lastMessageDates.get(chat.id) || 'No messages'}
+                                        {TimeService.formatDateToEURWithHour(lastMessageDates.get(chat.id) || '') || 'No messages'}
                                     </td>
                                     <td className="chat-room-row">
                                         <Button variant="info" className="button-spacing" onClick={() => moveToSpecificChatPage(chat.id)}>

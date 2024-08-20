@@ -6,7 +6,9 @@ import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
 import TimeService from '../../services/time/TimeService';
 import FavoriteClubAdvertisementService from '../../services/api/FavoriteClubAdvertisementService';
+import ChatService from '../../services/api/ChatService';
 import FavoriteClubAdvertisement from '../../models/interfaces/FavoriteClubAdvertisement';
+import ChatCreateDTO from '../../models/dtos/ChatCreateDTO';
 import '../../App.css';
 import '../../styles/user/MyFavoriteClubAdvertisements.css';
 
@@ -75,6 +77,30 @@ const MyFavoriteClubAdvertisements = () => {
         }
     };
 
+    const handleOpenChat = async (receiverId: string) => {
+        if (!receiverId || !userId) 
+            return;
+
+        try {
+            let chatId = await ChatService.getChatIdBetweenUsers(userId, receiverId);
+
+            if (chatId === 0) {
+                const chatCreateDTO: ChatCreateDTO = {
+                    user1Id: userId,
+                    user2Id: receiverId
+                };
+
+                await ChatService.createChat(chatCreateDTO);
+                chatId = await ChatService.getChatIdBetweenUsers(userId, receiverId);
+            }
+            navigate(`/chat/${chatId}`, { state: { chatId } });
+        } 
+        catch (error) {
+            console.error('Failed to open chat:', error);
+            toast.error('Failed to open chat.');
+        }
+    };
+
     return (
         <div className="MyFavoriteClubAdvertisements">
             <ToastContainer />
@@ -107,8 +133,11 @@ const MyFavoriteClubAdvertisements = () => {
                                         <Button variant="dark" className="button-spacing" onClick={() => moveToClubAdvertisementPage(favoriteAdvertisement.clubAdvertisement.id)}>
                                             <i className="bi bi-info-square"></i>
                                         </Button>
-                                        <Button variant="danger" onClick={() => handleShowDeleteModal(favoriteAdvertisement.id)}>
+                                        <Button variant="danger" className="button-spacing" onClick={() => handleShowDeleteModal(favoriteAdvertisement.id)}>
                                             <i className="bi bi-heart-fill"></i>
+                                        </Button>
+                                        <Button variant="info" onClick={() => handleOpenChat(favoriteAdvertisement.clubAdvertisement.clubMemberId)}>
+                                            <i className="bi bi-chat-fill"></i>
                                         </Button>
                                     </td>
                                 </tr>

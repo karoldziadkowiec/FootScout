@@ -2,8 +2,14 @@ import { format } from 'date-fns';
 
 const TimeService = {
   formatDateToEURWithHour(dateString: string): string {
+    if (!dateString)
+      return 'Invalid date';
+
     const date = new Date(dateString);
-    return format(date, 'dd.MM.yyyy HH:mm:ss');
+    if (isNaN(date.getTime()))
+      return '-';
+
+    return format(date, 'dd.MM.yyyy HH:mm');
   },
 
   formatDateToEUR(dateString: string): string {
