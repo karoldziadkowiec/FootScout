@@ -90,6 +90,7 @@ namespace FootScout.WebAPI
             builder.Services.AddScoped<IClubAdvertisementRepository, ClubAdvertisementRepository>();
             builder.Services.AddScoped<IFavoriteClubAdvertisementRepository, FavoriteClubAdvertisementRepository>();
             builder.Services.AddScoped<IPlayerOfferRepository, PlayerOfferRepository>();
+            builder.Services.AddScoped<IProblemRepository, ProblemRepository>();
 
             // AutoMapper service
             builder.Services.AddAutoMapper(typeof(Program));
@@ -171,6 +172,7 @@ namespace FootScout.WebAPI
             app.UseAuthentication();
             app.UseAuthorization();
 
+            // Endpoints
             app.MapControllers();
             app.MapHub<ChatHub>("/chathub");
 

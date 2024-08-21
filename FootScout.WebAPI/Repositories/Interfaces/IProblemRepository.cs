@@ -1,0 +1,14 @@
+﻿using FootScout.WebAPI.Entities;
+
+namespace FootScout.WebAPI.Repositories.Interfaces
+{
+    public interface IProblemRepository
+    {
+        Task<Problem> GetProblem(int playerAdvertisementId);
+        Task<IEnumerable<Problem>> GetAllProblems();
+        Task<IEnumerable<Problem>> GetSolvedProblems();
+        Task<IEnumerable<Problem>> GetUnsolvedProblems();
+        Task CreateProblem(Problem problem);
+        Task CheckProblemSolved(Problem problem);
+    }
+}

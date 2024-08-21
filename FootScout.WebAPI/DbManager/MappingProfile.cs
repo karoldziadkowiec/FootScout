@@ -37,6 +37,8 @@ namespace FootScout.WebAPI.DbManager
             CreateMap<FavoriteClubAdvertisementCreateDTO, FavoriteClubAdvertisement>();
             CreateMap<PlayerOffer, PlayerOfferCreateDTO>();
             CreateMap<PlayerOfferCreateDTO, PlayerOffer>();
+            CreateMap<Problem, ProblemCreateDTO>();
+            CreateMap<ProblemCreateDTO, Problem>();
             // Chat
             CreateMap<Chat, ChatCreateDTO>();
             CreateMap<ChatCreateDTO, Chat>();

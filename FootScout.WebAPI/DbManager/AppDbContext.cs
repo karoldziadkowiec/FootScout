@@ -20,6 +20,7 @@ namespace FootScout.WebAPI.DbManager
         public DbSet<PlayerFoot> PlayerFeet { get; set; }
         public DbSet<PlayerOffer> PlayerOffers { get; set; }
         public DbSet<PlayerPosition> PlayerPositions { get; set; }
+        public DbSet<Problem> Problems { get; set; }
         public DbSet<SalaryRange> SalaryRanges { get; set; }
         public DbSet<User> Users { get; set; }
 
@@ -193,6 +194,12 @@ namespace FootScout.WebAPI.DbManager
                 .HasOne(po => po.Player)
                 .WithMany()
                 .HasForeignKey(po => po.PlayerId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Problem>()
+                .HasOne(p => p.Requester)
+                .WithMany()
+                .HasForeignKey(p => p.RequesterId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
