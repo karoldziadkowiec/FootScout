@@ -46,14 +46,14 @@ const MyClubAdvertisements = () => {
     return (
         <div className="MyClubAdvertisements">
             <ToastContainer />
-            <h1>My Club Advertisements</h1>
+            <h1><i className="bi bi-shield-fill"></i> My Club Advertisements</h1>
             <Button variant="success" className="form-button" onClick={() => navigate('/new-club-advertisement')}>
                 <i className="bi bi-file-earmark-plus-fill"></i>
                 New Advertisement
             </Button>
             <p></p>
             {/* Active advertisements*/}
-            <h3>Active advertisements</h3>
+            <h3><i className="bi bi-bookmark-check-fill"></i> Active advertisements</h3>
             <div className="table-responsive">
                 <Table striped bordered hover variant="light">
                     <thead className="table-success">
@@ -92,7 +92,7 @@ const MyClubAdvertisements = () => {
             </div>
 
             {/* Inactive advertisements*/}
-            <h3>Archived advertisements</h3>
+            <h3><i className="bi bi-clipboard-x-fill"></i> Archived advertisements</h3>
             <div className="table-responsive">
                 <Table striped bordered hover variant="light">
                     <thead className="table-warning">

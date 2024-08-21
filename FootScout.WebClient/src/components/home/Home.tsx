@@ -44,7 +44,7 @@ const Home = () => {
                 </div>
             </Element>
             <Element name="forPlayers" className="blackSection">
-                <h1>For Players</h1>
+                <h1><i className="bi bi-person-bounding-box"></i> For Players</h1>
                 <h5>Find your dream club by searching ads and through recommendations and enjoy the games.</h5>
                 <h5>Create a new ad as a player looking for a club and collect offers from clubs.</h5>
                 <p></p>
@@ -57,7 +57,7 @@ const Home = () => {
                 </Container>
             </Element>
             <Element name="forClubs" className="whiteSection">
-                <h1>For Clubs</h1>
+                <h1><i className="bi bi-shield-fill"></i> For Clubs</h1>
                 <h5>Find a dream player for your club by searching ads and through recommendations and enjoy the games.</h5>
                 <h5>Add a new ad as a club looking for a player and collect offers from players.</h5>
                 <p></p>

@@ -46,14 +46,14 @@ const MyPlayerAdvertisements = () => {
     return (
         <div className="MyPlayerAdvertisements">
             <ToastContainer />
-            <h1>My Player Advertisements</h1>
+            <h1><i className="bi bi-person-bounding-box"></i> My Player Advertisements</h1>
             <Button variant="success" className="form-button" onClick={() => navigate('/new-player-advertisement')}>
                 <i className="bi bi-file-earmark-plus-fill"></i>
                 New Advertisement
             </Button>
             <p></p>
             {/* Active advertisements*/}
-            <h3>Active advertisements</h3>
+            <h3><i className="bi bi-bookmark-check"></i> Active advertisements</h3>
             <div className="table-responsive">
                 <Table striped bordered hover variant="light">
                     <thead className="table-success">
@@ -92,7 +92,7 @@ const MyPlayerAdvertisements = () => {
             </div>
 
             {/* Inactive advertisements*/}
-            <h3>Archived advertisements</h3>
+            <h3><i className="bi bi-clipboard-x"></i> Archived advertisements</h3>
             <div className="table-responsive">
                 <Table striped bordered hover variant="light">
                     <thead className="table-warning">

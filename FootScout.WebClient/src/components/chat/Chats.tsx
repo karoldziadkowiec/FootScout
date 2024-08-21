@@ -92,7 +92,7 @@ const Chats = () => {
     return (
         <div className="Chats">
             <ToastContainer />
-            <h1>Chat Rooms</h1>
+            <h1><i className="bi bi-chat-fill"></i> Chat Rooms</h1>
             <p></p>
 
             <div className="table-responsive">

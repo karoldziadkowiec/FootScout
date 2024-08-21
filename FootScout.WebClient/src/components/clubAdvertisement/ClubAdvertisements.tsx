@@ -225,7 +225,7 @@ const ClubAdvertisements = () => {
     return (
         <div className="ClubAdvertisements">
             <ToastContainer />
-            <h1>Club Advertisements</h1>
+            <h1><i className="bi bi-list-nested"></i> Club Advertisements</h1>
             <Button variant="success" className="form-button" onClick={() => navigate('/new-club-advertisement')}>
                 <i className="bi bi-file-earmark-plus-fill"></i>
                 New Advertisement

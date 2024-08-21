@@ -177,7 +177,7 @@ if (loading)
 return (
     <div className="MyProfile">
         <ToastContainer />
-        <h1>My Profile</h1>
+        <h1><i className="bi bi-person-fill"></i> My Profile</h1>
         <div className="buttons-container mb-3">
             <Row>
                 <Col>

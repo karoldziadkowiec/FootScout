@@ -178,7 +178,7 @@ const Chat = () => {
     return (
         <div className="Chat">
             <ToastContainer />
-            <h1>Chat</h1>
+            <h1><i className="bi bi-chat-dots-fill"></i> Chat</h1>
             <div className="chat-container">
                 <Navbar bg="dark" variant="dark" className="sticky-top">
                     <Container>

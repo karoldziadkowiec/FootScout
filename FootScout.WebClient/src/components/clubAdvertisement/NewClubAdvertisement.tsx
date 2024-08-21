@@ -97,7 +97,7 @@ const NewClubAdvertisement = () => {
     return (
         <div className="NewClubAdvertisement">
             <ToastContainer />
-            <h1>New Club Advertisement</h1>
+            <h1><i className="bi bi-file-earmark-plus-fill"></i> New Club Advertisement</h1>
             <p></p>
             <div className="forms-container">
                 <Container>

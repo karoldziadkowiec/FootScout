@@ -104,10 +104,10 @@ const MyFavoritePlayerAdvertisements = () => {
     return (
         <div className="MyFavoritePlayerAdvertisements">
             <ToastContainer />
-            <h1>My Favorite Player Advertisements</h1>
+            <h1><i className="bi bi-chat-square-heart"></i> My Favorite Player Advertisements</h1>
             <p></p>
             {/* Active favorite advertisements*/}
-            <h3>Active advertisements</h3>
+            <h3><i className="bi bi-bookmark-check"></i> Active advertisements</h3>
             <div className="table-responsive">
                 <Table striped bordered hover variant="light">
                     <thead className="table-success">
@@ -152,7 +152,7 @@ const MyFavoritePlayerAdvertisements = () => {
             </div>
 
             {/* Inactive favorite advertisements*/}
-            <h3>Archived advertisements</h3>
+            <h3><i className="bi bi-clipboard-x"></i> Archived advertisements</h3>
             <div className="table-responsive">
                 <Table striped bordered hover variant="light">
                     <thead className="table-warning">

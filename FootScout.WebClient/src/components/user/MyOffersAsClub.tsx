@@ -208,10 +208,10 @@ const MyOffersAsClub = () => {
     return (
         <div className="MyOffersAsClub">
             <ToastContainer />
-            <h1>My Offers as a Club member</h1>
+            <h1><i className="bi bi-briefcase-fill"></i> My Offers as a Club member</h1>
             <p></p>
             {/* Received offers from players*/}
-            <h3>Received requests from players</h3>
+            <h3><i className="bi bi-arrow-down-left-square-fill"></i> Received requests from players</h3>
             <div className="table-responsive">
                 <Table striped bordered hover variant="light">
                     <thead className="table-dark">
@@ -280,7 +280,7 @@ const MyOffersAsClub = () => {
             </div>
 
             {/* My sent offers to players*/}
-            <h3>My sent offers to players</h3>
+            <h3><i className="bi bi-send-fill"></i> My sent offers to players</h3>
             <div className="table-responsive">
                 <Table striped bordered hover variant="light">
                     <thead className="table-success">

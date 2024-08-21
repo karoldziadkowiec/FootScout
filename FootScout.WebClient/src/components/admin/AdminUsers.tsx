@@ -2,14 +2,14 @@ import React from 'react';
 /*import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';*/
 import '../../App.css';
-import '../../styles/admin/Users.css';
+import '../../styles/admin/AdminUsers.css';
 
-const Users = () => {
+const AdminUsers = () => {
     return (
-        <div className="Users">
-            <h1>Users page</h1>
+        <div className="AdminUsers">
+            <h1><i className="bi bi-people-fill"></i> Users</h1>
         </div>
     );
 }
 
-export default Users;
+export default AdminUsers;

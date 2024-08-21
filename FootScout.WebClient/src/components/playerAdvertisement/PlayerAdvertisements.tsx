@@ -221,7 +221,7 @@ const PlayerAdvertisements = () => {
     return (
         <div className="PlayerAdvertisements">
             <ToastContainer />
-            <h1>Player Advertisements</h1>
+            <h1><i className="bi bi-list-nested"></i> Player Advertisements</h1>
             <Button variant="success" className="form-button" onClick={() => navigate('/new-player-advertisement')}>
                 <i className="bi bi-file-earmark-plus-fill"></i>
                 New Advertisement

@@ -359,7 +359,7 @@ const ClubAdvertisement = () => {
     return (
         <div className="ClubAdvertisement">
             <ToastContainer />
-            <h1>Club Advertisement</h1>
+            <h1><i className="bi bi-shield-fill"></i> Club Advertisement</h1>
             <div className="ad-buttons-container mb-3">
                 {clubAdvertisementStatus ? (
                     clubAdvertisement.clubMemberId === userId || isAdminRole ? (

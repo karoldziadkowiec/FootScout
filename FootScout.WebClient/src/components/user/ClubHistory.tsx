@@ -193,7 +193,7 @@ const ClubHistory = () => {
     return (
         <div className="ClubHistory">
             <ToastContainer />
-            <h1>Club History</h1>
+            <h1><i className="bi bi-clock-history"></i> Club History</h1>
             <p></p>
             <Button variant="success" className="form-button" onClick={() => setShowCreateModal(true)}>
                 <i className="bi bi-file-earmark-plus"></i>

@@ -384,7 +384,7 @@ const PlayerAdvertisement = () => {
     return (
         <div className="PlayerAdvertisement">
             <ToastContainer />
-            <h1>Player Advertisement</h1>
+            <h1><i className="bi bi-person-bounding-box"></i> Player Advertisement</h1>
             <div className="ad-buttons-container mb-3">
                 {playerAdvertisementStatus ? (
                     playerAdvertisement.playerId === userId || isAdminRole ? (
