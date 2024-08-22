@@ -23,7 +23,7 @@ import MyOffersAsClub from '../components/user/MyOffersAsClub';
 import NewPlayerAdvertisement from '../components/playerAdvertisement/NewPlayerAdvertisement';
 import NewClubAdvertisement from '../components/clubAdvertisement/NewClubAdvertisement';
 import Support from '../components/support/Support';
-import AdminHome from '../components/admin/AdminHome';
+import AdminDashboard from '../components/admin/AdminDashboard';
 import AdminUsers from '../components/admin/AdminUsers';
 import AdminSupport from '../components/admin/AdminSupport';
 
@@ -52,7 +52,7 @@ const Routing = () => {
         <Route path="/new-club-advertisement" element={<ProtectedRoute element={<DynamicNavbar><NewClubAdvertisement /></DynamicNavbar>} allowedRoles={[Role.User]} />} />
         <Route path="/support" element={<ProtectedRoute element={<DynamicNavbar><Support /></DynamicNavbar>} allowedRoles={[Role.Admin, Role.User]} />} />
         {/* Admin */}
-        <Route path="/admin/home" element={<ProtectedRoute element={<DynamicNavbar><AdminHome /></DynamicNavbar>} allowedRoles={[Role.Admin]} />} />
+        <Route path="/admin/dashboard" element={<ProtectedRoute element={<DynamicNavbar><AdminDashboard /></DynamicNavbar>} allowedRoles={[Role.Admin]} />} />
         <Route path="/admin/users" element={<ProtectedRoute element={<DynamicNavbar><AdminUsers /></DynamicNavbar>} allowedRoles={[Role.Admin]} />} />
         <Route path="/admin/support" element={<ProtectedRoute element={<DynamicNavbar><AdminSupport /></DynamicNavbar>} allowedRoles={[Role.Admin]} />} />
       </Routes>

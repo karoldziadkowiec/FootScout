@@ -13,11 +13,11 @@ const AdminNavbarComponent = () => {
     <Navbar bg="primary" variant="dark" expand="lg" className="sticky-top">
       <Container>
         <img src={require('../../img/logo.png')} alt="logo" className="logo" />
-        <Navbar.Brand as={NavLink} to="/admin/home">FootScout</Navbar.Brand>
+        <Navbar.Brand as={NavLink} to="/admin/dashboard">FootScout</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto blue-links">
-            <Nav.Link as={NavLink} to="/admin/home"><i className="bi bi-house-fill"></i> Home</Nav.Link>
+            <Nav.Link as={NavLink} to="/admin/dashboard"><i className="bi bi-grid"></i> Dashboard</Nav.Link>
             <Nav.Link as={NavLink} to="/admin/users"><i className="bi bi-people-fill"></i> Users</Nav.Link>
             <Nav.Link as={NavLink} to="/admin/users"><i className="bi bi-clock-history"></i> Club History</Nav.Link>
             <Nav.Link as={NavLink} to="/admin/users"><i className="bi bi-chat-text-fill"></i> Chats</Nav.Link>
@@ -29,9 +29,22 @@ const AdminNavbarComponent = () => {
               <NavDropdown.Item as={NavLink} to="/admin/users"><i className="bi bi-person-bounding-box"></i> Player's</NavDropdown.Item>
               <NavDropdown.Item as={NavLink} to="/admin/users"><i className="bi bi-shield-fill"></i> Club's</NavDropdown.Item>
             </NavDropdown>
+            <NavDropdown title={<><i className="bi bi-graph-up-arrow"></i> Raports</>} id="basic-nav-dropdown">
+              <NavDropdown.Item as={NavLink} to="/admin/users"><i className="bi bi-people-fill"></i> Users</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/admin/users"><i className="bi bi-clock-history"></i> Club History</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/admin/users"><i className="bi bi-chat-text-fill"></i> Chats</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/admin/users"><i className="bi bi-person-bounding-box"></i> Player Advertisements</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/admin/users"><i className="bi bi-shield-fill"></i> Club Advertisements</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/admin/users"><i className="bi bi-briefcase"></i> Player Offers</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/admin/users"><i className="bi bi-briefcase-fill"></i> Club Offers</NavDropdown.Item>
+            </NavDropdown>
+            <NavDropdown title={<><i className="bi bi-gear-fill"></i> Service</>} id="basic-nav-dropdown">
+              <NavDropdown.Item as={NavLink} to="/admin/support"><i className="bi bi-cone-striped"></i> Reported Problems</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/admin/support"><i className="bi bi-person-standing"></i> Add New Position</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/admin/support"><i className="bi bi-universal-access-circle"></i> Make an Admin</NavDropdown.Item>
+            </NavDropdown>
           </Nav>
           <Nav className="ms-auto blue-links">
-            <Nav.Link as={NavLink} to="/admin/support"><i className="bi bi-gear-fill"></i> Reported Problems</Nav.Link>
             <Nav.Link as={NavLink} to="/chats"><i className="bi bi-chat-fill"></i> Chat</Nav.Link>
             <NavDropdown title={<><i className="bi bi-person-circle"></i> My Profile</>} id="basic-nav-dropdown">
               <NavDropdown.Item as={NavLink} to="/my-profile"><i className="bi bi-person-fill"></i> Profile</NavDropdown.Item>

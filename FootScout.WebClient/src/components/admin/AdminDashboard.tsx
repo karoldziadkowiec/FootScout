@@ -4,9 +4,9 @@ import { ToastContainer, toast } from 'react-toastify';
 /*import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';*/
 import '../../App.css';
-import '../../styles/admin/AdminHome.css';
+import '../../styles/admin/AdminDashboard.css';
 
-const AdminHome = () => {
+const AdminDashboard = () => {
     const location = useLocation();
     
     useEffect(() => {
@@ -16,11 +16,11 @@ const AdminHome = () => {
     }, [location]);
 
     return (
-        <div className="AdminHome">
+        <div className="AdminDashboard">
             <ToastContainer />
-            <h1>Admin Home page</h1>
+            <h1><i className="bi bi-grid"></i> Dashboard</h1>
         </div>
     );
 }
 
-export default AdminHome;
+export default AdminDashboard;

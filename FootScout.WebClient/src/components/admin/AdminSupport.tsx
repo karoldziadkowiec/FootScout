@@ -123,10 +123,10 @@ const AdminSupport = () => {
     return (
         <div className="AdminSupport">
             <ToastContainer />
-            <h1><i className="bi bi-gear-fill"></i> Reported Problems</h1>
+            <h1><i className="bi bi-cone-striped"></i> Reported Problems</h1>
             <p></p>
             {/* Unsolved problems*/}
-            <h3>Unsolved problems</h3>
+            <h3><i className="bi bi-exclamation-diamond"></i> Unsolved problems</h3>
             <div className="table-responsive">
                 <Table striped bordered hover variant="light">
                     <thead className="table-primary">
@@ -186,7 +186,7 @@ const AdminSupport = () => {
             </div>
 
             {/* Solved problems*/}
-            <h3>Solved problems</h3>
+            <h3><i className="bi bi-check2-circle"></i> Solved problems</h3>
             <div className="table-responsive">
                 <Table striped bordered hover variant="light">
                     <thead className="table-success">
