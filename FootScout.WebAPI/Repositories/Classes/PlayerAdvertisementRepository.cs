@@ -47,6 +47,11 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
+        public async Task<int> GetActivePlayerAdvertisementCount()
+        {
+            return await _dbContext.PlayerAdvertisements.Where(pa => pa.EndDate >= DateTime.Now).CountAsync();
+        }
+
         public async Task<IEnumerable<PlayerAdvertisement>> GetInactivePlayerAdvertisements()
         {
             return await _dbContext.PlayerAdvertisements

@@ -1,4 +1,5 @@
 ﻿using FootScout.WebAPI.Entities;
+using FootScout.WebAPI.Repositories.Classes;
 using FootScout.WebAPI.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +24,14 @@ namespace FootScout.WebAPI.Controllers
         {
             var playerPositions = await _playerPositionRepository.GetPlayerPositions();
             return Ok(playerPositions);
+        }
+
+        // GET: api/player-positions/count
+        [HttpGet("count")]
+        public async Task<IActionResult> GetPlayerPositionCount()
+        {
+            int count = await _playerPositionRepository.GetPlayerPositionCount();
+            return Ok(count);
         }
 
         // GET: api/player-positions/:positionId

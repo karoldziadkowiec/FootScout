@@ -56,6 +56,14 @@ namespace FootScout.WebAPI.Controllers
             return Ok(unsolvedProblemss);
         }
 
+        // GET: api/problems/unsolved/count
+        [HttpGet("unsolved/count")]
+        public async Task<IActionResult> GetUnsolvedProblemCount()
+        {
+            int count = await _problemRepository.GetUnsolvedProblemCount();
+            return Ok(count);
+        }
+
         // POST: api/problems
         [HttpPost]
         public async Task<ActionResult> CreateProblem([FromBody] ProblemCreateDTO dto)

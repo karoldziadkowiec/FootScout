@@ -49,6 +49,14 @@ namespace FootScout.WebAPI.Controllers
             return Ok(activeClubOffers);
         }
 
+        // GET: api/club-offers/active/count
+        [HttpGet("active/count")]
+        public async Task<IActionResult> GetActiveClubOfferCount()
+        {
+            int count = await _clubOfferRepository.GetActiveClubOfferCount();
+            return Ok(count);
+        }
+
         // GET: api/club-offers/inactive
         [HttpGet("inactive")]
         public async Task<ActionResult<IEnumerable<ClubOffer>>> GetInactiveClubOffers()

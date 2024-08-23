@@ -59,6 +59,21 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
+        public async Task<int> GetActivePlayerOfferCount()
+        {
+            return await _dbContext.PlayerOffers
+                .Include(po => po.ClubAdvertisement)
+                .Include(ca => ca.ClubAdvertisement.PlayerPosition)
+                .Include(ca => ca.ClubAdvertisement.SalaryRange)
+                .Include(ca => ca.ClubAdvertisement.ClubMember)
+                .Include(po => po.OfferStatus)
+                .Include(po => po.PlayerPosition)
+                .Include(po => po.PlayerFoot)
+                .Include(po => po.Player)
+                .Where(po => po.ClubAdvertisement.EndDate >= DateTime.Now)
+                .CountAsync();
+        }
+
         public async Task<IEnumerable<PlayerOffer>> GetInactivePlayerOffers()
         {
             return await _dbContext.PlayerOffers

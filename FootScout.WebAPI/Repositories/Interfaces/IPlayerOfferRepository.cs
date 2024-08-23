@@ -7,6 +7,7 @@ namespace FootScout.WebAPI.Repositories.Interfaces
         Task<PlayerOffer> GetPlayerOffer(int playerOfferId);
         Task<IEnumerable<PlayerOffer>> GetPlayerOffers();
         Task<IEnumerable<PlayerOffer>> GetActivePlayerOffers();
+        Task<int> GetActivePlayerOfferCount();
         Task<IEnumerable<PlayerOffer>> GetInactivePlayerOffers();
         Task CreatePlayerOffer(PlayerOffer playerOffer);
         Task UpdatePlayerOffer(PlayerOffer playerOffer);

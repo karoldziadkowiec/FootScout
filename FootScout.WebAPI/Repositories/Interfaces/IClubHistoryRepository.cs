@@ -1,5 +1,4 @@
 ﻿using FootScout.WebAPI.Entities;
-using FootScout.WebAPI.Models.DTOs;
 
 namespace FootScout.WebAPI.Repositories.Interfaces
 {
@@ -7,6 +6,7 @@ namespace FootScout.WebAPI.Repositories.Interfaces
     {
         Task<ClubHistory> GetClubHistory(int clubHistoryId);
         Task<IEnumerable<ClubHistory>> GetAllClubHistory();
+        Task<int> GetClubHistoryCount();
         Task CreateClubHistory(ClubHistory clubHistory);
         Task UpdateClubHistory(ClubHistory clubHistory);
         Task DeleteClubHistory(int clubHistoryId);

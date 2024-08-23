@@ -35,6 +35,11 @@ namespace FootScout.WebAPI.Repositories.Classes
             return userDTOs;
         }
 
+        public async Task<int> GetUserCount()
+        {
+            return await _dbContext.Users.CountAsync();
+        }
+
         public async Task UpdateUser(string userId, UserUpdateDTO dto)
         {
             var user = await _dbContext.Users.FindAsync(userId);

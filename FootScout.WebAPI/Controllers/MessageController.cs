@@ -24,6 +24,14 @@ namespace FootScout.WebAPI.Controllers
             return Ok(messages);
         }
 
+        // GET: api/messages/chat/:chatId/count
+        [HttpGet("chat/{chatId}/count")]
+        public async Task<IActionResult> GetMessagesForChatCount(int chatId)
+        {
+            int count = await _messageService.GetMessagesForChatCount(chatId);
+            return Ok(count);
+        }
+
         // GET: api/messages/chat/:chatId/last-message-date
         [HttpGet("chat/{chatId}/last-message-date")]
         public async Task<IActionResult> GetLastMessageDateForChat(int chatId)

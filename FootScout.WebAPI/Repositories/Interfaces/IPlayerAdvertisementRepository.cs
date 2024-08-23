@@ -7,6 +7,7 @@ namespace FootScout.WebAPI.Repositories.Interfaces
         Task<PlayerAdvertisement> GetPlayerAdvertisement(int playerAdvertisementId);
         Task<IEnumerable<PlayerAdvertisement>> GetAllPlayerAdvertisements();
         Task<IEnumerable<PlayerAdvertisement>> GetActivePlayerAdvertisements();
+        Task<int> GetActivePlayerAdvertisementCount();
         Task<IEnumerable<PlayerAdvertisement>> GetInactivePlayerAdvertisements();
         Task CreatePlayerAdvertisement(PlayerAdvertisement playerAdvertisement);
         Task UpdatePlayerAdvertisement(PlayerAdvertisement playerAdvertisement);

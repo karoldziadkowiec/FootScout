@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FootScout.WebAPI.Entities;
 using FootScout.WebAPI.Models.DTOs;
+using FootScout.WebAPI.Repositories.Classes;
 using FootScout.WebAPI.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -48,6 +49,14 @@ namespace FootScout.WebAPI.Controllers
         {
             var activePlayerAdvertisements = await _playerAdvertisementRepository.GetActivePlayerAdvertisements();
             return Ok(activePlayerAdvertisements);
+        }
+
+        // GET: api/player-advertisements/active/count
+        [HttpGet("active/count")]
+        public async Task<IActionResult> GetActivePlayerAdvertisementCount()
+        {
+            int count = await _playerAdvertisementRepository.GetActivePlayerAdvertisementCount();
+            return Ok(count);
         }
 
         // GET: api/player-advertisements/inactive

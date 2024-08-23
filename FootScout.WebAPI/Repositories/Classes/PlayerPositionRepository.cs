@@ -17,6 +17,9 @@ namespace FootScout.WebAPI.Repositories.Classes
         public async Task<IEnumerable<PlayerPosition>> GetPlayerPositions()
             => await _dbContext.PlayerPositions.ToListAsync();
 
+        public async Task<int> GetPlayerPositionCount()
+            => await _dbContext.PlayerPositions.CountAsync();
+
         public async Task<string> GetPlayerPositionName(int positionId)
             => await _dbContext.PlayerPositions.Where(p => p.Id == positionId).Select(p => p.PositionName).FirstOrDefaultAsync();
     }

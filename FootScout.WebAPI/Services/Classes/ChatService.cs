@@ -1,5 +1,6 @@
 ﻿using FootScout.WebAPI.DbManager;
 using FootScout.WebAPI.Entities;
+using FootScout.WebAPI.Models.DTOs;
 using FootScout.WebAPI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +21,19 @@ namespace FootScout.WebAPI.Services.Classes
                 .Include(c => c.User1)
                 .Include(c => c.User2)
                 .FirstOrDefaultAsync(c => c.Id == chatId);
+        }
+
+        public async Task<IEnumerable<Chat>> GetChats()
+        {
+            return await _dbContext.Chats
+                .Include(c => c.User1)
+                .Include(c => c.User2)
+                .ToListAsync();
+        }
+
+        public async Task<int> GetChatCount()
+        {
+            return await _dbContext.Chats.CountAsync();
         }
 
         public async Task<int> GetChatIdBetweenUsers(string user1Id, string user2Id)

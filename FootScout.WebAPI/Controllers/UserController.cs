@@ -41,6 +41,14 @@ namespace FootScout.WebAPI.Controllers
             return Ok(userDTOs);
         }
 
+        // GET: api/users/count
+        [HttpGet("count")]
+        public async Task<IActionResult> GetUserCount()
+        {
+            int count = await _userRepository.GetUserCount();
+            return Ok(count);
+        }
+
         // PUT: api/users/:userId
         [HttpPut("{userId}")]
         public async Task<IActionResult> UpdateUser(string userId, [FromBody]UserUpdateDTO dto)

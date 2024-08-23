@@ -8,6 +8,7 @@ namespace FootScout.WebAPI.Repositories.Interfaces
         Task<IEnumerable<Problem>> GetAllProblems();
         Task<IEnumerable<Problem>> GetSolvedProblems();
         Task<IEnumerable<Problem>> GetUnsolvedProblems();
+        Task<int> GetUnsolvedProblemCount();
         Task CreateProblem(Problem problem);
         Task CheckProblemSolved(Problem problem);
     }

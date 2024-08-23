@@ -7,6 +7,7 @@ namespace FootScout.WebAPI.Repositories.Interfaces
         Task<ClubOffer> GetClubOffer(int clubOfferId);
         Task<IEnumerable<ClubOffer>> GetClubOffers();
         Task<IEnumerable<ClubOffer>> GetActiveClubOffers();
+        Task<int> GetActiveClubOfferCount();
         Task<IEnumerable<ClubOffer>> GetInactiveClubOffers();
         Task CreateClubOffer(ClubOffer clubOffer);
         Task UpdateClubOffer(ClubOffer clubOffer);

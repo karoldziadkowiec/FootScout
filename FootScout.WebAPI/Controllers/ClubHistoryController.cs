@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FootScout.WebAPI.Entities;
 using FootScout.WebAPI.Models.DTOs;
+using FootScout.WebAPI.Repositories.Classes;
 using FootScout.WebAPI.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -40,6 +41,14 @@ namespace FootScout.WebAPI.Controllers
         {
             var clubHistories = await _clubHistoryRepository.GetAllClubHistory();
             return Ok(clubHistories);
+        }
+
+        // GET: api/club-history/count
+        [HttpGet("count")]
+        public async Task<IActionResult> GetClubHistoryCount()
+        {
+            int count = await _clubHistoryRepository.GetClubHistoryCount();
+            return Ok(count);
         }
 
         // POST: api/club-history

@@ -30,6 +30,11 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
+        public async Task<int> GetClubHistoryCount()
+        {
+            return await _dbContext.ClubHistories.CountAsync();
+        }
+
         public async Task CreateClubHistory(ClubHistory clubHistory)
         {
             await _dbContext.ClubHistories.AddAsync(clubHistory);

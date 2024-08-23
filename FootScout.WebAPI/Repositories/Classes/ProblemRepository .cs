@@ -47,6 +47,11 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
+        public async Task<int> GetUnsolvedProblemCount()
+        {
+            return await _dbContext.Problems.Where(p => p.IsSolved == false).CountAsync();
+        }
+
         public async Task CreateProblem(Problem problem)
         {
             problem.CreationDate = DateTime.Now;

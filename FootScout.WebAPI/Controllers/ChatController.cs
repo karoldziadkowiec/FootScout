@@ -32,6 +32,22 @@ namespace FootScout.WebAPI.Controllers
             return Ok(chat);
         }
 
+        // GET: api/chats
+        [HttpGet]
+        public async Task<IActionResult> GetChats()
+        {
+            var chats = await _chatService.GetChats();
+            return Ok(chats);
+        }
+
+        // GET: api/chats/count
+        [HttpGet("count")]
+        public async Task<IActionResult> GetChatCount()
+        {
+            int count = await _chatService.GetChatCount();
+            return Ok(count);
+        }
+
         // GET: api/chats/between/:user1Id/:user2Id
         [HttpGet("between/{user1Id}/{user2Id}")]
         public async Task<IActionResult> GetChatIdBetweenUsers(string user1Id, string user2Id)
