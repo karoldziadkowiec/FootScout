@@ -22,10 +22,6 @@ const NavbarComponent = () => {
               <NavDropdown.Item as={NavLink} to="/player-advertisements"><i className="bi bi-person-bounding-box"></i> Player's</NavDropdown.Item>
               <NavDropdown.Item as={NavLink} to="/club-advertisements"><i className="bi bi-shield-fill"></i> Club's</NavDropdown.Item>
             </NavDropdown>
-            <NavDropdown title={<><i className="bi bi-star-fill"></i> Recommendations</>} id="basic-nav-dropdown">
-              <NavDropdown.Item as={NavLink} to="/my-profile"><i className="bi bi-person-bounding-box"></i> Player's</NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/my-profile"><i className="bi bi-shield-fill"></i> Club's</NavDropdown.Item>
-            </NavDropdown>
             <NavDropdown title={<><i className="bi bi-file-earmark-plus"></i> New Advertisement</>} id="basic-nav-dropdown">
               <NavDropdown.Item as={NavLink} to="/new-player-advertisement"><i className="bi bi-person-bounding-box"></i> as Player</NavDropdown.Item>
               <NavDropdown.Item as={NavLink} to="/new-club-advertisement"><i className="bi bi-shield-fill"></i> as Club</NavDropdown.Item>

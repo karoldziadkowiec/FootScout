@@ -26,6 +26,48 @@ const ChatService = {
         }
     },
 
+    async getChats(): Promise<ChatModel[]> {
+        try {
+            const authorizationHeader = await AccountService.getAuthorizationHeader();
+            const response = await axios.get<ChatModel[]>(`${ApiURL}/chats`, {
+                headers: {
+                    'Authorization': authorizationHeader
+                }
+            });
+            return response.data;
+        }
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.error('Error fetching all chats, details:', error.response?.data || error.message);
+            }
+            else {
+                console.error('Unexpected error:', error);
+            }
+            throw error;
+        }
+    },
+
+    async getChatCount(): Promise<number> {
+        try {
+            const authorizationHeader = await AccountService.getAuthorizationHeader();
+            const response = await axios.get<number>(`${ApiURL}/chats/count`, {
+                headers: {
+                    'Authorization': authorizationHeader
+                }
+            });
+            return response.data;
+        }
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.error('Error fetching chat count, details:', error.response?.data || error.message);
+            }
+            else {
+                console.error('Unexpected error:', error);
+            }
+            throw error;
+        }
+    },
+
     async getChatIdBetweenUsers(user1Id: string, user2Id: string): Promise<number> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();

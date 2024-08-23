@@ -68,6 +68,27 @@ const PlayerAdvertisementService = {
         }
     },
 
+    async getActivePlayerAdvertisementCount(): Promise<number> {
+        try {
+            const authorizationHeader = await AccountService.getAuthorizationHeader();
+            const response = await axios.get<number>(`${ApiURL}/player-advertisements/active/count`, {
+                headers: {
+                    'Authorization': authorizationHeader
+                }
+            });
+            return response.data;
+        }
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.error('Error fetching active player advertiement count, details:', error.response?.data || error.message);
+            }
+            else {
+                console.error('Unexpected error:', error);
+            }
+            throw error;
+        }
+    },
+
     async getInactivePlayerAdvertisements(): Promise<PlayerAdvertisement[]> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();

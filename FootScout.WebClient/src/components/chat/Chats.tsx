@@ -99,7 +99,7 @@ const Chats = () => {
                 <Table striped bordered hover variant="light">
                     <thead className="table-dark">
                         <tr>
-                            <th>Name</th>
+                            <th>User</th>
                             <th>Last message</th>
                             <th></th>
                         </tr>

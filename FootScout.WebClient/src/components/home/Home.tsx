@@ -51,7 +51,6 @@ const Home = () => {
                 <Container className="links">
                     <Row>
                         <Col><Button variant="success" onClick={() => moveToPage("player-advertisements")}>Advertisements</Button></Col>
-                        <Col><Button variant="success" onClick={() => moveToPage("my-profile")}>Recommendations</Button></Col>
                         <Col><Button variant="success" onClick={() => moveToPage("new-player-advertisement")}>New Ad</Button></Col>
                     </Row>
                 </Container>
@@ -64,7 +63,6 @@ const Home = () => {
                 <Container className="links">
                     <Row>
                         <Col><Button variant="success" onClick={() => moveToPage("club-advertisements")}>Advertisements</Button></Col>
-                        <Col><Button variant="success" onClick={() => moveToPage("my-profile")}>Recommendations</Button></Col>
                         <Col><Button variant="success" onClick={() => moveToPage("new-club-advertisement")}>New Ad</Button></Col>
                     </Row>
                 </Container>

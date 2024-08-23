@@ -47,6 +47,27 @@ const ProblemService = {
         }
     },
 
+    async getUnsolvedProblemCount(): Promise<number> {
+        try {
+            const authorizationHeader = await AccountService.getAuthorizationHeader();
+            const response = await axios.get<number>(`${ApiURL}/problems/unsolved/count`, {
+                headers: {
+                    'Authorization': authorizationHeader
+                }
+            });
+            return response.data;
+        }
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.error('Error fetching unsolved problem count, details:', error.response?.data || error.message);
+            }
+            else {
+                console.error('Unexpected error:', error);
+            }
+            throw error;
+        }
+    },
+
     async getSolvedProblems(): Promise<Problem[]> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();

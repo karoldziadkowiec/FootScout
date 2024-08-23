@@ -68,6 +68,27 @@ const PlayerOfferService = {
         }
     },
 
+    async getActivePlayerOfferCount(): Promise<number> {
+        try {
+            const authorizationHeader = await AccountService.getAuthorizationHeader();
+            const response = await axios.get<number>(`${ApiURL}/player-offers/active/count`, {
+                headers: {
+                    'Authorization': authorizationHeader
+                }
+            });
+            return response.data;
+        }
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.error('Error fetching active player offer count, details:', error.response?.data || error.message);
+            }
+            else {
+                console.error('Unexpected error:', error);
+            }
+            throw error;
+        }
+    },
+
     async getInactivePlayerOffers(): Promise<PlayerOffer[]> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();

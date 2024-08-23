@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Table, Button, Modal, Form } from 'react-bootstrap';
+import { Table, Button, Modal, Form, Tabs, Tab } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import TimeService from '../../services/time/TimeService';
@@ -125,118 +125,125 @@ const AdminSupport = () => {
             <ToastContainer />
             <h1><i className="bi bi-cone-striped"></i> Reported Problems</h1>
             <p></p>
-            {/* Unsolved problems*/}
-            <h3><i className="bi bi-exclamation-diamond"></i> Unsolved problems</h3>
-            <div className="table-responsive">
-                <Table striped bordered hover variant="light">
-                    <thead className="table-primary">
-                        <tr>
-                            <th>Received Date</th>
-                            <th>Status</th>
-                            <th>Requester</th>
-                            <th>Title</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {unsolvedProblems.length > 0 ? (
-                            unsolvedProblems.map((problem, index) => (
-                                <tr key={index}>
-                                    <td>{TimeService.formatDateToEURWithHour(problem.creationDate)}</td>
-                                    <td>
-                                        {problem.isSolved === true && (
-                                            <i className="bi bi-check-circle-fill" style={{ color: 'green' }}></i>
-                                        )}
-                                        {problem.isSolved === false && (
-                                            <i className="bi bi-x-circle-fill" style={{ color: 'red' }}></i>
-                                        )}
-                                        {getStatusName(problem.isSolved)}
-                                    </td>
-                                    <td>{problem.requester.firstName} {problem.requester.lastName}</td>
-                                    <td>{problem.title}</td>
-                                    <td>
-                                        <Button variant="dark" className="button-spacing" onClick={() => handleShowProblemDetails(problem)}>
-                                            <i className="bi bi-info-square"></i> Info
-                                        </Button>
-                                        {problem.isSolved === false && (
-                                            <>
-                                                <Button variant="success" className="button-spacing" onClick={() => handleShowCheckProblemSolvedModal(problem)}>
-                                                    <i className="bi bi-check-lg"></i> Solved
-                                                </Button>
-                                            </>
-                                        )}
-                                        {problem.requesterId !== userId && (
-                                            <>
-                                                <span className="button-spacing">|</span>
-                                                <Button variant="info" onClick={() => handleOpenChat(problem.requesterId)}>
-                                                    <i className="bi bi-chat-fill"></i>
-                                                </Button>
-                                            </>
-                                        )}
-                                    </td>
-                                </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan={9} className="text-center">No unsolved reported problem available</td>
-                            </tr>
-                        )}
-                    </tbody>
-                </Table>
-            </div>
 
-            {/* Solved problems*/}
-            <h3><i className="bi bi-check2-circle"></i> Solved problems</h3>
-            <div className="table-responsive">
-                <Table striped bordered hover variant="light">
-                    <thead className="table-success">
-                        <tr>
-                            <th>Received Date</th>
-                            <th>Status</th>
-                            <th>Requester</th>
-                            <th>Title</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {solvedProblems.length > 0 ? (
-                            solvedProblems.map((problem, index) => (
-                                <tr key={index}>
-                                    <td>{TimeService.formatDateToEURWithHour(problem.creationDate)}</td>
-                                    <td>
-                                        {problem.isSolved === true && (
-                                            <i className="bi bi-check-circle-fill" style={{ color: 'green' }}></i>
-                                        )}
-                                        {problem.isSolved === false && (
-                                            <i className="bi bi-x-circle-fill" style={{ color: 'red' }}></i>
-                                        )}
-                                        {getStatusName(problem.isSolved)}
-                                    </td>
-                                    <td>{problem.requester.firstName} {problem.requester.lastName}</td>
-                                    <td>{problem.title}</td>
-                                    <td>
-                                        <Button variant="dark" className="button-spacing" onClick={() => handleShowProblemDetails(problem)}>
-                                            <i className="bi bi-info-square"></i> Info
-                                        </Button>
-                                        {problem.requesterId !== userId && (
-                                            <>
-                                                <span className="button-spacing">|</span>
-                                                <Button variant="info" onClick={() => handleOpenChat(problem.requesterId)}>
-                                                    <i className="bi bi-chat-fill"></i>
-                                                </Button>
-                                            </>
-                                        )}
-                                    </td>
+            <Tabs defaultActiveKey="unsolved" id="problem-tabs" className="mb-3 custom-tabs">
+                {/* Unsolved Problems*/}
+                <Tab eventKey="unsolved" title="Unsolved Problems">
+                    <h3><i className="bi bi-exclamation-diamond"></i> Unsolved problems</h3>
+                    <div className="table-responsive">
+                        <Table striped bordered hover variant="light">
+                            <thead className="table-primary">
+                                <tr>
+                                    <th>Received Date</th>
+                                    <th>Status</th>
+                                    <th>Requester</th>
+                                    <th>Title</th>
+                                    <th></th>
                                 </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan={9} className="text-center">No unsolved reported problem available</td>
-                            </tr>
-                        )}
-                    </tbody>
-                </Table>
-            </div>
+                            </thead>
+                            <tbody>
+                                {unsolvedProblems.length > 0 ? (
+                                    unsolvedProblems.map((problem, index) => (
+                                        <tr key={index}>
+                                            <td>{TimeService.formatDateToEURWithHour(problem.creationDate)}</td>
+                                            <td>
+                                                {problem.isSolved === true && (
+                                                    <i className="bi bi-check-circle-fill" style={{ color: 'green' }}></i>
+                                                )}
+                                                {problem.isSolved === false && (
+                                                    <i className="bi bi-x-circle-fill" style={{ color: 'red' }}></i>
+                                                )}
+                                                {getStatusName(problem.isSolved)}
+                                            </td>
+                                            <td>{problem.requester.firstName} {problem.requester.lastName}</td>
+                                            <td>{problem.title}</td>
+                                            <td>
+                                                <Button variant="dark" className="button-spacing" onClick={() => handleShowProblemDetails(problem)}>
+                                                    <i className="bi bi-info-square"></i> Info
+                                                </Button>
+                                                {problem.isSolved === false && (
+                                                    <>
+                                                        <Button variant="success" className="button-spacing" onClick={() => handleShowCheckProblemSolvedModal(problem)}>
+                                                            <i className="bi bi-check-lg"></i> Solved
+                                                        </Button>
+                                                    </>
+                                                )}
+                                                {problem.requesterId !== userId && (
+                                                    <>
+                                                        <span className="button-spacing">|</span>
+                                                        <Button variant="info" onClick={() => handleOpenChat(problem.requesterId)}>
+                                                            <i className="bi bi-chat-fill"></i>
+                                                        </Button>
+                                                    </>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan={9} className="text-center">No unsolved reported problem available</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </Table>
+                    </div>
+                </Tab>
+
+                {/* Solved Problems */}
+                <Tab eventKey="solved" title="Solved Problems">
+                    <h3><i className="bi bi-check2-circle"></i> Solved problems</h3>
+                    <div className="table-responsive">
+                        <Table striped bordered hover variant="light">
+                            <thead className="table-success">
+                                <tr>
+                                    <th>Received Date</th>
+                                    <th>Status</th>
+                                    <th>Requester</th>
+                                    <th>Title</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {solvedProblems.length > 0 ? (
+                                    solvedProblems.map((problem, index) => (
+                                        <tr key={index}>
+                                            <td>{TimeService.formatDateToEURWithHour(problem.creationDate)}</td>
+                                            <td>
+                                                {problem.isSolved === true && (
+                                                    <i className="bi bi-check-circle-fill" style={{ color: 'green' }}></i>
+                                                )}
+                                                {problem.isSolved === false && (
+                                                    <i className="bi bi-x-circle-fill" style={{ color: 'red' }}></i>
+                                                )}
+                                                {getStatusName(problem.isSolved)}
+                                            </td>
+                                            <td>{problem.requester.firstName} {problem.requester.lastName}</td>
+                                            <td>{problem.title}</td>
+                                            <td>
+                                                <Button variant="dark" className="button-spacing" onClick={() => handleShowProblemDetails(problem)}>
+                                                    <i className="bi bi-info-square"></i> Info
+                                                </Button>
+                                                {problem.requesterId !== userId && (
+                                                    <>
+                                                        <span className="button-spacing">|</span>
+                                                        <Button variant="info" onClick={() => handleOpenChat(problem.requesterId)}>
+                                                            <i className="bi bi-chat-fill"></i>
+                                                        </Button>
+                                                    </>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan={9} className="text-center">No solved reported problem available</td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </Table>
+                    </div>
+                </Tab>
+            </Tabs>
 
             {/* Details of Unsolved problem */}
             <Modal size="lg" show={showProblemDetailsModal} onHide={() => setShowProblemDetailsModal(false)}>
