@@ -26,6 +26,8 @@ import Support from '../components/support/Support';
 import AdminDashboard from '../components/admin/AdminDashboard';
 import AdminUsers from '../components/admin/AdminUsers';
 import AdminSupport from '../components/admin/AdminSupport';
+import AdminPlayerPositions from '../components/admin/AdminPlayerPositions';
+import AdminMakeAnAdmin from '../components/admin/AdminMakeAnAdmin';
 
 const Routing = () => {
   return (
@@ -55,6 +57,8 @@ const Routing = () => {
         <Route path="/admin/dashboard" element={<ProtectedRoute element={<DynamicNavbar><AdminDashboard /></DynamicNavbar>} allowedRoles={[Role.Admin]} />} />
         <Route path="/admin/users" element={<ProtectedRoute element={<DynamicNavbar><AdminUsers /></DynamicNavbar>} allowedRoles={[Role.Admin]} />} />
         <Route path="/admin/support" element={<ProtectedRoute element={<DynamicNavbar><AdminSupport /></DynamicNavbar>} allowedRoles={[Role.Admin]} />} />
+        <Route path="/admin/player-positions" element={<ProtectedRoute element={<DynamicNavbar><AdminPlayerPositions /></DynamicNavbar>} allowedRoles={[Role.Admin]} />} />
+        <Route path="/admin/make-admin" element={<ProtectedRoute element={<DynamicNavbar><AdminMakeAnAdmin /></DynamicNavbar>} allowedRoles={[Role.Admin]} />} />
       </Routes>
     </Router>
   );

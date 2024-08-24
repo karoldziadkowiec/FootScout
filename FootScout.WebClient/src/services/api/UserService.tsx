@@ -56,6 +56,69 @@ const UserService = {
     }
   },
 
+  async getOnlyUsers(): Promise<UserDTO[]> {
+    try {
+      const authorizationHeader = await AccountService.getAuthorizationHeader();
+      const response = await axios.get<UserDTO[]>(`${ApiURL}/users/role/user`, {
+        headers: {
+          'Authorization': authorizationHeader
+        }
+      });
+      return response.data;
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Error fetching users from role user, details:', error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
+      throw error;
+    }
+  },
+
+  async getOnlyAdmins(): Promise<UserDTO[]> {
+    try {
+      const authorizationHeader = await AccountService.getAuthorizationHeader();
+      const response = await axios.get<UserDTO[]>(`${ApiURL}/users/role/admin`, {
+        headers: {
+          'Authorization': authorizationHeader
+        }
+      });
+      return response.data;
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Error fetching users from role admin, details:', error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
+      throw error;
+    }
+  },
+
+  async getUserRole(userId: string): Promise<string> {
+    try {
+      const authorizationHeader = await AccountService.getAuthorizationHeader();
+      const response = await axios.get<string>(`${ApiURL}/users/${userId}/role`, {
+        headers: {
+          'Authorization': authorizationHeader
+        }
+      });
+      return response.data;
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Error fetching user role, details:', error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
+      throw error;
+    }
+  },
+
   async getUserCount(): Promise<number> {
     try {
       const authorizationHeader = await AccountService.getAuthorizationHeader();

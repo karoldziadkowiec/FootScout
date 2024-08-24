@@ -19,7 +19,6 @@ const AdminNavbarComponent = () => {
           <Nav className="me-auto blue-links">
             <Nav.Link as={NavLink} to="/admin/dashboard"><i className="bi bi-grid"></i> Dashboard</Nav.Link>
             <Nav.Link as={NavLink} to="/admin/users"><i className="bi bi-people-fill"></i> Users</Nav.Link>
-            <Nav.Link as={NavLink} to="/admin/users"><i className="bi bi-clock-history"></i> Club History</Nav.Link>
             <Nav.Link as={NavLink} to="/admin/users"><i className="bi bi-chat-text-fill"></i> Chats</Nav.Link>
             <NavDropdown title={<><i className="bi bi-list-nested"></i> Advertisements</>} id="basic-nav-dropdown">
               <NavDropdown.Item as={NavLink} to="/admin/users"><i className="bi bi-person-bounding-box"></i> Player's</NavDropdown.Item>
@@ -40,8 +39,8 @@ const AdminNavbarComponent = () => {
             </NavDropdown>
             <NavDropdown title={<><i className="bi bi-gear-fill"></i> Service</>} id="basic-nav-dropdown">
               <NavDropdown.Item as={NavLink} to="/admin/support"><i className="bi bi-cone-striped"></i> Reported Problems</NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/admin/support"><i className="bi bi-person-standing"></i> Add New Position</NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/admin/support"><i className="bi bi-universal-access-circle"></i> Make an Admin</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/admin/player-positions"><i className="bi bi-person-standing"></i> Player Positions</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/admin/make-admin"><i className="bi bi-universal-access-circle"></i> Make an Admin</NavDropdown.Item>
             </NavDropdown>
           </Nav>
           <Nav className="ms-auto blue-links">

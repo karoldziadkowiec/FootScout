@@ -13,9 +13,9 @@ import UserUpdateDTO from '../../models/dtos/UserUpdateDTO';
 import RegisterDTO from '../../models/dtos/RegisterDTO';
 import ChatCreateDTO from '../../models/dtos/ChatCreateDTO';
 import '../../App.css';
-import '../../styles/admin/AdminUsers.css';
+import '../../styles/admin/AdminMakeAnAdmin.css';
 
-const AdminUsers = () => {
+const AdminMakeAnAdmin = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [userId, setUserId] = useState<string | null>(null);
@@ -379,12 +379,9 @@ const AdminUsers = () => {
     const totalPages = Math.ceil(sortedUsers.length / itemsPerPage);
 
     return (
-        <div className="AdminUsers">
+        <div className="AdminMakeAnAdmin">
             <ToastContainer />
-            <h1><i className="bi bi-people-fill"></i> Users</h1>
-            <Button variant="primary" className="form-button" onClick={() => setShowCreateModal(true)}>
-                <i className="bi bi-person-plus-fill"></i>  Create User
-            </Button>
+            <h1><i className="bi bi-universal-access-circle"></i> Make an Admin</h1>
             <p></p>
             <div className="d-flex align-items-center mb-3">
                 {/* Search */}
@@ -763,4 +760,4 @@ const AdminUsers = () => {
     );
 }
 
-export default AdminUsers;
+export default AdminMakeAnAdmin;

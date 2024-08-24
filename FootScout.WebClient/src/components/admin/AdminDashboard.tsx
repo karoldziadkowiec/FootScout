@@ -3,21 +3,20 @@ import { To, useLocation, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { Card, Row, Col, Button } from 'react-bootstrap';
 import UserService from '../../services/api/UserService';
-import '../../App.css';
-import '../../styles/admin/AdminDashboard.css';
 import ClubHistoryService from '../../services/api/ClubHistoryService';
+import ChatService from '../../services/api/ChatService';
 import ProblemService from '../../services/api/ProblemService';
 import PlayerAdvertisementService from '../../services/api/PlayerAdvertisementService';
 import ClubAdvertisementService from '../../services/api/ClubAdvertisementService';
 import PlayerOfferService from '../../services/api/PlayerOfferService';
 import ClubOfferService from '../../services/api/ClubOfferService';
-import ChatService from '../../services/api/ChatService';
+import '../../App.css';
+import '../../styles/admin/AdminDashboard.css';
 
 const AdminDashboard = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [userCount, setUserCount] = useState<number>(0);
-    const [clubHistoryCount, setClubHistoryCount] = useState<number>(0);
     const [chatCount, setChatCount] = useState<number>(0);
     const [unsolvedReportedProblemCount, setUnsolvedReportedProblemCount] = useState<number>(0);
     const [playerAdvertisementCount, setPlayerAdvertisementCount] = useState<number>(0);
@@ -34,9 +33,6 @@ const AdminDashboard = () => {
             try {
                 const _userCount = await UserService.getUserCount();
                 setUserCount(_userCount);
-
-                const _clubHistoryCount = await ClubHistoryService.getClubHistoryCount();
-                setClubHistoryCount(_clubHistoryCount);
 
                 const _chatCount = await ChatService.getChatCount();
                 setChatCount(_chatCount);
@@ -67,9 +63,6 @@ const AdminDashboard = () => {
     const refreshData = async () => {
         const _userCount = await UserService.getUserCount();
         setUserCount(_userCount);
-
-        const _clubHistoryCount = await ClubHistoryService.getClubHistoryCount();
-        setClubHistoryCount(_clubHistoryCount);
 
         const _chatCount = await ChatService.getChatCount();
         setChatCount(_chatCount);
@@ -104,7 +97,7 @@ const AdminDashboard = () => {
             </Button>
             <p></p>
             <Row>
-                <Col md={3} className="mb-4">
+                <Col md={4} className="mb-4">
                     <Card bg="primary" text="white" onClick={() => handleCardClick('/admin/users')} className="clickable-card">
                         <Card.Body>
                             <Card.Title><i className="bi bi-people-fill"></i></Card.Title>
@@ -115,18 +108,7 @@ const AdminDashboard = () => {
                         </Card.Body>
                     </Card>
                 </Col>
-                <Col md={3} className="mb-4">
-                    <Card bg="secondary" text="white" onClick={() => handleCardClick('/admin/users')} className="clickable-card">
-                        <Card.Body>
-                            <Card.Title><i className="bi bi-clock-history"></i></Card.Title>
-                            <Card.Title>Club History</Card.Title>
-                            <Card.Text>
-                                <h4>{clubHistoryCount}</h4>
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
-                </Col>
-                <Col md={3} className="mb-4">
+                <Col md={4} className="mb-4">
                     <Card bg="info" text="white" onClick={() => handleCardClick('/admin/users')} className="clickable-card">
                         <Card.Body>
                             <Card.Title><i className="bi bi-chat-text-fill"></i></Card.Title>
@@ -137,8 +119,8 @@ const AdminDashboard = () => {
                         </Card.Body>
                     </Card>
                 </Col>
-                <Col md={3} className="mb-4">
-                    <Card bg="danger" text="white" onClick={() => handleCardClick('/admin/users')} className="clickable-card">
+                <Col md={4} className="mb-4">
+                    <Card bg="danger" text="white" onClick={() => handleCardClick('/admin/support')} className="clickable-card">
                         <Card.Body>
                             <Card.Title><i className="bi bi-cone-striped"></i></Card.Title>
                             <Card.Title>Reported Problems</Card.Title>
@@ -184,7 +166,7 @@ const AdminDashboard = () => {
                     </Card>
                 </Col>
                 <Col md={3} className="mb-4">
-                    <Card bg="light" text="dark" onClick={() => handleCardClick('/admin/users')} className="clickable-card">
+                    <Card bg="secondary" text="white" onClick={() => handleCardClick('/admin/users')} className="clickable-card">
                         <Card.Body>
                             <Card.Title><i className="bi bi-briefcase-fill"></i></Card.Title>
                             <Card.Title>Club Offers</Card.Title>

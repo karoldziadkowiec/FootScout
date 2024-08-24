@@ -65,7 +65,48 @@ const PlayerPositionService = {
             }
             throw error;
         }
-    }
+    },
+
+    async checkPlayerPositionExists(positionName: string): Promise<boolean> {
+        try {
+            const authorizationHeader = await AccountService.getAuthorizationHeader();
+            const response = await axios.get<boolean>(`${ApiURL}/player-positions/check/name/${positionName}`, {
+                headers: {
+                    'Authorization': authorizationHeader
+                }
+            });
+            return response.data;
+        }
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.error('Error checking existance of player position, details:', error.response?.data || error.message);
+            }
+            else {
+                console.error('Unexpected error:', error);
+            }
+            throw error;
+        }
+    },
+
+    async createPlayerPosition(playerPosition: PlayerPosition): Promise<void> {
+        try {
+            const authorizationHeader = await AccountService.getAuthorizationHeader();
+            await axios.post(`${ApiURL}/player-positions`, playerPosition, {
+                headers: {
+                    'Authorization': authorizationHeader
+                }
+            });
+        }
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.error('Error creating new player position, details:', error.response?.data || error.message);
+            }
+            else {
+                console.error('Unexpected error:', error);
+            }
+            throw error;
+        }
+    },
 };
 
 export default PlayerPositionService;
