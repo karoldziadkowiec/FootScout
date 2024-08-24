@@ -41,6 +41,30 @@ namespace FootScout.WebAPI.Controllers
             return Ok(userDTOs);
         }
 
+        // GET: api/users/role/user
+        [HttpGet("role/user")]
+        public async Task<IActionResult> GetOnlyUsers()
+        {
+            var onlyUserDTOs = await _userRepository.GetOnlyUsers();
+            return Ok(onlyUserDTOs);
+        }
+
+        // GET: api/users/role/admin
+        [HttpGet("role/admin")]
+        public async Task<IActionResult> GetOnlyAdmins()
+        {
+            var onlyAdminDTOs = await _userRepository.GetOnlyAdmins();
+            return Ok(onlyAdminDTOs);
+        }
+
+        // GET: api/users/:userId/role
+        [HttpGet("{userId}/role")]
+        public async Task<IActionResult> GetUserRole(string userId)
+        {
+            string role = await _userRepository.GetUserRole(userId);
+            return Ok(role);
+        }
+
         // GET: api/users/count
         [HttpGet("count")]
         public async Task<IActionResult> GetUserCount()

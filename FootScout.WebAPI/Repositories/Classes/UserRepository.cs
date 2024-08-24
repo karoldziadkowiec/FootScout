@@ -12,12 +12,14 @@ namespace FootScout.WebAPI.Repositories.Classes
     {
         private readonly AppDbContext _dbContext;
         private readonly IMapper _mapper;
+        private readonly UserManager<User> _userManager;
         private readonly IPasswordHasher<User> _passwordHasher;
 
-        public UserRepository(AppDbContext dbContext, IMapper mapper, IPasswordHasher<User> passwordHasher)
+        public UserRepository(AppDbContext dbContext, IMapper mapper, UserManager<User> userManager, IPasswordHasher<User> passwordHasher)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            _userManager = userManager;
             _passwordHasher = passwordHasher;
         }
 
@@ -33,6 +35,28 @@ namespace FootScout.WebAPI.Repositories.Classes
             var users = await _dbContext.Users.ToListAsync();
             var userDTOs = _mapper.Map<IEnumerable<UserDTO>>(users);
             return userDTOs;
+        }
+
+        public async Task<IEnumerable<UserDTO>> GetOnlyUsers()
+        {
+            var onlyUsers = await _userManager.GetUsersInRoleAsync("User");
+            var onlyUserDTOs = _mapper.Map<IEnumerable<UserDTO>>(onlyUsers);
+            return onlyUserDTOs;
+        }
+
+        public async Task<IEnumerable<UserDTO>> GetOnlyAdmins()
+        {
+            var onlyAdmins = await _userManager.GetUsersInRoleAsync("Admin");
+            var onlyAdminDTOs = _mapper.Map<IEnumerable<UserDTO>>(onlyAdmins);
+            return onlyAdminDTOs;
+        }
+
+        public async Task<string> GetUserRole(string userId)
+        {
+            return await (from ur in _dbContext.UserRoles
+                                  join r in _dbContext.Roles on ur.RoleId equals r.Id
+                                  where ur.UserId == userId
+                                  select r.Name).FirstOrDefaultAsync();
         }
 
         public async Task<int> GetUserCount()

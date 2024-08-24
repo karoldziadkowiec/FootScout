@@ -7,6 +7,9 @@ namespace FootScout.WebAPI.Repositories.Interfaces
     {
         Task<UserDTO> GetUser(string userId);
         Task<IEnumerable<UserDTO>> GetUsers();
+        Task<IEnumerable<UserDTO>> GetOnlyUsers();
+        Task<IEnumerable<UserDTO>> GetOnlyAdmins();
+        Task<string> GetUserRole(string userId);
         Task<int> GetUserCount();
         Task UpdateUser(string userId, UserUpdateDTO userUpdateDTO);
         Task ResetUserPassword(string userId, UserResetPasswordDTO userUpdateDTO);

@@ -7,5 +7,7 @@ namespace FootScout.WebAPI.Repositories.Interfaces
         Task<IEnumerable<PlayerPosition>> GetPlayerPositions();
         Task<int> GetPlayerPositionCount();
         Task<string> GetPlayerPositionName(int positionId);
+        Task<bool> CheckPlayerPositionExists(string positionName);
+        Task CreatePlayerPosition(PlayerPosition playerPosition);
     }
 }

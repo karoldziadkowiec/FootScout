@@ -1,5 +1,4 @@
 ﻿using FootScout.WebAPI.Entities;
-using FootScout.WebAPI.Repositories.Classes;
 using FootScout.WebAPI.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -43,6 +42,25 @@ namespace FootScout.WebAPI.Controllers
                 return NotFound();
 
             return Ok(positionName);
+        }
+
+        // GET: api/player-positions/check/name/:positionName
+        [HttpGet("check/name/{positionName}")]
+        public async Task<IActionResult> CheckPlayerPositionExists(string positionName)
+        {
+            var isExists = await _playerPositionRepository.CheckPlayerPositionExists(positionName);
+            return Ok(isExists);
+        }
+
+        // POST: api/player-positions
+        [HttpPost]
+        public async Task<ActionResult> CreatePlayerPosition([FromBody] PlayerPosition playerPosition)
+        {
+            if (playerPosition == null)
+                return BadRequest("Invalid player position data.");
+
+            await _playerPositionRepository.CreatePlayerPosition(playerPosition);
+            return Ok(playerPosition);
         }
     }
 }

@@ -6,6 +6,7 @@ using FootScout.WebAPI.Services.Interfaces;
 using FootScout.WebAPI.Models.DTOs;
 using AutoMapper;
 using FootScout.WebAPI.Models.Constants;
+using Microsoft.EntityFrameworkCore;
 
 namespace FootScout.WebAPI.Services.Classes
 {
@@ -14,14 +15,16 @@ namespace FootScout.WebAPI.Services.Classes
         private readonly AppDbContext _dbContext;
         private readonly UserManager<User> _userManager;
         private readonly IMapper _mapper;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ITokenService _tokenService;
         private readonly ICookieService _cookieService;
 
-        public AccountService(AppDbContext dbContext, UserManager<User> userManager, IMapper mapper, ITokenService tokenService, ICookieService cookieService)
+        public AccountService(AppDbContext dbContext, UserManager<User> userManager, IMapper mapper, RoleManager<IdentityRole> roleManager, ITokenService tokenService, ICookieService cookieService)
         {
             _dbContext = dbContext;
             _userManager = userManager;
             _mapper = mapper;
+            _roleManager = roleManager;
             _tokenService = tokenService;
             _cookieService = cookieService;
         }
@@ -63,6 +66,21 @@ namespace FootScout.WebAPI.Services.Classes
             await _cookieService.SetCookies(token, tokenString);
 
             return tokenString;
+        }
+
+        public async Task<IEnumerable<string>> GetRoles()
+        {
+            var roles = await _roleManager.Roles.ToListAsync();
+            return roles.Select(role => role.Name);
+        }
+
+        public async Task MakeAnAdmin(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                throw new ArgumentException($"User {userId} does not exist.");
+
+            await _userManager.AddToRoleAsync(user, Role.Admin);
         }
 
         private string GetRegisterError(IEnumerable<IdentityError> errors)

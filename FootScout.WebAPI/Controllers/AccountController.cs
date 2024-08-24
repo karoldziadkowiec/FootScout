@@ -3,6 +3,7 @@ using FootScout.WebAPI.Models.DTOs;
 using FootScout.WebAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace FootScout.WebAPI.Controllers
 {
@@ -62,24 +63,19 @@ namespace FootScout.WebAPI.Controllers
         }
 
         [Authorize(Roles = Role.Admin)]
-        [HttpPost("admin-action")]
-        public IActionResult AdminAction()
+        [HttpGet("roles")]
+        public async Task<ActionResult<IEnumerable<string>>> GetRoles()
         {
-            return Ok("This is an admin action");
+            var roles = await _accountService.GetRoles();
+            return Ok(roles);
         }
 
-        [Authorize(Roles = Role.User)]
-        [HttpPost("user-action")]
-        public IActionResult UserAction()
+        [Authorize(Roles = Role.Admin)]
+        [HttpPost("roles/make-admin/{userId}")]
+        public async Task<IActionResult> MakeAnAdmin(string userId)
         {
-            return Ok("This is a user action");
-        }
-
-        [Authorize(Policy = "AdminOrUserRights")]
-        [HttpPost("admin-user-action")]
-        public IActionResult AdminUserAction()
-        {
-            return Ok("This is a admin or user action");
+            await _accountService.MakeAnAdmin(userId);
+            return NoContent();
         }
     }
 }
