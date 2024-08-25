@@ -77,5 +77,13 @@ namespace FootScout.WebAPI.Controllers
             await _accountService.MakeAnAdmin(userId);
             return NoContent();
         }
+
+        [Authorize(Roles = Role.Admin)]
+        [HttpPost("roles/make-user/{userId}")]
+        public async Task<IActionResult> DemoteFromAdmin(string userId)
+        {
+            await _accountService.MakeAnUser(userId);
+            return NoContent();
+        }
     }
 }

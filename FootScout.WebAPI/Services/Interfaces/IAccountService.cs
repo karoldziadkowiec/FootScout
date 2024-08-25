@@ -8,5 +8,6 @@ namespace FootScout.WebAPI.Services.Interfaces
         Task<string> Login(LoginDTO loginDTO);
         Task<IEnumerable<string>> GetRoles();
         Task MakeAnAdmin(string userId);
+        Task MakeAnUser(string userId);
     }
 }

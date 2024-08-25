@@ -5,6 +5,7 @@ using FootScout.WebAPI.Models.DTOs;
 using FootScout.WebAPI.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace FootScout.WebAPI.Repositories.Classes
 {
@@ -32,7 +33,7 @@ namespace FootScout.WebAPI.Repositories.Classes
 
         public async Task<IEnumerable<UserDTO>> GetUsers()
         {
-            var users = await _dbContext.Users.ToListAsync();
+            var users = await _dbContext.Users.OrderByDescending(u => u.CreationDate).ToListAsync();
             var userDTOs = _mapper.Map<IEnumerable<UserDTO>>(users);
             return userDTOs;
         }
@@ -40,14 +41,16 @@ namespace FootScout.WebAPI.Repositories.Classes
         public async Task<IEnumerable<UserDTO>> GetOnlyUsers()
         {
             var onlyUsers = await _userManager.GetUsersInRoleAsync("User");
-            var onlyUserDTOs = _mapper.Map<IEnumerable<UserDTO>>(onlyUsers);
+            var sortedUsers = onlyUsers.OrderByDescending(u => u.CreationDate);
+            var onlyUserDTOs = _mapper.Map<IEnumerable<UserDTO>>(sortedUsers);
             return onlyUserDTOs;
         }
 
         public async Task<IEnumerable<UserDTO>> GetOnlyAdmins()
         {
             var onlyAdmins = await _userManager.GetUsersInRoleAsync("Admin");
-            var onlyAdminDTOs = _mapper.Map<IEnumerable<UserDTO>>(onlyAdmins);
+            var sortedUsers = onlyAdmins.OrderByDescending(u => u.CreationDate);
+            var onlyAdminDTOs = _mapper.Map<IEnumerable<UserDTO>>(sortedUsers);
             return onlyAdminDTOs;
         }
 
