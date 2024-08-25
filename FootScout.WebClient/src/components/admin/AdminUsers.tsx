@@ -390,7 +390,7 @@ const AdminUsers = () => {
                 {/* Search */}
                 <div>
                     <Form.Label><strong>Search</strong></Form.Label>
-                    <input
+                    <Form.Control
                         type="text"
                         className="form-control"
                         placeholder="Search"
@@ -466,6 +466,13 @@ const AdminUsers = () => {
                                         <Button variant="warning" className="button-spacing" onClick={() => handleShowEditModal(user.id)}>
                                             <i className="bi bi-pencil-square"></i>
                                         </Button>
+                                        {(user.id !== userId && userRoles[user.id] === Role.Admin) && (
+                                            <>
+                                                <Button variant="danger" className="button-spacing" onClick={() => handleShowDeleteModal(user.id)}>
+                                                    <i className="bi bi-trash"></i>
+                                                </Button>
+                                            </>
+                                        )}
                                         {userRoles[user.id] === Role.User && (
                                             <>
                                                 <Button variant="danger" className="button-spacing" onClick={() => handleShowDeleteModal(user.id)}>
@@ -477,7 +484,7 @@ const AdminUsers = () => {
                                                 </Button>
                                             </>
                                         )}
-                                        {user.id !== userId && (
+                                        {(user.id !== userId) && (
                                             <>
                                                 <span className="button-spacing">|</span>
                                                 <Button variant="info" onClick={() => handleOpenChat(user.id)}>

@@ -19,14 +19,14 @@ const AdminNavbarComponent = () => {
           <Nav className="me-auto blue-links">
             <Nav.Link as={NavLink} to="/admin/dashboard"><i className="bi bi-grid"></i> Dashboard</Nav.Link>
             <Nav.Link as={NavLink} to="/admin/users"><i className="bi bi-people-fill"></i> Users</Nav.Link>
-            <Nav.Link as={NavLink} to="/admin/users"><i className="bi bi-chat-text-fill"></i> Chats</Nav.Link>
+            <Nav.Link as={NavLink} to="/admin/chats"><i className="bi bi-chat-text-fill"></i> Chats</Nav.Link>
             <NavDropdown title={<><i className="bi bi-list-nested"></i> Advertisements</>} id="basic-nav-dropdown">
-              <NavDropdown.Item as={NavLink} to="/admin/users"><i className="bi bi-person-bounding-box"></i> Player's</NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/admin/users"><i className="bi bi-shield-fill"></i> Club's</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/admin/player-advertisements"><i className="bi bi-person-bounding-box"></i> Player's</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/admin/club-advertisements"><i className="bi bi-shield-fill"></i> Club's</NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title={<><i className="bi bi-briefcase-fill"></i> Offers</>} id="basic-nav-dropdown">
-              <NavDropdown.Item as={NavLink} to="/admin/users"><i className="bi bi-person-bounding-box"></i> Player's</NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/admin/users"><i className="bi bi-shield-fill"></i> Club's</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/admin/player-offers"><i className="bi bi-person-bounding-box"></i> Player's</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/admin/club-offers"><i className="bi bi-shield-fill"></i> Club's</NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title={<><i className="bi bi-graph-up-arrow"></i> Raports</>} id="basic-nav-dropdown">
               <NavDropdown.Item as={NavLink} to="/admin/users"><i className="bi bi-people-fill"></i> Users</NavDropdown.Item>

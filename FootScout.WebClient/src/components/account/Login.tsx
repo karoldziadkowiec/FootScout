@@ -32,10 +32,10 @@ const Login = () => {
     try {
       await AccountService.login(loginDTO);
       if (await AccountService.isRoleAdmin()) {
-        navigate('/admin/dashboard', { state: { toastMessage: "Successfully logged in to the admin panel." } });
+        navigate('/admin/dashboard');
       }
       else {
-        navigate('/home', { state: { toastMessage: "Successfully logged in." } });
+        navigate('/home');
       }
     }
     catch (error) {

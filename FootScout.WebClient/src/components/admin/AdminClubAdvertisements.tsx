@@ -3,36 +3,28 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Table, Button, Modal, Pagination, Form } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
-import UserService from '../../services/api/UserService';
 import TimeService from '../../services/time/TimeService';
 import PlayerPositionService from '../../services/api/PlayerPositionService';
 import ClubAdvertisementService from '../../services/api/ClubAdvertisementService';
-import FavoriteClubAdvertisementService from '../../services/api/FavoriteClubAdvertisementService';
+import ChatService from '../../services/api/ChatService';
 import PlayerPosition from '../../models/interfaces/PlayerPosition';
 import ClubAdvertisement from '../../models/interfaces/ClubAdvertisement';
-import FavoriteClubAdvertisement from '../../models/interfaces/FavoriteClubAdvertisement';
-import FavoriteClubAdvertisementCreateDTO from '../../models/dtos/FavoriteClubAdvertisementCreateDTO';
+import ChatCreateDTO from '../../models/dtos/ChatCreateDTO';
 import '../../App.css';
-import '../../styles/clubAdvertisement/ClubAdvertisements.css';
+import '../../styles/admin/AdminClubAdvertisements.css';
 
-const ClubAdvertisements = () => {
+const AdminClubAdvertisements = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [userId, setUserId] = useState<string | null>(null);
-    const [isAdminRole, setIsAdminRole] = useState<boolean | null>(null);
     const [positions, setPositions] = useState<PlayerPosition[]>([]);
     const [clubAdvertisements, setClubAdvertisements] = useState<ClubAdvertisement[]>([]);
-    const [favoriteClubAdvertisements, setFavoriteClubAdvertisements] = useState<FavoriteClubAdvertisement[]>([]);
-    const [favoriteClubAdvertisementIds, setFavoriteClubAdvertisementIds] = useState<number[]>([]);
-    const [showDeleteFavoriteModal, setShowDeleteFavoriteModal] = useState<boolean>(false);
-    const [deleteFavoriteId, setDeleteFavoriteId] = useState<number | null>(null);
-    const [favoriteClubAdvertisementDTO, setFavoriteClubAdvertisementDTO] = useState<FavoriteClubAdvertisementCreateDTO>({
-        clubAdvertisementId: 0,
-        userId: ''
-    });
+    const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+    const [deleteAdvertisementId, setDeleteAdvertisementId] = useState<number | null>(null);
     // Searching term
     const [searchTerm, setSearchTerm] = useState('');
     // Filtering position
+    const [selectedStatus, setSelectedStatus] = useState<string | 'all'>('all');
     const [selectedPosition, setSelectedPosition] = useState<string | ''>('');
     // Sorting
     const [sortCriteria, setSortCriteria] = useState('creationDateDesc');
@@ -48,9 +40,6 @@ const ClubAdvertisements = () => {
                 const userId = await AccountService.getId();
                 if (userId) {
                     setUserId(userId);
-
-                    const isAdmin = await AccountService.isRoleAdmin();
-                    setIsAdminRole(isAdmin);
                 }
             } catch (error) {
                 console.error('Failed to fetch user\'s data:', error);
@@ -71,32 +60,14 @@ const ClubAdvertisements = () => {
 
         const fetchClubAdvertisements = async () => {
             try {
-                const _clubAdvertisements = await ClubAdvertisementService.getActiveClubAdvertisements();
+                const _clubAdvertisements = await ClubAdvertisementService.getAllClubAdvertisements();
                 setClubAdvertisements(_clubAdvertisements);
-            } catch (error) {
+            }
+            catch (error) {
                 console.error('Failed to fetch club advertisements:', error);
                 toast.error('Failed to load club advertisements.');
             }
         };
-
-        const fetchFavoriteClubAdvertisements = async () => {
-            try {
-                if (userId) {
-                    const _favClubAdvertisements = await UserService.getUserActiveClubAdvertisementFavorites(userId);
-                    setFavoriteClubAdvertisements(_favClubAdvertisements);
-
-                    const favoriteIds = _favClubAdvertisements.map(fav => fav.clubAdvertisementId);
-                    setFavoriteClubAdvertisementIds(favoriteIds);
-                }
-            } catch (error) {
-                console.error('Failed to fetch favorite club advertisements:', error);
-                toast.error('Failed to load favorite club advertisements.');
-            }
-        };
-
-        if (userId) {
-            fetchFavoriteClubAdvertisements();
-        }
 
         fetchUserData();
         fetchPositions();
@@ -107,62 +78,54 @@ const ClubAdvertisements = () => {
         setCurrentPage(pageNumber);
     };
 
-    const moveToClubAdvertisementPage = (clubAdvertisementId: number) => {
+    const moveToPlayerAdvertisementPage = (clubAdvertisementId: number) => {
         navigate(`/club-advertisement/${clubAdvertisementId}`, { state: { clubAdvertisementId } });
     };
 
-    const handleShowDeleteFavoriteModal = (favoriteAdvertisementId: number) => {
-        setDeleteFavoriteId(favoriteAdvertisementId);
-        setShowDeleteFavoriteModal(true);
+    const handleShowDeleteModal = (advertisementId: number) => {
+        setDeleteAdvertisementId(advertisementId);
+        setShowDeleteModal(true);
     };
 
-    const handleDeleteFromFavorites = async () => {
-        if (!userId || !deleteFavoriteId)
+    const handleDeleteAdvertisement = async () => {
+        if (!deleteAdvertisementId)
             return;
 
         try {
-            await FavoriteClubAdvertisementService.deleteFromFavorites(deleteFavoriteId);
-            toast.success('Your followed advertisement has been deleted from favorites successfully.');
-            setShowDeleteFavoriteModal(false);
-            setDeleteFavoriteId(null);
-            // Refresh the user data
-            const _clubAdvertisements = await ClubAdvertisementService.getActiveClubAdvertisements();
+            await ClubAdvertisementService.deleteClubAdvertisement(deleteAdvertisementId);
+            setShowDeleteModal(false);
+            toast.success("Advertisement has been deleted successfully.");
+            //Refresh data
+            const _clubAdvertisements = await ClubAdvertisementService.getAllClubAdvertisements();
             setClubAdvertisements(_clubAdvertisements);
-
-            const _favClubAdvertisements = await UserService.getUserActiveClubAdvertisementFavorites(userId);
-            setFavoriteClubAdvertisements(_favClubAdvertisements);
-            const favoriteIds = _favClubAdvertisements.map(fav => fav.clubAdvertisementId);
-            setFavoriteClubAdvertisementIds(favoriteIds);
         }
         catch (error) {
-            console.error('Failed to delete advertisement from favorites:', error);
-            toast.error('Failed to delete advertisement from favorites.');
+            console.error('Failed to delete advertisement:', error);
+            toast.error('Failed to delete advertisement.');
         }
     };
 
-    const handleAddToFavorite = async (clubAdvertisement: ClubAdvertisement) => {
-        if (!clubAdvertisement || !userId)
+    const handleOpenChat = async (receiverId: string) => {
+        if (!receiverId || !userId)
             return;
 
         try {
-            const createFormData = { ...favoriteClubAdvertisementDTO, clubAdvertisementId: clubAdvertisement.id, userId: userId };
-            setFavoriteClubAdvertisementDTO(createFormData);
+            let chatId = await ChatService.getChatIdBetweenUsers(userId, receiverId);
 
-            await FavoriteClubAdvertisementService.addToFavorites(createFormData);
-            toast.success('Club advertisement has been added to favorites successfully.');
+            if (chatId === 0) {
+                const chatCreateDTO: ChatCreateDTO = {
+                    user1Id: userId,
+                    user2Id: receiverId
+                };
 
-            // Refresh the user data
-            const _clubAdvertisements = await ClubAdvertisementService.getActiveClubAdvertisements();
-            setClubAdvertisements(_clubAdvertisements);
-
-            const _favClubAdvertisements = await UserService.getUserActiveClubAdvertisementFavorites(userId);
-            setFavoriteClubAdvertisements(_favClubAdvertisements);
-            const favoriteIds = _favClubAdvertisements.map(fav => fav.clubAdvertisementId);
-            setFavoriteClubAdvertisementIds(favoriteIds);
+                await ChatService.createChat(chatCreateDTO);
+                chatId = await ChatService.getChatIdBetweenUsers(userId, receiverId);
+            }
+            navigate(`/chat/${chatId}`, { state: { chatId } });
         }
         catch (error) {
-            console.error('Failed to add advertisement to favorites:', error);
-            toast.error('Failed to add advertisement to favorites.');
+            console.error('Failed to open chat:', error);
+            toast.error('Failed to open chat.');
         }
     };
 
@@ -176,6 +139,22 @@ const ClubAdvertisements = () => {
             advertisement.league.toLowerCase().includes(lowerCaseSearchTerm) ||
             advertisement.region.toLowerCase().includes(lowerCaseSearchTerm)
         );
+    };
+
+    const filterAdvertisementsByStatus = (advertisements: ClubAdvertisement[]) => {
+        if (selectedStatus === 'all') {
+            return advertisements;
+        }
+
+        if (selectedStatus === 'active') {
+            return advertisements.filter(ad => new Date(ad.endDate).getTime() >= Date.now());
+        }
+        else if (selectedStatus === 'inactive') {
+            return advertisements.filter(ad => new Date(ad.endDate).getTime() < Date.now());
+        }
+        else {
+            return advertisements;
+        }
     };
 
     const filterAdvertisementsByPosition = (advertisements: ClubAdvertisement[]) => {
@@ -217,19 +196,16 @@ const ClubAdvertisements = () => {
     };
 
     const searchedAdvertisements = searchAdvertisements(clubAdvertisements);
-    const filteredAdvertisements = filterAdvertisementsByPosition(searchedAdvertisements);
-    const sortedAdvertisements = sortAdvertisements(filteredAdvertisements);
+    const filteredAdvertisementsByStatus = filterAdvertisementsByStatus(searchedAdvertisements);
+    const filteredAdvertisementsByPosition = filterAdvertisementsByPosition(filteredAdvertisementsByStatus);
+    const sortedAdvertisements = sortAdvertisements(filteredAdvertisementsByPosition);
     const currentClubAdvertisementItems = sortedAdvertisements.slice(indexOfFirstItem, indexOfLastItem);
     const totalPages = Math.ceil(sortedAdvertisements.length / itemsPerPage);
 
     return (
-        <div className="ClubAdvertisements">
+        <div className="AdminClubAdvertisements">
             <ToastContainer />
             <h1><i className="bi bi-list-nested"></i> Club Advertisements</h1>
-            <Button variant="success" className="form-button" onClick={() => navigate('/new-club-advertisement')}>
-                <i className="bi bi-file-earmark-plus-fill"></i>
-                New Advertisement
-            </Button>
             <p></p>
             <div className="d-flex align-items-center mb-3">
                 {/* Search */}
@@ -242,6 +218,19 @@ const ClubAdvertisements = () => {
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
+                </div>
+                {/* Status */}
+                <div className="ms-auto">
+                    <Form.Label><strong>Status</strong></Form.Label>
+                    <Form.Select
+                        as="select"
+                        value={selectedStatus}
+                        onChange={(e) => setSelectedStatus(e.target.value)}
+                    >
+                        <option value="all">All</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </Form.Select>
                 </div>
                 {/* Filter Positions */}
                 <div className="ms-auto">
@@ -287,6 +276,7 @@ const ClubAdvertisements = () => {
                     <thead className="table-dark">
                         <tr>
                             <th>Creation Date</th>
+                            <th>Status</th>
                             <th>Position</th>
                             <th>Club Name</th>
                             <th>League</th>
@@ -300,39 +290,43 @@ const ClubAdvertisements = () => {
                             currentClubAdvertisementItems.map((advertisement, index) => (
                                 <tr key={index}>
                                     <td className="ad-row">{TimeService.formatDateToEUR(advertisement.creationDate)}</td>
+                                    <td className="ad-row">
+                                        {new Date(advertisement.endDate).getTime() >= Date.now() ? (
+                                            <>
+                                                <i className="bi bi-check-circle-fill" style={{ color: 'green' }}></i> Active
+                                            </>
+                                        ) : (
+                                            <>
+                                                <i className="bi bi-x-circle-fill" style={{ color: 'red' }}></i> Inactive
+                                            </>
+                                        )}
+                                    </td>
                                     <td className="ad-row">{advertisement.playerPosition.positionName}</td>
                                     <td className="ad-row">{advertisement.clubName}</td>
                                     <td className="ad-row">{advertisement.league}</td>
                                     <td className="ad-row">{advertisement.region}</td>
                                     <td className="ad-row">{advertisement.salaryRange.min} - {advertisement.salaryRange.max}</td>
                                     <td className="ad-row">
-                                        <Button variant="dark" className="button-spacing" onClick={() => moveToClubAdvertisementPage(advertisement.id)}>
+                                        <Button variant="dark" className="button-spacing" onClick={() => moveToPlayerAdvertisementPage(advertisement.id)}>
                                             <i className="bi bi-info-square"></i>
                                         </Button>
-                                        {(advertisement.clubMemberId !== userId && !isAdminRole) && (
-                                            favoriteClubAdvertisementIds.includes(advertisement.id) ? (
-                                                <Button
-                                                    variant="danger"
-                                                    onClick={() => {
-                                                        const favorite = favoriteClubAdvertisements.find(fav => fav.clubAdvertisementId === advertisement.id);
-                                                        if (favorite) {
-                                                            handleShowDeleteFavoriteModal(favorite.id);
-                                                        }
-                                                    }}>
-                                                    <i className="bi bi-heart-fill"></i>
+                                        <Button variant="danger" className="button-spacing" onClick={() => handleShowDeleteModal(advertisement.id)}>
+                                            <i className="bi bi-trash"></i>
+                                        </Button>
+                                        {(advertisement.clubMemberId !== userId) && (
+                                            <>
+                                                <span className="button-spacing">|</span>
+                                                <Button variant="info" onClick={() => handleOpenChat(advertisement.clubMemberId)}>
+                                                    <i className="bi bi-chat-fill"></i>
                                                 </Button>
-                                            ) : (
-                                                <Button variant="success" onClick={() => handleAddToFavorite(advertisement)}>
-                                                    <i className="bi bi-heart"></i>
-                                                </Button>
-                                            )
+                                            </>
                                         )}
                                     </td>
                                 </tr>
                             ))
                         ) : (
                             <tr>
-                                <td colSpan={6} className="text-center">No club advertisement available</td>
+                                <td colSpan={8} className="text-center">No club advertisement available</td>
                             </tr>
                         )}
                     </tbody>
@@ -340,8 +334,8 @@ const ClubAdvertisements = () => {
             </div>
 
             {/* Pagination */}
-            <div className="pagination-container">
-                <Pagination className="pagination-green">
+            <div className="admin-pagination-container">
+                <Pagination className="pagination-blue">
                     <Pagination.Prev
                         onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
                         disabled={currentPage === 1}
@@ -362,19 +356,19 @@ const ClubAdvertisements = () => {
                 </Pagination>
             </div>
 
-            {/* Delete Favorite Club Advertisement Modal */}
-            <Modal show={showDeleteFavoriteModal} onHide={() => setShowDeleteFavoriteModal(false)}>
+            {/* Delete Advertisement Modal */}
+            <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>Confirm action</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Are you sure you want to delete this advertisement from favorites?</Modal.Body>
+                <Modal.Body>Are you sure you want to delete this advertisement?</Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowDeleteFavoriteModal(false)}>Cancel</Button>
-                    <Button variant="danger" onClick={handleDeleteFromFavorites}>Delete</Button>
+                    <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>Cancel</Button>
+                    <Button variant="danger" onClick={handleDeleteAdvertisement}>Delete</Button>
                 </Modal.Footer>
             </Modal>
         </div>
     );
 }
 
-export default ClubAdvertisements;
+export default AdminClubAdvertisements;

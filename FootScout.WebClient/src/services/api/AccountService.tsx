@@ -135,23 +135,43 @@ const AccountService = {
 
   async makeAnAdmin(userId: string): Promise<void> {
     try {
-        const authorizationHeader = await AccountService.getAuthorizationHeader();
-        await axios.post(`${ApiURL}/account/roles/${userId}`, userId, {
-            headers: {
-                'Authorization': authorizationHeader
-            }
-        });
+      const authorizationHeader = await AccountService.getAuthorizationHeader();
+      await axios.post(`${ApiURL}/account/roles/make-admin/${userId}`, userId, {
+        headers: {
+          'Authorization': authorizationHeader
+        }
+      });
     }
     catch (error) {
-        if (axios.isAxiosError(error)) {
-            console.error('Error making an admin, details:', error.response?.data || error.message);
-        }
-        else {
-            console.error('Unexpected error:', error);
-        }
-        throw error;
+      if (axios.isAxiosError(error)) {
+        console.error('Error making an admin, details:', error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
+      throw error;
     }
-},
+  },
+
+  async makeAnUser(userId: string): Promise<void> {
+    try {
+      const authorizationHeader = await AccountService.getAuthorizationHeader();
+      await axios.post(`${ApiURL}/account/roles/make-user/${userId}`, userId, {
+        headers: {
+          'Authorization': authorizationHeader
+        }
+      });
+    }
+    catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Error making an user, details:', error.response?.data || error.message);
+      }
+      else {
+        console.error('Unexpected error:', error);
+      }
+      throw error;
+    }
+  }
 };
 
 export default AccountService;

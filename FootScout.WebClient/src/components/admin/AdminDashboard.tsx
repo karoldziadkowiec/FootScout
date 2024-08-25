@@ -3,7 +3,6 @@ import { To, useLocation, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { Card, Row, Col, Button } from 'react-bootstrap';
 import UserService from '../../services/api/UserService';
-import ClubHistoryService from '../../services/api/ClubHistoryService';
 import ChatService from '../../services/api/ChatService';
 import ProblemService from '../../services/api/ProblemService';
 import PlayerAdvertisementService from '../../services/api/PlayerAdvertisementService';
@@ -109,7 +108,7 @@ const AdminDashboard = () => {
                     </Card>
                 </Col>
                 <Col md={4} className="mb-4">
-                    <Card bg="info" text="white" onClick={() => handleCardClick('/admin/users')} className="clickable-card">
+                    <Card bg="info" text="white" onClick={() => handleCardClick('/admin/chats')} className="clickable-card">
                         <Card.Body>
                             <Card.Title><i className="bi bi-chat-text-fill"></i></Card.Title>
                             <Card.Title>Chats</Card.Title>
@@ -133,7 +132,7 @@ const AdminDashboard = () => {
             </Row>
             <Row>
                 <Col md={3} className="mb-4">
-                    <Card bg="success" text="white" onClick={() => handleCardClick('/admin/users')} className="clickable-card">
+                    <Card bg="success" text="white" onClick={() => handleCardClick('/admin/player-advertisements')} className="clickable-card">
                         <Card.Body>
                             <Card.Title><i className="bi bi-person-bounding-box"></i></Card.Title>
                             <Card.Title>Player Advertisement</Card.Title>
@@ -144,7 +143,7 @@ const AdminDashboard = () => {
                     </Card>
                 </Col>
                 <Col md={3} className="mb-4">
-                    <Card bg="warning" text="white" onClick={() => handleCardClick('/admin/users')} className="clickable-card">
+                    <Card bg="warning" text="white" onClick={() => handleCardClick('/admin/club-advertisements')} className="clickable-card">
                         <Card.Body>
                             <Card.Title><i className="bi bi-shield-fill"></i></Card.Title>
                             <Card.Title>Club Advertisements</Card.Title>
@@ -155,7 +154,7 @@ const AdminDashboard = () => {
                     </Card>
                 </Col>
                 <Col md={3} className="mb-4">
-                    <Card bg="dark" text="white" onClick={() => handleCardClick('/admin/users')} className="clickable-card">
+                    <Card bg="dark" text="white" onClick={() => handleCardClick('/admin/player-offers')} className="clickable-card">
                         <Card.Body>
                             <Card.Title><i className="bi bi-briefcase"></i></Card.Title>
                             <Card.Title>Player Offers</Card.Title>
@@ -166,7 +165,7 @@ const AdminDashboard = () => {
                     </Card>
                 </Col>
                 <Col md={3} className="mb-4">
-                    <Card bg="secondary" text="white" onClick={() => handleCardClick('/admin/users')} className="clickable-card">
+                    <Card bg="secondary" text="white" onClick={() => handleCardClick('/admin/club-offers')} className="clickable-card">
                         <Card.Body>
                             <Card.Title><i className="bi bi-briefcase-fill"></i></Card.Title>
                             <Card.Title>Club Offers</Card.Title>
