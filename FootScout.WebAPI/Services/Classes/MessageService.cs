@@ -15,6 +15,21 @@ namespace FootScout.WebAPI.Services.Classes
             _dbContext = dbContext;
         }
 
+        public async Task<IEnumerable<Message>> GetAllMessages()
+        {
+            return await _dbContext.Messages
+                .Include(m => m.Chat)
+                .Include(m => m.Sender)
+                .Include(m => m.Receiver)
+                .OrderBy(m => m.Timestamp)
+                .ToListAsync();
+        }
+
+        public async Task<int> GetAllMessagesCount()
+        {
+            return await _dbContext.Messages.CountAsync();
+        }
+
         public async Task<IEnumerable<Message>> GetMessagesForChat(int chatId)
         {
             return await _dbContext.Messages
@@ -29,9 +44,6 @@ namespace FootScout.WebAPI.Services.Classes
         public async Task<int> GetMessagesForChatCount(int chatId)
         {
             return await _dbContext.Messages
-                .Include(m => m.Chat)
-                .Include(m => m.Sender)
-                .Include(m => m.Receiver)
                 .Where(m => m.ChatId == chatId)
                 .CountAsync();
         }

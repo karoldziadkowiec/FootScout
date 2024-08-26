@@ -76,5 +76,13 @@ namespace FootScout.WebAPI.Controllers
             await _chatService.DeleteChat(chatId);
             return NoContent();
         }
+
+        // GET: api/chats/export
+        [HttpGet("export")]
+        public async Task<IActionResult> ExportChatsToCsv()
+        {
+            var csvStream = await _chatService.ExportChatsToCsv();
+            return File(csvStream, "text/csv", "chats.csv");
+        }
     }
 }

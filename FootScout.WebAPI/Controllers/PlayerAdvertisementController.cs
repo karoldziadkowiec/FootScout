@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using FootScout.WebAPI.Entities;
 using FootScout.WebAPI.Models.DTOs;
-using FootScout.WebAPI.Repositories.Classes;
 using FootScout.WebAPI.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -108,6 +107,14 @@ namespace FootScout.WebAPI.Controllers
 
             await _playerAdvertisementRepository.DeletePlayerAdvertisement(playerAdvertisementId);
             return NoContent();
+        }
+
+        // GET: api/player-advertisements/export
+        [HttpGet("export")]
+        public async Task<IActionResult> ExportPlayerAdvertisementsToCsv()
+        {
+            var csvStream = await _playerAdvertisementRepository.ExportPlayerAdvertisementsToCsv();
+            return File(csvStream, "text/csv", "player-advertisements.csv");
         }
     }
 }

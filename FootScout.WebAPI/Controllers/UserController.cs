@@ -270,5 +270,13 @@ namespace FootScout.WebAPI.Controllers
             var userChats = await _userRepository.GetUserChats(userId);
             return Ok(userChats);
         }
+
+        // GET: api/users/export
+        [HttpGet("export")]
+        public async Task<IActionResult> ExportUsersToCsv()
+        {
+            var csvStream = await _userRepository.ExportUsersToCsv();
+            return File(csvStream, "text/csv", "users.csv");
+        }
     }
 }

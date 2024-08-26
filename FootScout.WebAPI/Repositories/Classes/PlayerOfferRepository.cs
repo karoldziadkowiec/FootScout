@@ -2,6 +2,7 @@
 using FootScout.WebAPI.Entities;
 using FootScout.WebAPI.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 namespace FootScout.WebAPI.Repositories.Classes
 {
@@ -151,6 +152,23 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .FirstOrDefaultAsync();
 
             return offerStatusId;
+        }
+
+        public async Task<MemoryStream> ExportPlayerOffersToCsv()
+        {
+            var playerOffers = await GetPlayerOffers();
+            var csv = new StringBuilder();
+            csv.AppendLine("Offer Status,E-mail,First Name,Last Name,Position,Age,Height,Foot,Salary,Additional Information,Club Member's E-mail,Club Member's First Name,Club Member's Last Name,Club Name,League,Region,Creation Date,End Date");
+
+            foreach (var offer in playerOffers)
+            {
+                csv.AppendLine($"{offer.OfferStatus.StatusName},{offer.Player.Email},{offer.Player.FirstName},{offer.Player.LastName},{offer.PlayerPosition.PositionName},{offer.Age},{offer.Height},{offer.PlayerFoot.FootName},{offer.Salary},{offer.AdditionalInformation},{offer.ClubAdvertisement.ClubMember.Email},{offer.ClubAdvertisement.ClubMember.FirstName},{offer.ClubAdvertisement.ClubMember.LastName},{offer.ClubAdvertisement.ClubName},{offer.ClubAdvertisement.League},{offer.ClubAdvertisement.Region}{offer.CreationDate:yyyy-MM-dd},{offer.ClubAdvertisement.EndDate:yyyy-MM-dd}");
+            }
+
+            var byteArray = Encoding.UTF8.GetBytes(csv.ToString());
+            var csvStream = new MemoryStream(byteArray);
+
+            return csvStream;
         }
     }
 }

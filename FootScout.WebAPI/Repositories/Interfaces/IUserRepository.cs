@@ -32,5 +32,6 @@ namespace FootScout.WebAPI.Repositories.Interfaces
         Task<IEnumerable<PlayerOffer>> GetReceivedPlayerOffers(string userId);
         Task<IEnumerable<PlayerOffer>> GetSentPlayerOffers(string userId);
         Task<IEnumerable<Chat>> GetUserChats(string userId);
+        Task<MemoryStream> ExportUsersToCsv();
     }
 }

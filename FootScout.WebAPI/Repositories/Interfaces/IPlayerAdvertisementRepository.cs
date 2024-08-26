@@ -12,5 +12,6 @@ namespace FootScout.WebAPI.Repositories.Interfaces
         Task CreatePlayerAdvertisement(PlayerAdvertisement playerAdvertisement);
         Task UpdatePlayerAdvertisement(PlayerAdvertisement playerAdvertisement);
         Task DeletePlayerAdvertisement(int playerAdvertisementId);
+        Task<MemoryStream> ExportPlayerAdvertisementsToCsv();
     }
 }

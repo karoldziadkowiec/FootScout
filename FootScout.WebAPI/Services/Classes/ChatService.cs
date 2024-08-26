@@ -3,6 +3,7 @@ using FootScout.WebAPI.Entities;
 using FootScout.WebAPI.Models.DTOs;
 using FootScout.WebAPI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 namespace FootScout.WebAPI.Services.Classes
 {
@@ -66,6 +67,23 @@ namespace FootScout.WebAPI.Services.Classes
 
             _dbContext.Chats.Remove(chat);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<MemoryStream> ExportChatsToCsv()
+        {
+            var chats = await GetChats();
+            var csv = new StringBuilder();
+            csv.AppendLine("Chat Id,User1 E-mail,User1 First Name,User1 Last Name,User2 E-mail,User2 First Name,User2 Last Name");
+
+            foreach (var chat in chats)
+            {
+                csv.AppendLine($"{chat.Id},{chat.User1.Email},{chat.User1.FirstName},{chat.User1.LastName},{chat.User2.Email},{chat.User2.FirstName},{chat.User2.LastName}");
+            }
+
+            var byteArray = Encoding.UTF8.GetBytes(csv.ToString());
+            var csvStream = new MemoryStream(byteArray);
+
+            return csvStream;
         }
     }
 }

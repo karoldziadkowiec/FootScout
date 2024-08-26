@@ -2,6 +2,7 @@
 using FootScout.WebAPI.Entities;
 using FootScout.WebAPI.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 namespace FootScout.WebAPI.Repositories.Classes
 {
@@ -100,6 +101,23 @@ namespace FootScout.WebAPI.Repositories.Classes
 
             _dbContext.ClubAdvertisements.Remove(clubAdvertisement);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<MemoryStream> ExportClubAdvertisementsToCsv()
+        {
+            var clubAdvertisements = await GetAllClubAdvertisements();
+            var csv = new StringBuilder();
+            csv.AppendLine("E-mail,First Name,Last Name,Position,Club Name,League,Region,Min Salary,Max Salary,Creation Date,End Date");
+
+            foreach (var ad in clubAdvertisements)
+            {
+                csv.AppendLine($"{ad.ClubMember.Email},{ad.ClubMember.FirstName},{ad.ClubMember.LastName},{ad.PlayerPosition.PositionName},{ad.ClubName},{ad.League},{ad.Region},{ad.SalaryRange.Min},{ad.SalaryRange.Max},{ad.CreationDate:yyyy-MM-dd},{ad.EndDate:yyyy-MM-dd}");
+            }
+
+            var byteArray = Encoding.UTF8.GetBytes(csv.ToString());
+            var csvStream = new MemoryStream(byteArray);
+
+            return csvStream;
         }
     }
 }

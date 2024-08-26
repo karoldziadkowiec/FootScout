@@ -10,5 +10,6 @@ namespace FootScout.WebAPI.Services.Interfaces
         Task<int> GetChatIdBetweenUsers(string user1Id, string user2Id);
         Task CreateChat(Chat chat);
         Task DeleteChat(int chatId);
+        Task<MemoryStream> ExportChatsToCsv();
     }
 }

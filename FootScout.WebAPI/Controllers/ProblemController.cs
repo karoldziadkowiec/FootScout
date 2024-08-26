@@ -48,6 +48,14 @@ namespace FootScout.WebAPI.Controllers
             return Ok(solvedProblemss);
         }
 
+        // GET: api/problems/solved/count
+        [HttpGet("solved/count")]
+        public async Task<IActionResult> GetSolvedProblemCount()
+        {
+            int count = await _problemRepository.GetSolvedProblemCount();
+            return Ok(count);
+        }
+
         // GET: api/problems/unsolved
         [HttpGet("unsolved")]
         public async Task<ActionResult<IEnumerable<Problem>>> GetUnsolvedProblems()
@@ -89,6 +97,14 @@ namespace FootScout.WebAPI.Controllers
 
             await _problemRepository.CheckProblemSolved(problem);
             return NoContent();
+        }
+
+        // GET: api/problems/export
+        [HttpGet("export")]
+        public async Task<IActionResult> ExportProblemsToCsv()
+        {
+            var csvStream = await _problemRepository.ExportProblemsToCsv();
+            return File(csvStream, "text/csv", "problems.csv");
         }
     }
 }

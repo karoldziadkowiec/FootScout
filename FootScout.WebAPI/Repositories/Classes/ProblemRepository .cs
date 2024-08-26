@@ -2,6 +2,7 @@
 using FootScout.WebAPI.Entities;
 using FootScout.WebAPI.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 namespace FootScout.WebAPI.Repositories.Classes
 {
@@ -38,6 +39,11 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .ToListAsync();
         }
 
+        public async Task<int> GetSolvedProblemCount()
+        {
+            return await _dbContext.Problems.Where(p => p.IsSolved == true).CountAsync();
+        }
+
         public async Task<IEnumerable<Problem>> GetUnsolvedProblems()
         {
             return await _dbContext.Problems
@@ -67,6 +73,23 @@ namespace FootScout.WebAPI.Repositories.Classes
 
             _dbContext.Problems.Update(problem);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<MemoryStream> ExportProblemsToCsv()
+        {
+            var problems = await GetAllProblems();
+            var csv = new StringBuilder();
+            csv.AppendLine("Chat Id,Is Solved,Requester E-mail,Requester First Name,Requester Last Name,Title,Description,Creation Date");
+
+            foreach (var problem in problems)
+            {
+                csv.AppendLine($"{problem.Id},{problem.IsSolved},{problem.Requester.Email},{problem.Requester.FirstName},{problem.Requester.LastName},{problem.Title},{problem.Description},{problem.CreationDate:yyyy-MM-dd}");
+            }
+
+            var byteArray = Encoding.UTF8.GetBytes(csv.ToString());
+            var csvStream = new MemoryStream(byteArray);
+
+            return csvStream;
         }
     }
 }

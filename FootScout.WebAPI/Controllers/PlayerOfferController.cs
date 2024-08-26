@@ -144,5 +144,13 @@ namespace FootScout.WebAPI.Controllers
             var playerOfferStatusId = await _playerOfferRepository.GetPlayerOfferStatusId(clubAdvertisementId, userId);
             return Ok(playerOfferStatusId);
         }
+
+        // GET: api/player-offers/export
+        [HttpGet("export")]
+        public async Task<IActionResult> ExportPlayerOffersToCsv()
+        {
+            var csvStream = await _playerOfferRepository.ExportPlayerOffersToCsv();
+            return File(csvStream, "text/csv", "player-offers.csv");
+        }
     }
 }

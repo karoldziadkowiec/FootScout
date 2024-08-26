@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using FootScout.WebAPI.Entities;
 using FootScout.WebAPI.Models.DTOs;
-using FootScout.WebAPI.Repositories.Classes;
 using FootScout.WebAPI.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -144,6 +143,14 @@ namespace FootScout.WebAPI.Controllers
         {
             var clubOfferStatusId = await _clubOfferRepository.GetClubOfferStatusId(playerAdvertisementId, userId);
             return Ok(clubOfferStatusId);
+        }
+
+        // GET: api/club-offers/export
+        [HttpGet("export")]
+        public async Task<IActionResult> ExportClubOffersToCsv()
+        {
+            var csvStream = await _clubOfferRepository.ExportClubOffersToCsv();
+            return File(csvStream, "text/csv", "club-offers.csv");
         }
     }
 }

@@ -16,6 +16,22 @@ namespace FootScout.WebAPI.Controllers
             _messageService = messageService;
         }
 
+        // GET: api/messages
+        [HttpGet]
+        public async Task<IActionResult> GetAllMessages()
+        {
+            var messages = await _messageService.GetAllMessages();
+            return Ok(messages);
+        }
+
+        // GET: api/messages/count
+        [HttpGet("count")]
+        public async Task<IActionResult> GetAllMessagesCount()
+        {
+            int count = await _messageService.GetAllMessagesCount();
+            return Ok(count);
+        }
+
         // GET: api/messages/chat/:chatId
         [HttpGet("chat/{chatId}")]
         public async Task<IActionResult> GetMessagesForChat(int chatId)

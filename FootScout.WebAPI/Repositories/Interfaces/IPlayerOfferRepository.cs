@@ -15,5 +15,6 @@ namespace FootScout.WebAPI.Repositories.Interfaces
         Task AcceptPlayerOffer(PlayerOffer playerOffer);
         Task RejectPlayerOffer(PlayerOffer playerOffer);
         Task<int> GetPlayerOfferStatusId(int clubAdvertisementId, string userId);
+        Task<MemoryStream> ExportPlayerOffersToCsv();
     }
 }

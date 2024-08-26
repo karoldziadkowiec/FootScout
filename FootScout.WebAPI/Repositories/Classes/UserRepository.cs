@@ -6,6 +6,7 @@ using FootScout.WebAPI.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Text;
 
 namespace FootScout.WebAPI.Repositories.Classes
 {
@@ -459,5 +460,21 @@ namespace FootScout.WebAPI.Repositories.Classes
                 .ToList();
         }
 
+        public async Task<MemoryStream> ExportUsersToCsv()
+        {
+            var users = await GetUsers();
+            var csv = new StringBuilder();
+            csv.AppendLine("E-mail,First Name,Last Name,Phone Number,Location,Creation Date");
+
+            foreach (var user in users)
+            {
+                csv.AppendLine($"{user.Email},{user.FirstName},{user.LastName},{user.PhoneNumber},{user.Location},{user.CreationDate:yyyy-MM-dd}");
+            }
+
+            var byteArray = Encoding.UTF8.GetBytes(csv.ToString());
+            var csvStream = new MemoryStream(byteArray);
+
+            return csvStream;
+        }
     }
 }
