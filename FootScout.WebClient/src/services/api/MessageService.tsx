@@ -4,6 +4,48 @@ import AccountService from './AccountService';
 import Message from '../../models/interfaces/Message';
 
 const MessageService = {
+    async getAllMessages(): Promise<Message[]> {
+        try {
+            const authorizationHeader = await AccountService.getAuthorizationHeader();
+            const response = await axios.get<Message[]>(`${ApiURL}/messages`, {
+                headers: {
+                    'Authorization': authorizationHeader
+                }
+            });
+            return response.data;
+        }
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.error('Error fetching all messages, details:', error.response?.data || error.message);
+            }
+            else {
+                console.error('Unexpected error:', error);
+            }
+            throw error;
+        }
+    },
+
+    async getAllMessagesCount(): Promise<number> {
+        try {
+            const authorizationHeader = await AccountService.getAuthorizationHeader();
+            const response = await axios.get<number>(`${ApiURL}/messages/count`, {
+                headers: {
+                    'Authorization': authorizationHeader
+                }
+            });
+            return response.data;
+        }
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.error('Error fetching messages count, details:', error.response?.data || error.message);
+            }
+            else {
+                console.error('Unexpected error:', error);
+            }
+            throw error;
+        }
+    },
+
     async getMessagesForChat(chatId: number): Promise<Message[]> {
         try {
             const authorizationHeader = await AccountService.getAuthorizationHeader();
@@ -16,7 +58,7 @@ const MessageService = {
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                console.error('Error fetching messages, details:', error.response?.data || error.message);
+                console.error('Error fetching messages for chat, details:', error.response?.data || error.message);
             }
             else {
                 console.error('Unexpected error:', error);

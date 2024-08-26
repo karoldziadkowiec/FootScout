@@ -14,6 +14,7 @@ const AdminChats = () => {
     const location = useLocation();
     const [chatRooms, setChatRooms] = useState<ChatModel[]>([]);
     const [lastMessageDates, setLastMessageDates] = useState<Map<number, string>>(new Map());
+    const [messagesCounters, setMessagesCounters] = useState<Map<number, number>>(new Map());
     const [showDeleteChatRoomModal, setShowDeleteChatRoomModal] = useState<boolean>(false);
     const [deleteChatRoomId, setDeleteChatRoomId] = useState<number | null>(null);
     // Searching term
@@ -36,7 +37,7 @@ const AdminChats = () => {
                 const _chatRooms = await ChatService.getChats();
                 setChatRooms(_chatRooms);
 
-                await fetchLastMessageDates(_chatRooms);
+                await fetchDataForSpecificChatRoom(_chatRooms);
             }
             catch (error) {
                 console.error('Failed to fetch chats:', error);
@@ -47,18 +48,24 @@ const AdminChats = () => {
         fetchChats();
     }, [location]);
 
-    const fetchLastMessageDates = async (chats: ChatModel[]) => {
+    const fetchDataForSpecificChatRoom = async (chats: ChatModel[]) => {
         const dates = new Map<number, string>();
+        const counters = new Map<number, number>();
+
         for (const chat of chats) {
             try {
                 const date = await MessageService.getLastMessageDateForChat(chat.id);
                 dates.set(chat.id, date === '0001-01-01T00:00:00' ? '-' : date);
+
+                const counter = await MessageService.getMessagesForChatCount(chat.id);
+                counters.set(chat.id, counter);
             }
             catch (error) {
                 console.error(`Failed to fetch last message date for chat ${chat.id}:`, error);
             }
         }
         setLastMessageDates(dates);
+        setMessagesCounters(counters);
     };
 
     const handlePageChange = (pageNumber: number) => {
@@ -86,7 +93,7 @@ const AdminChats = () => {
             // Refresh the chat data
             const _chatRooms = await ChatService.getChats();
             setChatRooms(_chatRooms);
-            await fetchLastMessageDates(_chatRooms);
+            await fetchDataForSpecificChatRoom(_chatRooms);
         }
         catch (error) {
             console.error('Failed to delete chat room:', error);
@@ -107,16 +114,23 @@ const AdminChats = () => {
         );
     };
 
-    const sortChats = (chats: ChatModel[], lastMessageDates: Map<number, string>) => {
+    const sortChats = (chats: ChatModel[], lastMessageDates: Map<number, string>, messagesCounters: Map<number, number>) => {
         return chats.sort((a, b) => {
             const lastMessageDateA = lastMessageDates.get(a.id) || '';
             const lastMessageDateB = lastMessageDates.get(b.id) || '';
+
+            const messagesCounterA = messagesCounters.get(a.id) || 0;
+            const messagesCounterB = messagesCounters.get(b.id) || 0;
 
             switch (sortCriteria) {
                 case 'lastMessageAsc':
                     return lastMessageDateA.localeCompare(lastMessageDateB);
                 case 'lastMessageDesc':
                     return lastMessageDateB.localeCompare(lastMessageDateA);
+                case 'messagesCounterAsc':
+                    return messagesCounterA - messagesCounterB;
+                case 'messagesCounterDesc':
+                    return messagesCounterB - messagesCounterA;
                 default:
                     return 0;
             }
@@ -124,7 +138,7 @@ const AdminChats = () => {
     };
 
     const searchedChats = searchChats(chatRooms);
-    const sortedChats = sortChats(searchedChats, lastMessageDates);
+    const sortedChats = sortChats(searchedChats, lastMessageDates, messagesCounters);
     const currentChatItems = sortedChats.slice(indexOfFirstItem, indexOfLastItem);
     const totalPages = Math.ceil(sortedChats.length / itemsPerPage);
 
@@ -155,6 +169,8 @@ const AdminChats = () => {
                     >
                         <option value="lastMessageAsc">Last Message Ascending</option>
                         <option value="lastMessageDesc">Last Message Descending</option>
+                        <option value="messagesCounterAsc">Messages Counter Ascending</option>
+                        <option value="messagesCounterDesc">Messages Counter Descending</option>
                     </Form.Select>
                 </div>
             </div>
@@ -165,6 +181,7 @@ const AdminChats = () => {
                             <th>User 1</th>
                             <th>User 2</th>
                             <th>Last message</th>
+                            <th>Messages count</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -180,6 +197,9 @@ const AdminChats = () => {
                                     </td>
                                     <td className="chat-room-row">
                                         {TimeService.formatDateToEURWithHour(lastMessageDates.get(chat.id) || '') || 'No messages'}
+                                    </td>
+                                    <td className="chat-room-row">
+                                        {messagesCounters.get(chat.id) || 0}
                                     </td>
                                     <td className="chat-room-row">
                                         <Button variant="info" className="button-spacing" onClick={() => moveToSpecificChatPage(chat.id)}>

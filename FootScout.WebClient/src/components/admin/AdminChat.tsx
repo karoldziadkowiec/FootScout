@@ -19,6 +19,7 @@ const AdminChat = () => {
     const [user1, setUser1] = useState<UserDTO | null>(null);
     const [user2, setUser2] = useState<UserDTO | null>(null);
     const [messages, setMessages] = useState<Message[]>([]);
+    const [messagesCount, setMessagesCount] = useState<number>(0);
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
     const [showDeleteChatRoomModal, setShowDeleteChatRoomModal] = useState<boolean>(false);
     const [showDeleteMessageModal, setShowDeleteMessageModal] = useState<boolean>(false);
@@ -35,6 +36,9 @@ const AdminChat = () => {
 
                 const _messages = await MessageService.getMessagesForChat(id);
                 setMessages(_messages);
+
+                const _messagesCount = await MessageService.getMessagesForChatCount(id);
+                setMessagesCount(_messagesCount);
             }
             catch (error) {
                 console.error('Failed to fetch chat data:', error);
@@ -64,6 +68,9 @@ const AdminChat = () => {
     const refreshData = async () => {
         const _messages = await MessageService.getMessagesForChat(Number(id));
         setMessages(_messages);
+
+        const _messagesCount = await MessageService.getMessagesForChatCount(Number(id));
+        setMessagesCount(_messagesCount);
     };
 
     const handleDeleteChatRoom = async () => {
@@ -95,9 +102,10 @@ const AdminChat = () => {
             toast.success('Message has been deleted successfully.');
             setShowDeleteMessageModal(false);
             setDeleteMessageId(null);
-            // Refresh the chat data
             const _messages = await MessageService.getMessagesForChat(chatData.id);
             setMessages(_messages);
+            const _messagesCount = await MessageService.getMessagesForChatCount(chatData.id);
+            setMessagesCount(_messagesCount);
         }
         catch (error) {
             console.error('Failed to delete message:', error);
@@ -109,9 +117,7 @@ const AdminChat = () => {
         <div className="AdminChat">
             <ToastContainer />
             <h1><i className="bi bi-chat-dots"></i> Manage Chat</h1>
-            <Button variant="dark" onClick={refreshData}>
-                <i className="bi bi-arrow-repeat"></i> Refresh
-            </Button>
+            <h4>Messages count: <strong>{messagesCount}</strong></h4>
             <div className="chat-container">
                 <Navbar bg="dark" variant="dark" className="sticky-top">
                     <Container>
@@ -121,6 +127,9 @@ const AdminChat = () => {
                                     {user1?.firstName} {user1?.lastName} - {user2?.firstName} {user2?.lastName}
                                 </Col>
                                 <Col xs="auto">
+                                    <Button variant="info" size='sm' className="button-spacing" onClick={refreshData}>
+                                        <i className="bi bi-arrow-repeat"></i>
+                                    </Button>
                                     <Button variant="danger" size='sm' onClick={() => setShowDeleteChatRoomModal(true)}>
                                         <i className="bi bi-trash"></i>
                                     </Button>
@@ -133,7 +142,7 @@ const AdminChat = () => {
                     {messages.length > 0 ? (
                         messages.map((message, index) => (
                             <Row key={index} className="my-2">
-                                <Col xs={message.senderId === user2?.id ? { span: 7, offset: 5 } : 7}>
+                                <Col xs={12} sm={message.senderId === user2?.id ? { span: 7, offset: 5 } : 7}>
                                     <Row className="d-flex justify-content-between align-items-center">
                                         <Col xs="auto">
                                             {message.sender ? `${message.sender.firstName} ${message.sender.lastName}` : 'Sender'}
@@ -163,12 +172,10 @@ const AdminChat = () => {
                             <p>Waiting for first message...</p>
                         </div>
                     )}
-                    {/* Scrolling down */}
                     <div ref={messagesEndRef} />
                 </div>
             </div>
 
-            {/* Delete Chat Room Modal */}
             <Modal show={showDeleteChatRoomModal} onHide={() => setShowDeleteChatRoomModal(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>Confirm action</Modal.Title>
@@ -180,7 +187,6 @@ const AdminChat = () => {
                 </Modal.Footer>
             </Modal>
 
-            {/* Delete Message Modal */}
             <Modal show={showDeleteMessageModal} onHide={() => setShowDeleteMessageModal(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>Confirm action</Modal.Title>

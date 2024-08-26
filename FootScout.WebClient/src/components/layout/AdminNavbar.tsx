@@ -28,14 +28,13 @@ const AdminNavbarComponent = () => {
               <NavDropdown.Item as={NavLink} to="/admin/player-offers"><i className="bi bi-person-bounding-box"></i> Player's</NavDropdown.Item>
               <NavDropdown.Item as={NavLink} to="/admin/club-offers"><i className="bi bi-shield-fill"></i> Club's</NavDropdown.Item>
             </NavDropdown>
-            <NavDropdown title={<><i className="bi bi-graph-up-arrow"></i> Raports</>} id="basic-nav-dropdown">
-              <NavDropdown.Item as={NavLink} to="/admin/users"><i className="bi bi-people-fill"></i> Users</NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/admin/users"><i className="bi bi-clock-history"></i> Club History</NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/admin/users"><i className="bi bi-chat-text-fill"></i> Chats</NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/admin/users"><i className="bi bi-person-bounding-box"></i> Player Advertisements</NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/admin/users"><i className="bi bi-shield-fill"></i> Club Advertisements</NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/admin/users"><i className="bi bi-briefcase"></i> Player Offers</NavDropdown.Item>
-              <NavDropdown.Item as={NavLink} to="/admin/users"><i className="bi bi-briefcase-fill"></i> Club Offers</NavDropdown.Item>
+            <NavDropdown title={<><i className="bi bi-graph-up-arrow"></i> Raports & Stats</>} id="basic-nav-dropdown">
+              <NavDropdown.Item as={NavLink} to="/admin/raports/users"><i className="bi bi-people-fill"></i> Users</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/admin/raports/chats"><i className="bi bi-chat-text-fill"></i> Chats</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/admin/raports/player-advertisements"><i className="bi bi-person-bounding-box"></i> Player Advertisements</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/admin/raports/club-advertisements"><i className="bi bi-shield-fill"></i> Club Advertisements</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/admin/raports/player-offers"><i className="bi bi-briefcase"></i> Player Offers</NavDropdown.Item>
+              <NavDropdown.Item as={NavLink} to="/admin/raports/club-offers"><i className="bi bi-briefcase-fill"></i> Club Offers</NavDropdown.Item>
             </NavDropdown>
             <NavDropdown title={<><i className="bi bi-gear-fill"></i> Service</>} id="basic-nav-dropdown">
               <NavDropdown.Item as={NavLink} to="/admin/support"><i className="bi bi-cone-striped"></i> Reported Problems</NavDropdown.Item>

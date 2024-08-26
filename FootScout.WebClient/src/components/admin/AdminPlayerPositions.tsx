@@ -66,7 +66,7 @@ const AdminPlayerPositions = () => {
             <ToastContainer />
             <h1><i className="bi bi-person-standing"></i> Player Positions</h1>
             <p></p>
-            <h3>Count: {positionCount}</h3>
+            <h3>Count: <strong>{positionCount}</strong></h3>
             <p></p>
             <Button variant="primary" className="form-button" onClick={() => setShowCreateModal(true)}>
                 <i className="bi bi-file-earmark-plus"></i>

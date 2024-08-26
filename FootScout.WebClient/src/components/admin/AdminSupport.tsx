@@ -15,7 +15,9 @@ const AdminSupport = () => {
     const navigate = useNavigate();
     const [userId, setUserId] = useState<string | null>();
     const [unsolvedProblems, setUnsolvedProblems] = useState<Problem[]>([]);
+    const [unsolvedProblemCount, setUnsolvedProblemCount] = useState<number>(0);
     const [solvedProblems, setSolvedProblems] = useState<Problem[]>([]);
+    const [solvedProblemCount, setSolvedProblemCount] = useState<number>(0);
     const [showProblemDetailsModal, setShowProblemDetailsModal] = useState<boolean>(false);
     const [showCheckProblemSolvedModal, setShowCheckProblemSolvedModal] = useState<boolean>(false);
     const [selectedProblem, setSelectedProblem] = useState<Problem | null>(null);
@@ -40,8 +42,14 @@ const AdminSupport = () => {
                 const _unsolvedProblems = await ProblemService.getUnsolvedProblems();
                 setUnsolvedProblems(_unsolvedProblems);
 
+                const _unsolvedProblemCount = await ProblemService.getUnsolvedProblemCount();
+                setUnsolvedProblemCount(_unsolvedProblemCount);
+
                 const _solvedProblems = await ProblemService.getSolvedProblems();
                 setSolvedProblems(_solvedProblems);
+
+                const _solvedProblemCount = await ProblemService.getSolvedProblemCount();
+                setSolvedProblemCount(_solvedProblemCount);
             }
             catch (error) {
                 console.error('Failed to fetch reported problems:', error);
@@ -120,16 +128,24 @@ const AdminSupport = () => {
         }
     };
 
+    const exportDataToCSV = async () => {
+        await ProblemService.exportProblemsToCsv();
+    };
+
     return (
         <div className="AdminSupport">
             <ToastContainer />
             <h1><i className="bi bi-cone-striped"></i> Reported Problems</h1>
             <p></p>
-
+            <Button variant="success" onClick={exportDataToCSV}>
+                <i className="bi bi-download"></i> Export to CSV
+            </Button>
+            <p></p>
             <Tabs defaultActiveKey="unsolved" id="problem-tabs" className="mb-3 custom-tabs">
                 {/* Unsolved Problems*/}
                 <Tab eventKey="unsolved" title="Unsolved Problems">
                     <h3><i className="bi bi-exclamation-diamond"></i> Unsolved problems</h3>
+                    <h4>Count: <strong>{unsolvedProblemCount}</strong></h4>
                     <div className="table-responsive">
                         <Table striped bordered hover variant="light">
                             <thead className="table-primary">
@@ -192,6 +208,7 @@ const AdminSupport = () => {
                 {/* Solved Problems */}
                 <Tab eventKey="solved" title="Solved Problems">
                     <h3><i className="bi bi-check2-circle"></i> Solved problems</h3>
+                    <h4>Count: <strong>{solvedProblemCount}</strong></h4>
                     <div className="table-responsive">
                         <Table striped bordered hover variant="light">
                             <thead className="table-success">

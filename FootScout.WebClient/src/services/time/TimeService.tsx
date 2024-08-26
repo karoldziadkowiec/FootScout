@@ -49,16 +49,33 @@ const TimeService = {
     const end = new Date(endDate);
 
     if (currentDate <= end) {
-        const timeDiff = end.getTime() - currentDate.getTime();
-        const daysLeft = timeDiff / (1000 * 3600 * 24);
-        return `${Math.ceil(daysLeft)} days left`;
+      const timeDiff = end.getTime() - currentDate.getTime();
+      const daysLeft = timeDiff / (1000 * 3600 * 24);
+      return `${Math.ceil(daysLeft)} days left`;
     }
     else {
-        const timeDiff = currentDate.getTime() - end.getTime();
-        const days = timeDiff / (1000 * 3600 * 24);
-        return `${Math.floor(days)} days passed`;
+      const timeDiff = currentDate.getTime() - end.getTime();
+      const days = timeDiff / (1000 * 3600 * 24);
+      return `${Math.floor(days)} days passed`;
     }
-}
+  },
+
+  generateDateRange(startDate: string, endDate: string): string[] {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const dateArray: string[] = [];
+
+    while (start <= end) {
+      dateArray.push(start.toISOString().split('T')[0]);
+      start.setDate(start.getDate() + 1);
+    }
+
+    return dateArray;
+  },
+
+  formatDateToMonth(date: Date): string {
+    return date.toISOString().substring(0, 7);
+  },
 };
 
 export default TimeService;

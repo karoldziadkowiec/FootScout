@@ -229,6 +229,37 @@ const ClubOfferService = {
             }
             throw error;
         }
+    },
+
+    async exportClubOffersToCsv(): Promise<void> {
+        try {
+            const authorizationHeader = await AccountService.getAuthorizationHeader();
+
+            const response = await axios.get(`${ApiURL}/club-offers/export`, {
+                headers: {
+                    'Authorization': authorizationHeader
+                },
+                responseType: 'blob'
+            });
+
+            const url = window.URL.createObjectURL(new Blob([response.data], { type: 'text/csv' }));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'club-offers.csv');
+
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        }
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+                console.error("Error exporting club offers to CSV, details:", error.response?.data || error.message);
+            }
+            else {
+                console.error('Unexpected error:', error);
+            }
+            throw error;
+        }
     }
 };
 
