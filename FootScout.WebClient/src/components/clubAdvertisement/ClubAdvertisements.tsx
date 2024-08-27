@@ -332,7 +332,7 @@ const ClubAdvertisements = () => {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan={6} className="text-center">No club advertisement available</td>
+                                <td colSpan={7} className="text-center">No club advertisement available</td>
                             </tr>
                         )}
                     </tbody>

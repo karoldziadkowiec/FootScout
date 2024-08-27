@@ -326,7 +326,7 @@ const PlayerAdvertisements = () => {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan={6} className="text-center">No player advertisement available</td>
+                                <td colSpan={7} className="text-center">No player advertisement available</td>
                             </tr>
                         )}
                     </tbody>
