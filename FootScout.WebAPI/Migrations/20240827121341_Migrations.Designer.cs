@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FootScout.WebAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240817164408_Migration123")]
-    partial class Migration123
+    [Migration("20240827121341_Migrations")]
+    partial class Migrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -488,6 +488,41 @@ namespace FootScout.WebAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PlayerPositions");
+                });
+
+            modelBuilder.Entity("FootScout.WebAPI.Entities.Problem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsSolved")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("RequesterId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RequesterId");
+
+                    b.ToTable("Problems");
                 });
 
             modelBuilder.Entity("FootScout.WebAPI.Entities.SalaryRange", b =>
@@ -975,6 +1010,17 @@ namespace FootScout.WebAPI.Migrations
                     b.Navigation("PlayerFoot");
 
                     b.Navigation("PlayerPosition");
+                });
+
+            modelBuilder.Entity("FootScout.WebAPI.Entities.Problem", b =>
+                {
+                    b.HasOne("FootScout.WebAPI.Entities.User", "Requester")
+                        .WithMany()
+                        .HasForeignKey("RequesterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Requester");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
