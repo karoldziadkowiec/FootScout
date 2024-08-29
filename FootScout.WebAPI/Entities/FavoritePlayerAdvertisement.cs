@@ -7,12 +7,16 @@ namespace FootScout.WebAPI.Entities
     {
         [Key]
         public int Id { get; set; }
+
         [Required]
         public int PlayerAdvertisementId { get; set; }
+
         [ForeignKey("PlayerAdvertisementId")]
         public PlayerAdvertisement PlayerAdvertisement { get; set; }
+
         [Required]
         public string UserId { get; set; }
+
         [ForeignKey("UserId")]
         public virtual User User { get; set; }
     }

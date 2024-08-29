@@ -6,6 +6,7 @@ namespace FootScout.WebAPI.Entities
     {
         [Key]
         public int Id { get; set; }
+
         [Required]
         [MaxLength(20)]
         public string StatusName { get; set; }

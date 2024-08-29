@@ -168,7 +168,7 @@ namespace FootScout.WebAPI
             app.UseCors("AllowReactDevClient");
             app.UseHttpsRedirection();
 
-            // Authentication middleware
+            // Auth middleware
             app.UseAuthentication();
             app.UseAuthorization();
 
