@@ -215,7 +215,10 @@ const ClubAdvertisement = () => {
 
         try {
             await ClubAdvertisementService.deleteClubAdvertisement(clubAdvertisement.id);
-            navigate('/my-club-advertisements', { state: { toastMessage: "Your club advertisement has been deleted successfully." } });
+            if(isAdminRole)
+                navigate('/admin/club-advertisements', { state: { toastMessage: "Club advertisement has been deleted successfully." } });
+            else
+                navigate('/my-club-advertisements', { state: { toastMessage: "Your club advertisement has been deleted successfully." } });
         }
         catch (error) {
             console.error('Failed to delete club advertisement:', error);
@@ -244,7 +247,10 @@ const ClubAdvertisement = () => {
 
             await ClubAdvertisementService.updateClubAdvertisement(clubAdvertisement.id, updatedFormData);
             setShowFinishModal(false);
-            navigate('/my-club-advertisements', { state: { toastMessage: "Your club advertisement has been finished successfully." } });
+            if(isAdminRole)
+                navigate('/admin/club-advertisements', { state: { toastMessage: "Club advertisement has been finished successfully." } });
+            else
+                navigate('/my-club-advertisements', { state: { toastMessage: "Your club advertisement has been finished successfully." } });
         }
         catch (error) {
             console.error('Failed to finish club advertisement:', error);

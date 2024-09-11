@@ -10,14 +10,20 @@ interface ProtectedRouteProps {
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element, allowedRoles }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [role, setRole] = useState<string | null>(null);
+  const [isTokenAvailable, setIsTokenAvailable] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchAuthStatus = async () => {
       const authStatus = await AccountService.isAuthenticated();
-      const userRole = await AccountService.getRole();
       setIsAuthenticated(authStatus);
+
+      const userRole = await AccountService.getRole();
       setRole(userRole);
+
+      const tokenStatus = await AccountService.isTokenAvailable();
+      setIsTokenAvailable(tokenStatus);
+
       setLoading(false);
     };
     fetchAuthStatus();
@@ -27,10 +33,13 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element, allowedRoles }
     return <div>Loading...</div>;
 
   if (!isAuthenticated)
-    return <Navigate to="/" />
+    return <Navigate to="/" state={{ toastMessage: "You are not authenticated. Please try to log in." }} />
 
   if (!allowedRoles.includes(role || ''))
-    return <Navigate to="/" />;
+    return <Navigate to="/" state={{ toastMessage: "Wrong path... Please log in again." }} />;
+
+  if (!isTokenAvailable)
+    return <Navigate to="/" state={{ toastMessage: "The expiration date has expired. Please log in again." }} />;
 
   return element;
 };

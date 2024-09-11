@@ -86,8 +86,12 @@ const AdminSupport = () => {
             // Refresh data
             const _unsolvedProblems = await ProblemService.getUnsolvedProblems();
             setUnsolvedProblems(_unsolvedProblems);
+            const _unsolvedProblemCount = await ProblemService.getUnsolvedProblemCount();
+            setUnsolvedProblemCount(_unsolvedProblemCount);
             const _solvedProblems = await ProblemService.getSolvedProblems();
             setSolvedProblems(_solvedProblems);
+            const _solvedProblemCount = await ProblemService.getSolvedProblemCount();
+            setSolvedProblemCount(_solvedProblemCount);
         }
         catch (error) {
             console.error('Failed to set problem to solved:', error);

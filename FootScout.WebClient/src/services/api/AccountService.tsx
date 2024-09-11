@@ -31,7 +31,8 @@ const AccountService = {
       if (token) {
         Cookies.set('AuthToken', token, { path: '/' });
         return token;
-      } else {
+      }
+      else {
         console.error('Token not found in response');
       }
     }
@@ -50,13 +51,50 @@ const AccountService = {
     return Cookies.get('AuthToken') || null;
   },
 
+  async getTokenExpirationTime() {
+    const token = await AccountService.getToken();
+    if (token) {
+      try {
+        const decodedToken = jwtDecode<any>(token);
+        return decodedToken['exp'];
+      }
+      catch (error) {
+        console.error('Failed to get token expiration time:', error);
+      }
+    }
+    return null;
+  },
+
+  async isTokenAvailable(): Promise<boolean> {
+    const expirationDate = await AccountService.getTokenExpirationTime();
+    if (expirationDate) {
+      try {
+        const expirationTime = expirationDate * 1000;
+        const currentTime = Date.now();
+
+        if (currentTime < expirationTime) {
+          return true;
+        } 
+        else {
+          Cookies.remove('AuthToken');
+          return false;
+        }
+      }
+      catch (error) {
+        console.error('Failed to check if token is avaiable:', error);
+      }
+    }
+    return false;
+  },
+
   async getRole() {
     const token = await AccountService.getToken();
     if (token) {
       try {
         const decodedToken = jwtDecode<any>(token);
         return decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
-      } catch (error) {
+      }
+      catch (error) {
         console.error('Failed to decode token:', error);
       }
     }

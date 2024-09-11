@@ -53,6 +53,8 @@ const AdminPlayerPositions = () => {
                 // Refresh the user data
                 const _positions = await PlayerPositionService.getPlayerPositions();
                 setPositions(_positions);
+                const _positionCount = await PlayerPositionService.getPlayerPositionCount();
+                setPositionCount(_positionCount);
             }
         }
         catch (error) {

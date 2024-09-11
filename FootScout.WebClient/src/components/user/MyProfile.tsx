@@ -115,10 +115,7 @@ const handleResetPassword = async () => {
     try {
         await UserService.resetUserPassword(user.id, resetPasswordFormData);
         setShowResetPasswordModal(false);
-        toast.success('Password updated successfully!');
-        // Refresh the user data
-        const updatedUser = await UserService.getUser(user.id);
-        setUser(updatedUser);
+        navigate('/', { state: { toastMessage: "Password updated successfully! Try to log in with new password." } });
     }
     catch (error) {
         console.error('Failed to update user\'s password:', error);

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { To, useLocation, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { Card, Row, Col, Button } from 'react-bootstrap';
+import CurrentTimeDisplay from '../../services/time/CurrentTimeDisplay';
 import UserService from '../../services/api/UserService';
 import ChatService from '../../services/api/ChatService';
 import ProblemService from '../../services/api/ProblemService';
@@ -90,6 +91,8 @@ const AdminDashboard = () => {
         <div className="AdminDashboard">
             <ToastContainer />
             <h1><i className="bi bi-grid"></i> Dashboard</h1>
+            <p></p>
+            <CurrentTimeDisplay/>
             <p></p>
             <Button variant="dark" onClick={refreshData}>
                 <i className="bi bi-arrow-repeat"></i> Refresh

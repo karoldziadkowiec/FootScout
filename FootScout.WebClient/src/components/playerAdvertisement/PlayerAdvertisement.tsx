@@ -234,7 +234,10 @@ const PlayerAdvertisement = () => {
 
         try {
             await PlayerAdvertisementService.deletePlayerAdvertisement(playerAdvertisement.id);
-            navigate('/my-player-advertisements', { state: { toastMessage: "Your player advertisement has been deleted successfully." } });
+            if(isAdminRole)
+                navigate('/admin/player-advertisements', { state: { toastMessage: "Player advertisement has been deleted successfully." } });
+            else
+                navigate('/my-player-advertisements', { state: { toastMessage: "Your player advertisement has been deleted successfully." } });
         }
         catch (error) {
             console.error('Failed to delete player advertisement:', error);
@@ -270,7 +273,10 @@ const PlayerAdvertisement = () => {
 
             await PlayerAdvertisementService.updatePlayerAdvertisement(playerAdvertisement.id, updatedFormData);
             setShowFinishModal(false);
-            navigate('/my-player-advertisements', { state: { toastMessage: "Your player advertisement has been finished successfully." } });
+            if(isAdminRole)
+                navigate('/admin/player-advertisements', { state: { toastMessage: "Player advertisement has been finished successfully." } });
+            else
+                navigate('/my-player-advertisements', { state: { toastMessage: "Your player advertisement has been finished successfully." } });
         }
         catch (error) {
             console.error('Failed to finish player advertisement:', error);

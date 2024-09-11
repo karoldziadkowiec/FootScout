@@ -5,6 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { NavLink } from 'react-router-dom';
 import AccountService from '../../services/api/AccountService';
+import CurrentTimeDisplay from '../../services/time/CurrentTimeDisplay';
 import '../../App.css';
 import '../../styles/layout/Navbar.css';
 
@@ -28,7 +29,7 @@ const NavbarComponent = () => {
             </NavDropdown>
           </Nav>
           <Nav className="ms-auto green-links">
-            <Nav.Link as={NavLink} to="/chats"><i className="bi bi-chat-fill"></i> Chat</Nav.Link>
+            <Nav.Link as={NavLink} to="/chats"><i className="bi bi-chat-fill"></i> Chat </Nav.Link>
             <NavDropdown title={<><i className="bi bi-briefcase-fill"></i> My Offers</>} id="basic-nav-dropdown">
               <NavDropdown.Item as={NavLink} to="/my-offers-as-player"><i className="bi bi-person-bounding-box"></i> as Player</NavDropdown.Item>
               <NavDropdown.Item as={NavLink} to="/my-offers-as-club"><i className="bi bi-shield-fill"></i> as Club</NavDropdown.Item>
@@ -43,6 +44,7 @@ const NavbarComponent = () => {
               <NavDropdown.Item as={NavLink} to="/support"><i className="bi bi-wrench-adjustable"></i> Support</NavDropdown.Item>
               <NavDropdown.Item onClick={AccountService.logout} as={NavLink} to="/"><i className="bi bi-box-arrow-left"></i> Log out</NavDropdown.Item>
             </NavDropdown>
+            <Navbar.Text> <CurrentTimeDisplay/> </Navbar.Text>
           </Nav>
         </Navbar.Collapse>
       </Container>

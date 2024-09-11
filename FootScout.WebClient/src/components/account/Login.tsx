@@ -20,7 +20,7 @@ const Login = () => {
       await AccountService.logout();
     };
     if (location.state && location.state.toastMessage)
-      toast.success(location.state.toastMessage);
+      toast.info(location.state.toastMessage);
 
     clearAuthToken();
   }, [location]);

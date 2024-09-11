@@ -141,17 +141,9 @@ const ClubHistory = () => {
             return;
         }
 
-        const position = positions.find(pos => pos.id === editFormData.playerPositionId);
-
-        if (!position) {
-            toast.error('Invalid player position.');
-            return;
-        }
-
         try {
             const updatedFormData = {
-                ...editFormData,
-                playerPosition: position
+                ...editFormData
             };
 
             await ClubHistoryService.updateClubHistory(editFormData.id, updatedFormData);

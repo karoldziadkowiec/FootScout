@@ -19,7 +19,9 @@ const AdminPlayerAdvertisements = () => {
     const [userId, setUserId] = useState<string | null>(null);
     const [positions, setPositions] = useState<PlayerPosition[]>([]);
     const [playerAdvertisements, setPlayerAdvertisements] = useState<PlayerAdvertisement[]>([]);
+    const [showFinishModal, setShowFinishModal] = useState<boolean>(false);
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+    const [finishAdvertisementId, setFinishAdvertisementId] = useState<number | null>(null);
     const [deleteAdvertisementId, setDeleteAdvertisementId] = useState<number | null>(null);
     // Searching term
     const [searchTerm, setSearchTerm] = useState('');
@@ -80,6 +82,37 @@ const AdminPlayerAdvertisements = () => {
 
     const moveToPlayerAdvertisementPage = (playerAdvertisementId: number) => {
         navigate(`/player-advertisement/${playerAdvertisementId}`, { state: { playerAdvertisementId } });
+    };
+
+    const handleShowFinishModal = (advertisementId: number) => {
+        setFinishAdvertisementId(advertisementId);
+        setShowFinishModal(true);
+    };
+
+    const handleFinishPlayerAdvertisement = async () => {
+        if (!finishAdvertisementId)
+            return;
+
+        try {
+            const playerAdvertisement = await PlayerAdvertisementService.getPlayerAdvertisement(finishAdvertisementId);
+            const currentDate = new Date().toISOString();
+
+            const finishFormData = {
+                ...playerAdvertisement,
+                endDate: currentDate
+            };
+
+            await PlayerAdvertisementService.updatePlayerAdvertisement(finishAdvertisementId, finishFormData);
+            setShowFinishModal(false);
+            toast.success("Advertisement has been finished successfully.");
+            //Refresh data
+            const _playerAdvertisements = await PlayerAdvertisementService.getAllPlayerAdvertisements();
+            setPlayerAdvertisements(_playerAdvertisements);
+        }
+        catch (error) {
+            console.error('Failed to delete advertisement:', error);
+            toast.error('Failed to delete advertisement.');
+        }
     };
 
     const handleShowDeleteModal = (advertisementId: number) => {
@@ -304,6 +337,9 @@ const AdminPlayerAdvertisements = () => {
                                         <Button variant="dark" className="button-spacing" onClick={() => moveToPlayerAdvertisementPage(advertisement.id)}>
                                             <i className="bi bi-info-square"></i>
                                         </Button>
+                                        <Button variant="secondary" className="button-spacing" onClick={() => handleShowFinishModal(advertisement.id)}>
+                                            <i className="bi bi-calendar-x"></i>
+                                        </Button>
                                         <Button variant="danger" className="button-spacing" onClick={() => handleShowDeleteModal(advertisement.id)}>
                                             <i className="bi bi-trash"></i>
                                         </Button>
@@ -349,6 +385,18 @@ const AdminPlayerAdvertisements = () => {
                     />
                 </Pagination>
             </div>
+
+            {/* Finish Player Advertisement */}
+            <Modal show={showFinishModal} onHide={() => setShowFinishModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirm action</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Are you sure you want to finish this advertisement?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowFinishModal(false)}>Cancel</Button>
+                    <Button variant="dark" onClick={handleFinishPlayerAdvertisement}>Finish</Button>
+                </Modal.Footer>
+            </Modal>
 
             {/* Delete Advertisement Modal */}
             <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
