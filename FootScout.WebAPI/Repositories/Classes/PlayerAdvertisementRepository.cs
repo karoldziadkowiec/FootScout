@@ -86,22 +86,27 @@ namespace FootScout.WebAPI.Repositories.Classes
             if (playerAdvertisement == null)
                 throw new ArgumentException($"No Player Advertisement found with ID {playerAdvertisementId}");
 
-            if (playerAdvertisement.SalaryRangeId != null)
+            if (playerAdvertisement.SalaryRangeId != 0)
             {
-                var salaryRange = await _dbContext.SalaryRanges.FindAsync(playerAdvertisement.SalaryRangeId);
-                if (salaryRange != null)
-                    _dbContext.SalaryRanges.Remove(salaryRange);
+                var salaryRanges = await _dbContext.SalaryRanges
+                    .Where(pa => pa.Id == playerAdvertisement.SalaryRangeId)
+                    .ToListAsync();
+
+                if (salaryRanges.Any())
+                    _dbContext.SalaryRanges.RemoveRange(salaryRanges);
             }
 
             var favorites = await _dbContext.FavoritePlayerAdvertisements
                 .Where(pa => pa.PlayerAdvertisementId == playerAdvertisementId)
                 .ToListAsync();
-            _dbContext.FavoritePlayerAdvertisements.RemoveRange(favorites);
+                    if (favorites.Any())
+                _dbContext.FavoritePlayerAdvertisements.RemoveRange(favorites);
 
             var clubOffers = await _dbContext.ClubOffers
                 .Where(co => co.PlayerAdvertisementId == playerAdvertisementId)
                 .ToListAsync();
-            _dbContext.ClubOffers.RemoveRange(clubOffers);
+            if (clubOffers.Any())
+                _dbContext.ClubOffers.RemoveRange(clubOffers);
 
             _dbContext.PlayerAdvertisements.Remove(playerAdvertisement);
             await _dbContext.SaveChangesAsync();

@@ -5,7 +5,6 @@ using FootScout.WebAPI.Models.DTOs;
 using FootScout.WebAPI.Repositories.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Text;
 
 namespace FootScout.WebAPI.Repositories.Classes
@@ -134,6 +133,7 @@ namespace FootScout.WebAPI.Repositories.Classes
                         _dbContext.Messages.RemoveRange(messages);
                 }
             }
+            _dbContext.Chats.RemoveRange(chats);
 
             var playerFavorites = await _dbContext.FavoritePlayerAdvertisements
                     .Where(fpa => fpa.UserId == userId)
@@ -204,6 +204,11 @@ namespace FootScout.WebAPI.Repositories.Classes
                 }
                 offer.PlayerId = unknownUserId;
             }
+
+            var problems = await _dbContext.Problems
+                .Where(p => p.RequesterId == userId)
+                .ToListAsync();
+            _dbContext.Problems.RemoveRange(problems);
 
             _dbContext.Users.Remove(user);
             await _dbContext.SaveChangesAsync();

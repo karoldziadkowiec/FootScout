@@ -1,6 +1,5 @@
 ﻿using FootScout.WebAPI.DbManager;
 using FootScout.WebAPI.Entities;
-using FootScout.WebAPI.Models.DTOs;
 using FootScout.WebAPI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Text;

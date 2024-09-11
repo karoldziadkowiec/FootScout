@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FootScout.WebAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240827121341_Migrations")]
-    partial class Migrations
+    [Migration("20240910203041_Migration-MSSQL")]
+    partial class MigrationMSSQL
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -785,13 +785,13 @@ namespace FootScout.WebAPI.Migrations
                     b.HasOne("FootScout.WebAPI.Entities.User", "ClubMember")
                         .WithMany()
                         .HasForeignKey("ClubMemberId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("FootScout.WebAPI.Entities.PlayerPosition", "PlayerPosition")
                         .WithMany()
                         .HasForeignKey("PlayerPositionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("FootScout.WebAPI.Entities.SalaryRange", "SalaryRange")
@@ -851,7 +851,7 @@ namespace FootScout.WebAPI.Migrations
                     b.HasOne("FootScout.WebAPI.Entities.PlayerAdvertisement", "PlayerAdvertisement")
                         .WithMany()
                         .HasForeignKey("PlayerAdvertisementId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FootScout.WebAPI.Entities.PlayerPosition", "PlayerPosition")
@@ -874,13 +874,13 @@ namespace FootScout.WebAPI.Migrations
                     b.HasOne("FootScout.WebAPI.Entities.ClubAdvertisement", "ClubAdvertisement")
                         .WithMany()
                         .HasForeignKey("ClubAdvertisementId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FootScout.WebAPI.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("ClubAdvertisement");
@@ -893,13 +893,13 @@ namespace FootScout.WebAPI.Migrations
                     b.HasOne("FootScout.WebAPI.Entities.PlayerAdvertisement", "PlayerAdvertisement")
                         .WithMany()
                         .HasForeignKey("PlayerAdvertisementId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FootScout.WebAPI.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("PlayerAdvertisement");
@@ -939,19 +939,19 @@ namespace FootScout.WebAPI.Migrations
                     b.HasOne("FootScout.WebAPI.Entities.PlayerFoot", "PlayerFoot")
                         .WithMany()
                         .HasForeignKey("PlayerFootId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("FootScout.WebAPI.Entities.User", "Player")
                         .WithMany()
                         .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("FootScout.WebAPI.Entities.PlayerPosition", "PlayerPosition")
                         .WithMany()
                         .HasForeignKey("PlayerPositionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("FootScout.WebAPI.Entities.SalaryRange", "SalaryRange")
@@ -974,7 +974,7 @@ namespace FootScout.WebAPI.Migrations
                     b.HasOne("FootScout.WebAPI.Entities.ClubAdvertisement", "ClubAdvertisement")
                         .WithMany()
                         .HasForeignKey("ClubAdvertisementId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("FootScout.WebAPI.Entities.OfferStatus", "OfferStatus")

@@ -62,17 +62,7 @@ namespace FootScout.WebAPI.Repositories.Classes
 
         public async Task<int> GetActiveClubOfferCount()
         {
-            return await _dbContext.ClubOffers
-                .Include(co => co.PlayerAdvertisement)
-                .Include(pa => pa.PlayerAdvertisement.PlayerPosition)
-                .Include(pa => pa.PlayerAdvertisement.PlayerFoot)
-                .Include(pa => pa.PlayerAdvertisement.SalaryRange)
-                .Include(pa => pa.PlayerAdvertisement.Player)
-                .Include(co => co.OfferStatus)
-                .Include(co => co.PlayerPosition)
-                .Include(co => co.ClubMember)
-                .Where(co => co.PlayerAdvertisement.EndDate >= DateTime.Now)
-                .CountAsync();
+            return await _dbContext.ClubOffers.Where(co => co.PlayerAdvertisement.EndDate >= DateTime.Now).CountAsync();
         }
 
         public async Task<IEnumerable<ClubOffer>> GetInactiveClubOffers()

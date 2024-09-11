@@ -22,11 +22,11 @@ namespace FootScout.WebAPI
             var builder = WebApplication.CreateBuilder(args);
             var configuration = builder.Configuration;
 
-            // Database connection
+            // MS SQL database connection
             builder.Services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("SQLConnectionString") ??
-                    throw new InvalidOperationException("SQL Connection String is not found!"));
+                options.UseSqlServer(configuration.GetConnectionString("MSSQLConnectionString") ??
+                    throw new InvalidOperationException("MS SQL connection string is not found!"));
             });
 
             // Identity with support for roles
