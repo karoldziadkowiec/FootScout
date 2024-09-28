@@ -58,12 +58,12 @@ namespace FootScout.WebAPI.UnitTests.Controllers
         public async Task GetPlayerOffers_ReturnsOkResultWithListOfPlayerOffers()
         {
             // Arrange
-            var clubOffers = new List<PlayerOffer>
+            var playerOffers = new List<PlayerOffer>
             {
                 new PlayerOffer { Id = 1, PlayerFootId = 1, PlayerId = "leomessi" },
                 new PlayerOffer { Id = 2, PlayerFootId = 3, PlayerId = "cr7" }
             };
-            _mockPlayerOfferRepository.Setup(repo => repo.GetPlayerOffers()).ReturnsAsync(clubOffers);
+            _mockPlayerOfferRepository.Setup(repo => repo.GetPlayerOffers()).ReturnsAsync(playerOffers);
 
             // Act
             var result = await _playerOfferController.GetPlayerOffers();

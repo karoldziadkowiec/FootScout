@@ -7,7 +7,6 @@ using FootScout.WebAPI.UnitTests.TestManager;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using System.Diagnostics;
 
 namespace FootScout.WebAPI.UnitTests.Repositories
 {
@@ -16,7 +15,6 @@ namespace FootScout.WebAPI.UnitTests.Repositories
         [Fact]
         public async Task GetUser_ReturnsCorrectUser()
         {
-            var stopwatch = Stopwatch.StartNew();
             // Arrange
             var options = GetDbContextOptions("GetUser_ReturnsCorrectUser");
 
@@ -37,8 +35,6 @@ namespace FootScout.WebAPI.UnitTests.Repositories
                 Assert.Equal("Leo", result.FirstName);
                 Assert.Equal("Messi", result.LastName);
             }
-            stopwatch.Stop();
-            var elapsed = stopwatch.Elapsed;
         }
 
         [Fact]
@@ -121,10 +117,10 @@ namespace FootScout.WebAPI.UnitTests.Repositories
 
             // Assert
             Assert.NotNull(result);
-            var userList = result.ToList();
-            Assert.Contains(userList, u => u.Id == "admin0");
-            Assert.Contains(userList, u => u.Id == "admin1");
-            Assert.Equal(2, userList.Count);
+            var adminList = result.ToList();
+            Assert.Contains(adminList, u => u.Id == "admin0");
+            Assert.Contains(adminList, u => u.Id == "admin1");
+            Assert.Equal(2, adminList.Count);
         }
 
         [Fact]

@@ -219,5 +219,161 @@ namespace FootScout.WebAPI.UnitTests.Repositories
                 Assert.Equal(2, updatedOffer.OfferStatusId);
             }
         }
+
+        [Fact]
+        public async Task DeleteClubOffer_DeletesClubOfferFromDatabase()
+        {
+            // Arrange
+            var options = GetDbContextOptions("DeleteClubOffer_DeletesClubOfferFromDatabase");
+
+            using (var dbContext = new AppDbContext(options))
+            {
+                var userManager = CreateUserManager();
+                await SeedUserTestBase(dbContext, userManager);
+                await SeedPlayerPositionTestBase(dbContext);
+                await SeedPlayerFootTestBase(dbContext);
+                await SeedOfferStatusTestBase(dbContext);
+                await SeedPlayerAdvertisementTestBase(dbContext);
+                await SeedClubOfferTestBase(dbContext);
+
+                var _clubOfferRepository = new ClubOfferRepository(dbContext);
+                var clubOffer = await dbContext.ClubOffers.FirstAsync();
+                var clubOfferId = clubOffer.Id;
+
+                // Act
+                await _clubOfferRepository.DeleteClubOffer(clubOfferId);
+
+                // Assert
+                var deletedOffer = await dbContext.ClubOffers
+                    .FirstOrDefaultAsync(co => co.Id == clubOfferId);
+
+                Assert.Null(deletedOffer);
+            }
+        }
+
+        [Fact]
+        public async Task AcceptClubOffer_UpdatesOfferStatusToAccepted()
+        {
+            // Arrange
+            var options = GetDbContextOptions("AcceptClubOffer_UpdatesOfferStatusToAccepted");
+
+            using (var dbContext = new AppDbContext(options))
+            {
+                var userManager = CreateUserManager();
+                await SeedUserTestBase(dbContext, userManager);
+                await SeedPlayerPositionTestBase(dbContext);
+                await SeedPlayerFootTestBase(dbContext);
+                await SeedOfferStatusTestBase(dbContext);
+                await SeedPlayerAdvertisementTestBase(dbContext);
+                await SeedClubOfferTestBase(dbContext);
+
+                var _clubOfferRepository = new ClubOfferRepository(dbContext);
+                var clubOffer = await dbContext.ClubOffers.FirstAsync();
+
+                // Act
+                await _clubOfferRepository.AcceptClubOffer(clubOffer);
+
+                // Assert
+                var updatedOffer = await dbContext.ClubOffers
+                    .FirstOrDefaultAsync(co => co.Id == clubOffer.Id);
+
+                Assert.NotNull(updatedOffer);
+                Assert.Equal("Accepted", updatedOffer.OfferStatus.StatusName);
+            }
+        }
+
+        [Fact]
+        public async Task RejectClubOffer_UpdatesOfferStatusToRejected()
+        {
+            // Arrange
+            var options = GetDbContextOptions("RejectClubOffer_UpdatesOfferStatusToRejected");
+
+            using (var dbContext = new AppDbContext(options))
+            {
+                var userManager = CreateUserManager();
+                await SeedUserTestBase(dbContext, userManager);
+                await SeedPlayerPositionTestBase(dbContext);
+                await SeedPlayerFootTestBase(dbContext);
+                await SeedOfferStatusTestBase(dbContext);
+                await SeedPlayerAdvertisementTestBase(dbContext);
+                await SeedClubOfferTestBase(dbContext);
+
+                var _clubOfferRepository = new ClubOfferRepository(dbContext);
+                var clubOffer = await dbContext.ClubOffers.FirstAsync();
+
+                // Act
+                await _clubOfferRepository.RejectClubOffer(clubOffer);
+
+                // Assert
+                var updatedOffer = await dbContext.ClubOffers
+                    .FirstOrDefaultAsync(co => co.Id == clubOffer.Id);
+
+                Assert.NotNull(updatedOffer);
+                Assert.Equal("Rejected", updatedOffer.OfferStatus.StatusName);
+            }
+        }
+
+        [Fact]
+        public async Task GetClubOfferStatusId_ReturnsCorrectStatusId()
+        {
+            // Arrange
+            var options = GetDbContextOptions("GetClubOfferStatusId_ReturnsCorrectStatusId");
+
+            using (var dbContext = new AppDbContext(options))
+            {
+                var userManager = CreateUserManager();
+                await SeedUserTestBase(dbContext, userManager);
+                await SeedPlayerPositionTestBase(dbContext);
+                await SeedPlayerFootTestBase(dbContext);
+                await SeedOfferStatusTestBase(dbContext);
+                await SeedPlayerAdvertisementTestBase(dbContext);
+                await SeedClubOfferTestBase(dbContext);
+
+                var _clubOfferRepository = new ClubOfferRepository(dbContext);
+                var clubOffer = await dbContext.ClubOffers.FirstAsync();
+                var playerAdvertisementId = clubOffer.PlayerAdvertisementId;
+                var clubMemberId = clubOffer.ClubMemberId;
+
+                // Act
+                var result = await _clubOfferRepository.GetClubOfferStatusId(playerAdvertisementId, clubMemberId);
+
+                // Assert
+                Assert.Equal(clubOffer.OfferStatusId, result);
+            }
+        }
+
+        [Fact]
+        public async Task ExportClubOffersToCsv_ReturnsValidCsvStream()
+        {
+            // Arrange
+            var options = GetDbContextOptions("ExportClubOffersToCsv_ReturnsValidCsvStream");
+
+            using (var dbContext = new AppDbContext(options))
+            {
+                var userManager = CreateUserManager();
+                await SeedUserTestBase(dbContext, userManager);
+                await SeedPlayerPositionTestBase(dbContext);
+                await SeedPlayerFootTestBase(dbContext);
+                await SeedOfferStatusTestBase(dbContext);
+                await SeedPlayerAdvertisementTestBase(dbContext);
+                await SeedClubOfferTestBase(dbContext);
+
+                var _clubOfferRepository = new ClubOfferRepository(dbContext);
+
+                // Act
+                var csvStream = await _clubOfferRepository.ExportClubOffersToCsv();
+                csvStream.Position = 0;
+
+                using (var reader = new StreamReader(csvStream))
+                {
+                    var csvContent = await reader.ReadToEndAsync();
+
+                    // Assert
+                    Assert.NotEmpty(csvContent);
+                    Assert.Contains("Offer Status,E-mail,First Name,Last Name,Position,Club Name,League,Region,Salary,Additional Information,Player's E-mail,Player's First Name,Player's Last Name,Age,Height,Foot,Creation Date,End Date", csvContent);
+                    Assert.Contains("Offered,pg8@gmail.com,Pep", csvContent);
+                }
+            }
+        }
     }
 }

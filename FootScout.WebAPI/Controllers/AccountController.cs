@@ -70,7 +70,7 @@ namespace FootScout.WebAPI.Controllers
             return Ok(roles);
         }
 
-        // GET: api/account/roles/make-admin/:userId
+        // POST: api/account/roles/make-admin/:userId
         [Authorize(Roles = Role.Admin)]
         [HttpPost("roles/make-admin/{userId}")]
         public async Task<IActionResult> MakeAnAdmin(string userId)
@@ -79,7 +79,7 @@ namespace FootScout.WebAPI.Controllers
             return NoContent();
         }
 
-        // GET: api/account/roles/make-user/:userId
+        // POST: api/account/roles/make-user/:userId
         [Authorize(Roles = Role.Admin)]
         [HttpPost("roles/make-user/{userId}")]
         public async Task<IActionResult> DemoteFromAdmin(string userId)

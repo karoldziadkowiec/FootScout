@@ -38,7 +38,7 @@ namespace FootScout.WebAPI.Controllers
 
         // GET: api/offer-statuses/name/:statusId
         [HttpGet("name/{statusId}")]
-        public async Task<IActionResult> GetAdvertisementStatusName(int statusId)
+        public async Task<IActionResult> GetOfferStatusName(int statusId)
         {
             var statusName = await _offerStatusRepository.GetOfferStatusName(statusId);
             if (statusName == null)

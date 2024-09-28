@@ -1,6 +1,4 @@
-﻿using FootScout.WebAPI.Entities;
-
-namespace FootScout.WebAPI.Models.DTOs
+﻿namespace FootScout.WebAPI.Models.DTOs
 {
     public class ClubOfferCreateDTO
     {

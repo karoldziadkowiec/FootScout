@@ -74,7 +74,7 @@ namespace FootScout.WebAPI.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task GetAdvertisementStatusName_ValidId_ReturnsOkResult_WithStatusName()
+        public async Task GetOfferStatusName_ValidId_ReturnsOkResult_WithStatusName()
         {
             // Arrange
             var statusId = 1;
@@ -83,7 +83,7 @@ namespace FootScout.WebAPI.UnitTests.Controllers
             _mockOfferStatusRepository.Setup(repo => repo.GetOfferStatusName(statusId)).ReturnsAsync(statusName);
 
             // Act
-            var result = await _offerStatusController.GetAdvertisementStatusName(statusId);
+            var result = await _offerStatusController.GetOfferStatusName(statusId);
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
@@ -92,7 +92,7 @@ namespace FootScout.WebAPI.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task GetAdvertisementStatusName_InvalidId_ReturnsNotFound()
+        public async Task GetOfferStatusName_InvalidId_ReturnsNotFound()
         {
             // Arrange
             var statusId = 999;
@@ -100,7 +100,7 @@ namespace FootScout.WebAPI.UnitTests.Controllers
             _mockOfferStatusRepository.Setup(repo => repo.GetOfferStatusName(statusId)).ReturnsAsync((string)null);
 
             // Act
-            var result = await _offerStatusController.GetAdvertisementStatusName(statusId);
+            var result = await _offerStatusController.GetOfferStatusName(statusId);
 
             // Assert
             Assert.IsType<NotFoundResult>(result);

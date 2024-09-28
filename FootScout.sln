@@ -5,7 +5,9 @@ VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FootScout.WebAPI", "FootScout.WebAPI\FootScout.WebAPI.csproj", "{AFCFC984-96FA-4B4A-AB6A-9FEE7FAD4BD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootScout.WebAPI.UnitTests", "FootScout.WebAPI.UnitTests\FootScout.WebAPI.UnitTests.csproj", "{56601C25-1637-464E-80C5-A09F24DCF18E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FootScout.WebAPI.UnitTests", "FootScout.WebAPI.UnitTests\FootScout.WebAPI.UnitTests.csproj", "{56601C25-1637-464E-80C5-A09F24DCF18E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootScout.WebAPI.IntegrationTests", "FootScout.WebAPI.IntegrationTests\FootScout.WebAPI.IntegrationTests.csproj", "{00F7F636-26EF-41FE-B88B-6FE445C1DAC4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{56601C25-1637-464E-80C5-A09F24DCF18E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56601C25-1637-464E-80C5-A09F24DCF18E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56601C25-1637-464E-80C5-A09F24DCF18E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00F7F636-26EF-41FE-B88B-6FE445C1DAC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00F7F636-26EF-41FE-B88B-6FE445C1DAC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00F7F636-26EF-41FE-B88B-6FE445C1DAC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00F7F636-26EF-41FE-B88B-6FE445C1DAC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
