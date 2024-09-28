@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Table, Button, Modal, Form, Tabs, Tab } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import TimeService from '../../services/time/TimeService';
 import ProblemService from '../../services/api/ProblemService';
@@ -138,7 +138,6 @@ const AdminSupport = () => {
 
     return (
         <div className="AdminSupport">
-            <ToastContainer />
             <h1><i className="bi bi-cone-striped"></i> Reported Problems</h1>
             <p></p>
             <Button variant="success" onClick={exportDataToCSV}>

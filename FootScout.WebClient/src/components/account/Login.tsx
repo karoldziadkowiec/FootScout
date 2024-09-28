@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 import LoginDTO from '../../models/dtos/LoginDTO';
 import AccountService from '../../services/api/AccountService';
@@ -43,17 +43,22 @@ const Login = () => {
         if (error.response) {
           if (error.response.status === 401) {
             toast.error('Invalid email or password.');
-          } else if (error.response.status === 500) {
+          }
+          else if (error.response.status === 500) {
             toast.error('Internal server error. Please try again later.');
-          } else {
+          }
+          else {
             toast.error('Login failed. Please check your credentials and try again.');
           }
-        } else if (error.request) {
+        }
+        else if (error.request) {
           toast.error('No response from server. Please check your network connection.');
-        } else {
+        }
+        else {
           toast.error('Login request failed. Please try again.');
         }
-      } else {
+      }
+      else {
         toast.error('An unexpected error occurred during login. Please try again.');
       }
     }
@@ -65,7 +70,6 @@ const Login = () => {
 
   return (
     <div className="Login">
-      <ToastContainer />
       <div className="logo-container">
         <img src={require('../../img/logo.png')} alt="logo" className="logo" />
         FootScout

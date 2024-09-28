@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { Button } from 'react-bootstrap';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import UserService from '../../services/api/UserService';
@@ -65,7 +65,6 @@ const AdminRaportsUsers = () => {
 
     return (
         <div className="AdminRaportsUsers">
-            <ToastContainer />
             <h1><i className="bi bi-people-fill"></i> Users - Raports & Stats</h1>
             <p></p>
             <h3>Users count: <strong>{userCount}</strong></h3>

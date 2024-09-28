@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Row, Col, Button, Card, Container, Modal } from 'react-bootstrap';
 import Navbar from 'react-bootstrap/Navbar';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import TimeService from '../../services/time/TimeService';
 import ChatService from '../../services/api/ChatService';
 import MessageService from '../../services/api/MessageService';
@@ -115,7 +115,6 @@ const AdminChat = () => {
 
     return (
         <div className="AdminChat">
-            <ToastContainer />
             <h1><i className="bi bi-chat-dots"></i> Manage Chat</h1>
             <h4>Messages count: <strong>{messagesCount}</strong></h4>
             <div className="chat-container">

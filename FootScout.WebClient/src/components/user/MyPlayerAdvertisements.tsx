@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Table, Button, Tabs, Tab } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
 import TimeService from '../../services/time/TimeService';
@@ -45,7 +45,6 @@ const MyPlayerAdvertisements = () => {
 
     return (
         <div className="MyPlayerAdvertisements">
-            <ToastContainer />
             <h1><i className="bi bi-person-bounding-box"></i> My Player Advertisements</h1>
             <Button variant="success" className="form-button" onClick={() => navigate('/new-player-advertisement')}>
                 <i className="bi bi-file-earmark-plus-fill"></i>

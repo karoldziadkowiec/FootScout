@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Table, Button, Modal, Form, Pagination } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import TimeService from '../../services/time/TimeService';
 import ChatService from '../../services/api/ChatService';
 import MessageService from '../../services/api/MessageService';
@@ -144,7 +144,6 @@ const AdminChats = () => {
 
     return (
         <div className="AdminChats">
-            <ToastContainer />
             <h1><i className="bi bi-chat-text-fill"></i> Chat Rooms</h1>
             <p></p>
             <div className="d-flex align-items-center mb-3">

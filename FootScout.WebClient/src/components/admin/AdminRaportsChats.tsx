@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { Button } from 'react-bootstrap';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import ChatService from '../../services/api/ChatService';
@@ -67,7 +67,6 @@ const AdminRaportsChats = () => {
 
     return (
         <div className="AdminRaportsChats">
-            <ToastContainer />
             <h1><i className="bi bi-chat-text-fill"></i> Chats - Raports & Stats</h1>
             <p></p>
             <h3>Chat rooms count: <strong>{chatCount}</strong></h3>

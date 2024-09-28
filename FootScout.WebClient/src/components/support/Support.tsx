@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Col, Row, Container } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import ProblemService from '../../services/api/ProblemService';
 import ProblemCreateDTO from '../../models/dtos/ProblemCreateDTO';
@@ -64,7 +64,6 @@ const Support = () => {
 
     return (
         <div className="Support">
-            <ToastContainer />
             <h1><i className="bi bi-wrench-adjustable"></i> Support</h1>
             <p></p>
             <h3>Report a problem/request</h3>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Form, Button, Row, Col, Modal, FormSelect } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
 import TimeService from '../../services/time/TimeService';
@@ -216,9 +216,15 @@ const ClubAdvertisement = () => {
         try {
             await ClubAdvertisementService.deleteClubAdvertisement(clubAdvertisement.id);
             if(isAdminRole)
-                navigate('/admin/club-advertisements', { state: { toastMessage: "Club advertisement has been deleted successfully." } });
+            {
+                toast.success('Club advertisement has been deleted successfully.');
+                navigate('/admin/club-advertisements');
+            }
             else
-                navigate('/my-club-advertisements', { state: { toastMessage: "Your club advertisement has been deleted successfully." } });
+            {
+                toast.success('Your club advertisement has been deleted successfully.');
+                navigate('/my-club-advertisements');
+            }
         }
         catch (error) {
             console.error('Failed to delete club advertisement:', error);
@@ -248,9 +254,15 @@ const ClubAdvertisement = () => {
             await ClubAdvertisementService.updateClubAdvertisement(clubAdvertisement.id, updatedFormData);
             setShowFinishModal(false);
             if(isAdminRole)
-                navigate('/admin/club-advertisements', { state: { toastMessage: "Club advertisement has been finished successfully." } });
+            {
+                toast.success('Club advertisement has been finished successfully.');
+                navigate('/admin/club-advertisements');
+            }
             else
-                navigate('/my-club-advertisements', { state: { toastMessage: "Your club advertisement has been finished successfully." } });
+            {
+                toast.success('Your club advertisement has been finished successfully.');
+                navigate('/my-club-advertisements');
+            }
         }
         catch (error) {
             console.error('Failed to finish club advertisement:', error);
@@ -267,7 +279,8 @@ const ClubAdvertisement = () => {
             setFavoriteClubAdvertisementDTO(createFormData);
 
             await FavoriteClubAdvertisementService.addToFavorites(createFormData);
-            navigate('/my-favorite-club-advertisements', { state: { toastMessage: "Club advertisement has been added to favorites successfully." } });
+            toast.success('Club advertisement has been added to favorites successfully.');
+            navigate('/my-favorite-club-advertisements');
         }
         catch (error) {
             console.error('Failed to add advertisement to favorites:', error);
@@ -314,7 +327,8 @@ const ClubAdvertisement = () => {
 
             await PlayerOfferService.createPlayerOffer(newFormData);
             setShowSubmitPlayerOfferModal(false);
-            navigate('/my-offers-as-player', { state: { toastMessage: "The player offer was submitted successfully." } });
+            toast.success('The player offer was submitted successfully.');
+            navigate('/my-offers-as-player');
         }
         catch (error) {
             console.error('Failed to submit player offer:', error);
@@ -364,7 +378,6 @@ const ClubAdvertisement = () => {
 
     return (
         <div className="ClubAdvertisement">
-            <ToastContainer />
             <h1><i className="bi bi-shield-fill"></i> Club Advertisement</h1>
             <div className="ad-buttons-container mb-3">
                 {clubAdvertisementStatus ? (

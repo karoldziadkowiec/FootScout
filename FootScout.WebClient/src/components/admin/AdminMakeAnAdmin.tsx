@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Table, Button, Modal, Pagination, Form, Tabs, Tab } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
 import TimeService from '../../services/time/TimeService';
@@ -157,7 +157,6 @@ const AdminMakeAnAdmin = () => {
 
     return (
         <div className="AdminMakeAnAdmin">
-            <ToastContainer />
             <h1><i className="bi bi-universal-access-circle"></i> Make an Admin</h1>
             <p></p>
             <Tabs defaultActiveKey="users" id="user-tabs" className="mb-3 custom-tabs">

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { To, useLocation, useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { Card, Row, Col, Button } from 'react-bootstrap';
 import CurrentTimeDisplay from '../../services/time/CurrentTimeDisplay';
 import UserService from '../../services/api/UserService';
@@ -89,7 +89,6 @@ const AdminDashboard = () => {
 
     return (
         <div className="AdminDashboard">
-            <ToastContainer />
             <h1><i className="bi bi-grid"></i> Dashboard</h1>
             <p></p>
             <CurrentTimeDisplay/>

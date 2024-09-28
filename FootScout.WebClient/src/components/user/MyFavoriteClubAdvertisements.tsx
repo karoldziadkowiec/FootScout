@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Table, Button, Modal, Tabs, Tab } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
 import TimeService from '../../services/time/TimeService';
@@ -103,7 +103,6 @@ const MyFavoriteClubAdvertisements = () => {
 
     return (
         <div className="MyFavoriteClubAdvertisements">
-            <ToastContainer />
             <h1><i className="bi bi-chat-square-heart-fill"></i> My Favorite Club Advertisements</h1>
             <p></p>
             {/* Active favorite advertisements*/}

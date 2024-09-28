@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Table, Button, Modal, Form, Row, Col, Tabs, Tab } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
 import TimeService from '../../services/time/TimeService';
@@ -199,7 +199,6 @@ const MyOffersAsPlayer = () => {
 
     return (
         <div className="MyOffersAsPlayer">
-            <ToastContainer />
             <h1><i className="bi bi-briefcase"></i> My Offers as a Player</h1>
             <p></p>
             {/* Received offers from clubs*/}

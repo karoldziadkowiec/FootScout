@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Form, Button, Row, Col, Modal } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import PlayerPositionService from '../../services/api/PlayerPositionService';
 import PlayerPosition from '../../models/interfaces/PlayerPosition';
 import '../../App.css';
@@ -65,7 +65,6 @@ const AdminPlayerPositions = () => {
 
     return (
         <div className="AdminPlayerPositions">
-            <ToastContainer />
             <h1><i className="bi bi-person-standing"></i> Player Positions</h1>
             <p></p>
             <h3>Count: <strong>{positionCount}</strong></h3>

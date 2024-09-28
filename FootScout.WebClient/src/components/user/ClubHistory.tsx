@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Form, Button, Row, Col, Modal, FormSelect } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
 import TimeService from '../../services/time/TimeService';
@@ -184,7 +184,6 @@ const ClubHistory = () => {
 
     return (
         <div className="ClubHistory">
-            <ToastContainer />
             <h1><i className="bi bi-clock-history"></i> Club History</h1>
             <p></p>
             <Button variant="success" className="form-button" onClick={() => setShowCreateModal(true)}>

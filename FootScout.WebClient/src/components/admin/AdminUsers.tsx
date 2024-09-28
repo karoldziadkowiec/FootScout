@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Table, Button, Modal, Pagination, Form, Col, Row } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import Role from '../../models/enums/Role';
 import UserService from '../../services/api/UserService';
@@ -380,7 +380,6 @@ const AdminUsers = () => {
 
     return (
         <div className="AdminUsers">
-            <ToastContainer />
             <h1><i className="bi bi-people-fill"></i> Users</h1>
             <Button variant="primary" className="form-button" onClick={() => setShowCreateModal(true)}>
                 <i className="bi bi-person-plus-fill"></i>  Create User

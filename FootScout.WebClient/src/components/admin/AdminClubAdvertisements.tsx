@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Table, Button, Modal, Pagination, Form } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import TimeService from '../../services/time/TimeService';
 import PlayerPositionService from '../../services/api/PlayerPositionService';
@@ -237,7 +237,6 @@ const AdminClubAdvertisements = () => {
 
     return (
         <div className="AdminClubAdvertisements">
-            <ToastContainer />
             <h1><i className="bi bi-list-nested"></i> Club Advertisements</h1>
             <p></p>
             <div className="d-flex align-items-center mb-3">

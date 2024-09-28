@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Table, Button, Modal, Form, Col, Row, Tabs, Tab } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
 import TimeService from '../../services/time/TimeService';
@@ -207,7 +207,6 @@ const MyOffersAsClub = () => {
 
     return (
         <div className="MyOffersAsClub">
-            <ToastContainer />
             <h1><i className="bi bi-briefcase-fill"></i> My Offers as a Club member</h1>
             <p></p>
             {/* Received offers from players*/}

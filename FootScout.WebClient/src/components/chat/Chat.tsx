@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Row, Col, Form, Button, Card, Container, Modal } from 'react-bootstrap';
 import Navbar from 'react-bootstrap/Navbar';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import TimeService from '../../services/time/TimeService';
 import ChatService from '../../services/api/ChatService';
@@ -142,7 +142,8 @@ const Chat = () => {
         try {
             await ChatService.deleteChat(chatData.id);
             setShowDeleteChatRoomModal(false);
-            navigate('/chats', { state: { toastMessage: "Your chat room has been deleted successfully." } });
+            toast.success('Your chat room has been deleted successfully.');
+            navigate('/chats');
         }
         catch (error) {
             console.error('Failed to delete chat room:', error);
@@ -176,7 +177,6 @@ const Chat = () => {
 
     return (
         <div className="Chat">
-            <ToastContainer />
             <h1><i className="bi bi-chat-dots-fill"></i> Chat</h1>
             <div className="chat-container">
                 <Navbar bg="dark" variant="dark" className="sticky-top">

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Table, Button, Tabs, Tab } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
 import ClubAdvertisement from '../../models/interfaces/ClubAdvertisement';
@@ -45,7 +45,6 @@ const MyClubAdvertisements = () => {
 
     return (
         <div className="MyClubAdvertisements">
-            <ToastContainer />
             <h1><i className="bi bi-shield-fill"></i> My Club Advertisements</h1>
             <Button variant="success" className="form-button" onClick={() => navigate('/new-club-advertisement')}>
                 <i className="bi bi-file-earmark-plus-fill"></i>

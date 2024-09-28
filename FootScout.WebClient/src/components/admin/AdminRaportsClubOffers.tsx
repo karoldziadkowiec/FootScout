@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { Button } from 'react-bootstrap';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import ClubOfferService from '../../services/api/ClubOfferService';
@@ -65,7 +65,6 @@ const AdminRaportsClubOffers = () => {
 
     return (
         <div className="AdminRaportsClubOffers">
-            <ToastContainer />
             <h1><i className="bi bi-briefcase-fill"></i> Club Offers - Raports & Stats</h1>
             <p></p>
             <h3>Club Offers count: <strong>{clubOfferCount}</strong></h3>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { Button } from 'react-bootstrap';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import PlayerAdvertisementService from '../../services/api/PlayerAdvertisementService';
@@ -65,7 +65,6 @@ const AdminRaportsPlayerAdvertisements = () => {
 
     return (
         <div className="AdminRaportsPlayerAdvertisements">
-            <ToastContainer />
             <h1><i className="bi bi-person-bounding-box"></i> Player Advertisements - Raports & Stats</h1>
             <p></p>
             <h3>Player Advertisements count: <strong>{playerAdvertisementCount}</strong></h3>

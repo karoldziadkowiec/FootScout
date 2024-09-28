@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { Element, scroller } from 'react-scroll';
 import { Button, Container, Row, Col } from 'react-bootstrap';
 import '../../App.css';
@@ -29,7 +29,6 @@ const Home = () => {
 
     return (
         <div className="Home">
-            <ToastContainer />
             <Element name="home" className="startSection">
                 <div className="Home-logo-container">
                     <img src={require('../../img/logo.png')} alt="Home-logo" className="Home-logo" />

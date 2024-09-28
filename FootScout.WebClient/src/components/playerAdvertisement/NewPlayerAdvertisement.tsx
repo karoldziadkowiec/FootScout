@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Col, Row, Container, FormSelect } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import PlayerAdvertisementService from '../../services/api/PlayerAdvertisementService';
 import PlayerPositionService from '../../services/api/PlayerPositionService';
@@ -83,7 +83,8 @@ const NewPlayerAdvertisement = () => {
         try {
             const createFormData = { ...playerAdvertisementDTO, playerId: userId };
             await PlayerAdvertisementService.createPlayerAdvertisement(createFormData);
-            navigate('/my-player-advertisements', { state: { toastMessage: "Player advertisement created successfully!" } });
+            toast.success('Player advertisement created successfully!');
+            navigate('/my-player-advertisements');
         }
         catch (error) {
             console.error('Failed to create player advertisement:', error);
@@ -113,7 +114,6 @@ const NewPlayerAdvertisement = () => {
 
     return (
         <div className="NewPlayerAdvertisement">
-            <ToastContainer />
             <h1><i className="bi bi-file-earmark-plus"></i> New Player Advertisement</h1>
             <p></p>
             <div className="forms-container">

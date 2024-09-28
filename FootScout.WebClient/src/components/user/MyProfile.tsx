@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Row, Col, Modal } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import UserService from '../../services/api/UserService';
 import TimeService from '../../services/time/TimeService';
@@ -115,7 +115,8 @@ const handleResetPassword = async () => {
     try {
         await UserService.resetUserPassword(user.id, resetPasswordFormData);
         setShowResetPasswordModal(false);
-        navigate('/', { state: { toastMessage: "Password updated successfully! Try to log in with new password." } });
+        toast.success('Password updated successfully! Try to log in with new password.');
+        navigate('/');
     }
     catch (error) {
         console.error('Failed to update user\'s password:', error);
@@ -160,7 +161,8 @@ const handleDeleteProfile = async () => {
 
     try {
         await UserService.deleteUser(user.id);
-        navigate('/', { state: { toastMessage: "Your account has been deleted successfully." } });
+        toast.success('Your account has been deleted successfully.');
+        navigate('/');
     }
     catch (error) {
         console.error('Failed to delete user:', error);
@@ -173,7 +175,6 @@ if (loading)
 
 return (
     <div className="MyProfile">
-        <ToastContainer />
         <h1><i className="bi bi-person-fill"></i> My Profile</h1>
         <div className="buttons-container mb-3">
             <Row>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Col, Row, Container, FormSelect } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import ClubAdvertisementService from '../../services/api/ClubAdvertisementService';
 import PlayerPositionService from '../../services/api/PlayerPositionService';
@@ -66,7 +66,8 @@ const NewClubAdvertisement = () => {
         try {
             const createFormData = { ...clubAdvertisementDTO, clubMemberId: userId };
             await ClubAdvertisementService.createClubAdvertisement(createFormData);
-            navigate('/my-club-advertisements', { state: { toastMessage: "Club advertisement created successfully!" } });
+            toast.success('Club advertisement created successfully!');
+            navigate('/my-club-advertisements');
         }
         catch (error) {
             console.error('Failed to create club advertisement:', error);
@@ -96,7 +97,6 @@ const NewClubAdvertisement = () => {
 
     return (
         <div className="NewClubAdvertisement">
-            <ToastContainer />
             <h1><i className="bi bi-file-earmark-plus-fill"></i> New Club Advertisement</h1>
             <p></p>
             <div className="forms-container">

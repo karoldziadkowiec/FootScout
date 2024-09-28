@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Col, Row, Container } from 'react-bootstrap';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import AccountService from '../../services/api/AccountService';
 import RegisterDTO from '../../models/dtos/RegisterDTO';
 import '../../App.css';
@@ -46,8 +46,10 @@ const Registration: React.FC = () => {
 
         try {
             await AccountService.registerUser(registerDTO);
-            navigate('/', { state: { toastMessage: "Your account has been successfully registered!" } });
-        } catch (error) {
+            toast.success('Your account has been successfully registered!');
+            navigate('/');
+        } 
+        catch (error) {
             toast.error('Registration failed. Please try again.');
         }
     };
@@ -102,7 +104,6 @@ const Registration: React.FC = () => {
 
     return (
         <div className="Registration">
-            <ToastContainer />
             <div className="logo-container">
                 <img src={require('../../img/logo.png')} alt="logo" className="logo" />
                 FootScout
