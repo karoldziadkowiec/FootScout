@@ -38,6 +38,17 @@
     display: flex;
     justify-content: center;
     margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.pagination-blue {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.pagination-blue .page-item {
+    margin: 2px;
 }
 
 .pagination-blue .page-item .page-link {
