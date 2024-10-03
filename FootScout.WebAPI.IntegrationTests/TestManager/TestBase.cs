@@ -97,10 +97,10 @@ namespace FootScout.WebAPI.IntegrationTests.TestManager
             // users
             dbContext.Users.AddRange(new List<User>
             {
-                new User { Id = "admin0", Email = "admin@admin.com", UserName = "admin@admin.com", PasswordHash = "Admin1!", FirstName = "Admin F.", LastName = "Admin L.", Location = "Admin Loc.", PhoneNumber = "000000000" },
-                new User { Id = "unknown9", Email = "unknown@unknown.com", UserName = "unknown@unknown.com", PasswordHash = "Uuuuu1!",FirstName = "Unknown F.", LastName = "Unknown L.", Location = "Unknown Loc.", PhoneNumber = "999999999" },
-                new User { Id = "leomessi", Email = "lm10@gmail.com", UserName = "lm10@gmail.com", PasswordHash = "Leooo1!",FirstName = "Leo", LastName = "Messi", Location = "Miami", PhoneNumber = "101010101" },
-                new User { Id = "pepguardiola", Email = "pg8@gmail.com", UserName = "pg8@gmail.com", PasswordHash = "Peppp1!",FirstName = "Pep", LastName = "Guardiola", Location = "Manchester", PhoneNumber = "868686868" }
+                new User { Id = "admin0", Email = "admin@admin.com", UserName = "admin@admin.com", PasswordHash = "Admin1!", FirstName = "Admin F.", LastName = "Admin L.", Location = "Admin Loc.", PhoneNumber = "000000000", CreationDate = DateTime.Now },
+                new User { Id = "unknown9", Email = "unknown@unknown.com", UserName = "unknown@unknown.com", PasswordHash = "Uuuuu1!",FirstName = "Unknown F.", LastName = "Unknown L.", Location = "Unknown Loc.", PhoneNumber = "999999999", CreationDate = DateTime.Now },
+                new User { Id = "leomessi", Email = "lm10@gmail.com", UserName = "lm10@gmail.com", PasswordHash = "Leooo1!",FirstName = "Leo", LastName = "Messi", Location = "Miami", PhoneNumber = "101010101", CreationDate = DateTime.Now },
+                new User { Id = "pepguardiola", Email = "pg8@gmail.com", UserName = "pg8@gmail.com", PasswordHash = "Peppp1!",FirstName = "Pep", LastName = "Guardiola", Location = "Manchester", PhoneNumber = "868686868", CreationDate = DateTime.Now }
             });
             await dbContext.SaveChangesAsync();
 
@@ -190,7 +190,7 @@ namespace FootScout.WebAPI.IntegrationTests.TestManager
 
         public static async Task SeedProblemTestBase(AppDbContext dbContext)
         {
-            // club history
+            // problem
             dbContext.Problems.AddRange(new List<Problem>
             {
                 new Problem { Title = "Problem 1", Description = "Desc 1", CreationDate = DateTime.Now, IsSolved = true, RequesterId = "leomessi" },

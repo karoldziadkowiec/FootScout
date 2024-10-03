@@ -75,6 +75,7 @@ namespace FootScout.WebAPI
             builder.Services.AddScoped<ICookieService, CookieService>();
             builder.Services.AddScoped<IChatService, ChatService>();
             builder.Services.AddScoped<IMessageService, MessageService>();
+            builder.Services.AddScoped<IPerformanceTestsService, PerformanceTestsService>();
 
             // Repositories
             builder.Services.AddScoped<IPlayerPositionRepository, PlayerPositionRepository>();
