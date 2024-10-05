@@ -295,7 +295,7 @@ namespace FootScout.WebAPI.Services.Classes
             await _dbContext.SaveChangesAsync();
 
             // club advertisements
-            var salaryRangeIds = await _dbContext.SalaryRanges.Select(sr => sr.Id).Take(testCounter).ToListAsync();
+            var salaryRangeIds = await _dbContext.SalaryRanges.Select(sr => sr.Id).ToListAsync();
             for (int i = 1; i <= testCounter; i++)
             {
                 clubAdvertisements.Add(new ClubAdvertisement
@@ -304,7 +304,7 @@ namespace FootScout.WebAPI.Services.Classes
                     ClubName = $"ClubName {i}",
                     League = $"League {i}",
                     Region = $"Region {i}",
-                    SalaryRangeId = testCounter + salaryRangeIds[i - 1],
+                    SalaryRangeId = salaryRangeIds[testCounter + i - 1],
                     CreationDate = DateTime.Now,
                     EndDate = DateTime.Now.AddDays(30),
                     ClubMemberId = $"user{i}"
@@ -400,9 +400,7 @@ namespace FootScout.WebAPI.Services.Classes
 
         private async Task ClearSalaryRanges()
         {
-            var salaryRanges = await _dbContext.SalaryRanges.ToListAsync();
-
-            _dbContext.SalaryRanges.RemoveRange(salaryRanges);
+            await _dbContext.Database.ExecuteSqlRawAsync("DELETE FROM SalaryRanges");
             await _dbContext.SaveChangesAsync();
         }
 
@@ -412,8 +410,7 @@ namespace FootScout.WebAPI.Services.Classes
             _dbContext.FavoritePlayerAdvertisements.RemoveRange(favoritePlayerAdvertisements);
             await _dbContext.SaveChangesAsync();
 
-            var playerAdvertisements = await _dbContext.PlayerAdvertisements.ToListAsync();
-            _dbContext.PlayerAdvertisements.RemoveRange(playerAdvertisements);
+            await _dbContext.Database.ExecuteSqlRawAsync("DELETE FROM PlayerAdvertisements");
             await _dbContext.SaveChangesAsync();
         }
 
@@ -431,8 +428,7 @@ namespace FootScout.WebAPI.Services.Classes
             _dbContext.FavoriteClubAdvertisements.RemoveRange(favoriteClubAdvertisements);
             await _dbContext.SaveChangesAsync();
 
-            var clubAdvertisements = await _dbContext.ClubAdvertisements.ToListAsync();
-            _dbContext.ClubAdvertisements.RemoveRange(clubAdvertisements);
+            await _dbContext.Database.ExecuteSqlRawAsync("DELETE FROM ClubAdvertisements");
             await _dbContext.SaveChangesAsync();
         }
 
@@ -446,19 +442,13 @@ namespace FootScout.WebAPI.Services.Classes
 
         private async Task ClearUsers()
         {
-            var usersToRemove = await _dbContext.Users
-                .Where(u => u.Email != "admin@admin.com" && u.Email != "unknown@unknown.com")
-                .ToListAsync();
+            var adminEmail = "admin@admin.com";
+            var unknownEmail = "unknown@unknown.com";
 
-            var userIdsToRemove = usersToRemove.Select(u => u.Id).ToList();
-            var userRolesToRemove = await _dbContext.UserRoles
-                .Where(ur => userIdsToRemove.Contains(ur.UserId))
-                .ToListAsync();
-
-            _dbContext.UserRoles.RemoveRange(userRolesToRemove);
+            await _dbContext.Database.ExecuteSqlRawAsync(@"DELETE FROM AspNetUserRoles WHERE UserId NOT IN (SELECT Id FROM AspNetUsers WHERE Email IN ({0}, {1}))", adminEmail, unknownEmail);
             await _dbContext.SaveChangesAsync();
 
-            _dbContext.Users.RemoveRange(usersToRemove);
+            await _dbContext.Database.ExecuteSqlRawAsync(@"DELETE FROM AspNetUsers WHERE Email NOT IN ({0}, {1})", adminEmail, unknownEmail);
             await _dbContext.SaveChangesAsync();
         }
     }
