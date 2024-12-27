@@ -36,7 +36,13 @@ class ChatHub {
     public async sendMessage(messageSendDTO: MessageSendDTO): Promise<void> {
         if (this.connection) {
             try {
+                const startTime = performance.now();
+                
                 await this.connection.invoke("SendMessage", messageSendDTO);
+
+                const endTime = performance.now();
+                const timeTaken = endTime - startTime;
+                console.log(`Czas wysyłania wiadomości: ${Math.round(timeTaken)} ms`);
             } 
             catch (error) {
                 console.error('Failed to send message:', error);
