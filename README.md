@@ -19,10 +19,10 @@ Other versions of the project:
 - **ASP.NET Core Web API** (8.0)
 - **C#** (12.0)
     - asynchronous programming (async/await)
-    - authentication (**JWT Bearer**), authorization, policies
+    - authentication (**JWT Bearer**), authorization with roles, policies
     - real-time communication between users (**SignalR**)
     - Dependency Injection, DTO, Controller, Service, Repository patterns
-    - configuration management with appsettings.json
+    - configuration management with file *appsettings.json*
     - application's seeder during the initial launch
     - password hashing
     - mapping profiles
@@ -48,7 +48,7 @@ Other versions of the project:
 - **React** (18.3.1)
     - **TypeScript** (4.9.5)
         - asynchronous programming (async/await)
-        - authentication (**JWT Bearer**), authorization, cookies management
+        - authentication (**JWT Bearer**), authorization with roles, cookies management
         - real-time communication between users (**microsoft/signalR**)
         - Service, Modal, Pagination, Routing patterns
         - Hooks
@@ -72,9 +72,9 @@ Other versions of the project:
 - Admin
 
 ## Main features
-- Observer: login and account registration.
-- User: account management, managing club histories, creating player and club advertisements, managing player and club advertisements, following advertisements, managing player and club offers, reporting application problems, managing chats, chatting with users in real time, logging out.
-- Admin: management of users, chats, player and club advertisements, player and club offers, raporting data of user, chats, player and club advertisements, player and club offers, chatting with users in real time, reporting and managing application problems, adding new player position, adding/removing an admin, logging out.
+- **Observer**: login and account registration.
+- **User**: account management, managing club histories, creating player and club advertisements, managing player and club advertisements, following advertisements, managing player and club offers, reporting application problems, managing chats, chatting with users in real time, logging out.
+- **Admin**: management of users, chats, player and club advertisements, player and club offers, raporting data of user, chats, player and club advertisements, player and club offers, chatting with users in real time, reporting and managing application problems, adding new player position, adding/removing an admin, logging out.
 
 ## Images
 Login page:
