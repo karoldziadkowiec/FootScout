@@ -9,13 +9,13 @@ Other versions of the project:
 - **PostgreSQL**: https://github.com/karoldziadkowiec/FootScout-PostgreSQL
 - **MongoDB**: https://github.com/karoldziadkowiec/FootScout-MongoDB
 
-## Construction and communication
+## Construction and communication of application
 - Application type: **web application**
 - Architecture: **client-server**
 - Communication: **REST API**
 
 ## Technologies
-#### Backend (server)
+### Backend (server)
 - **ASP.NET Core Web API** (8.0)
 - **C#** (12.0)
     - asynchronous programming (async/await)
@@ -44,7 +44,7 @@ Other versions of the project:
     - **Swagger UI**
     - **Postman**
 
-#### Frontend (client)
+### Frontend (client)
 - **React** (18.3.1)
     - **TypeScript** (4.9.5)
         - asynchronous programming (async/await)
@@ -56,7 +56,7 @@ Other versions of the project:
     - **CSS**
     - Main libraries:
         - **react-bootstrap, bootstrap-icons** components
-        - **react-Toastify**
+        - **react-toastify**
         - **recharts**
         - **react-router-dom**
         - **axios**
@@ -71,7 +71,7 @@ Other versions of the project:
 - User
 - Admin
 
-## Main features of the application
+## Main features
 - Observer: login and account registration.
 - User: account management, managing club histories, creating player and club advertisements, managing player and club advertisements, following advertisements, managing player and club offers, reporting application problems, managing chats, chatting with users in real time, logging out.
 - Admin: management of users, chats, player and club advertisements, player and club offers, raporting data of user, chats, player and club advertisements, player and club offers, chatting with users in real time, reporting and managing application problems, adding new player position, adding/removing an admin, logging out.
@@ -133,7 +133,7 @@ Real-time chatting with a selected user:
 
 ![14](github-img/14.png)
 
-Raporting a problem connected with web app:
+Reporting a problem connected with web app:
 
 ![15](github-img/15.png)
 
@@ -157,7 +157,7 @@ Admin page for adding new admin:
 
 ![20](github-img/20.png)
 
-#### Mobile version of web app
+### Mobile version of web app
 
 Login page:
 
@@ -171,15 +171,15 @@ Admin home page:
 
 ![23](github-img/23.png)
 
-#### Database schema
+### Database schema
 
 ![24](github-img/24.png)
 
-#### Unit tests
+### Unit tests results
 
 ![25](github-img/25.png)
 
-#### Integration tests
+### Integration tests results
 
 ![26](github-img/26.png)
 
