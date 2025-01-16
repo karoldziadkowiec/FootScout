@@ -1,6 +1,4 @@
-const ApiPORT: number = 7220;    // SQL Server
-//const ApiPORT: number = 7104;    // PostgreSQL
-//const ApiPORT: number = 7272;    // MongoDB
+const ApiPORT: number = 7220;
 
 const HubName: string = 'chathub';
 
